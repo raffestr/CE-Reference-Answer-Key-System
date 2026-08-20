@@ -14,51 +14,192 @@ main{max-width:1120px;margin:22px auto;padding:0 18px}.panel{background:#fff;bor
 .examnote{font-size:12px;color:#667085;padding:10px 20px;background:#fffdf5;border-bottom:1px solid #eee4bd}
 .sheet{padding:18px 20px}.instructions{font-size:13px;color:#687384;margin-bottom:16px}.question-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 34px;align-items:start}.question-column{min-width:0}
 .qrow{display:grid;grid-template-columns:42px 1fr;align-items:center;min-height:54px;border-top:1px solid #e5e8ec}.qrow:first-child{border-top:0}.qno{font-weight:700;color:#475467}
-.choices{display:grid;grid-template-columns:repeat(5,minmax(44px,1fr));gap:7px}.choice{display:flex;align-items:center;justify-content:center;cursor:pointer;padding:9px 5px;border:1px solid #cbd7e5;border-radius:5px;min-height:40px;font-size:14px}.choice:hover{background:var(--softsub);border-color:#8fb2df}.choice input{display:none}.choice.selected{background:var(--softsub);border-color:var(--subject);box-shadow:0 0 0 1px var(--subject) inset}.choice.e-selected{background:#fff1f1;border-color:#ef4444;box-shadow:0 0 0 1px #ef4444 inset}.choice.locked{cursor:not-allowed;opacity:.62}.choice.locked:hover{background:#fff;border-color:#cbd7e5}
+.choices{display:grid;grid-template-columns:repeat(5,minmax(44px,1fr));gap:7px}.choice{position:relative;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:9px 5px;border:1px solid #cbd7e5;border-radius:5px;min-height:40px;font-size:14px}.choice:hover{background:var(--softsub);border-color:#8fb2df}
+.choice input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.choice:focus-within{outline:2px solid var(--subject);outline-offset:1px}
+.choice.selected{background:var(--softsub);border-color:var(--subject);box-shadow:0 0 0 1px var(--subject) inset}.choice.e-selected{background:#fff1f1;border-color:#ef4444;box-shadow:0 0 0 1px #ef4444 inset}.choice.locked{cursor:not-allowed;opacity:.62}.choice.locked:hover{background:#fff;border-color:#cbd7e5}
 .footerbar{display:flex;align-items:center;gap:10px;padding:14px 20px;border-top:1px solid var(--line);background:#fafbfc}button{font-weight:700;border-radius:4px;padding:9px 15px;cursor:pointer}.primary{background:var(--subject);border:1px solid var(--subject);color:#fff}.secondary{background:#fff;border:1px solid #cbd2da;color:#344054}.danger{background:#fff;border:1px solid #d9534f;color:#c62828}.status{margin-left:auto;font-size:13px;color:#667085}
 .attempts{width:100%;border-collapse:collapse;font-size:13px}.attempts th,.attempts td{text-align:left;padding:11px 12px;border-bottom:1px solid #e5e7eb}.attempts th{background:#f8fafc}
 .modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.modalbox{background:#fff;border-radius:7px;width:min(900px,100%);max-height:88vh;overflow:auto;padding:24px}.score{text-align:center;font-size:44px;font-weight:800;color:var(--subject)}
-.review{display:grid;grid-template-columns:42px 1fr;align-items:center;padding:10px 0;border-bottom:1px solid #eee}.reviewchoices{display:grid;grid-template-columns:repeat(5,minmax(50px,1fr));gap:8px}.reviewchoice{display:flex;justify-content:center;align-items:center;min-height:42px;border:1px solid #cbd7e5;border-radius:5px;font-weight:700;color:#475467}.reviewchoice.correct{background:#12b981;border-color:#12b981;color:#fff}.reviewchoice.wrong{background:#ef4444;border-color:#ef4444;color:#fff}.result-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.review-legend{display:flex;gap:16px;font-size:12px;color:#475467;margin:12px 0;justify-content:center;flex-wrap:wrap;align-items:center}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}
+.dot.c-correct{background:#12b981}
+.dot.c-wrong{background:#ef4444}
+.dot.c-unanswered{background:#fff;border:2px solid #d97706}
+.review{display:grid;grid-template-columns:42px 1fr;align-items:center;padding:10px 0;border-bottom:1px solid #eee}.reviewchoices{display:grid;grid-template-columns:repeat(5,minmax(50px,1fr));gap:8px}.reviewchoice{display:flex;justify-content:center;align-items:center;min-height:42px;border:1px solid #cbd7e5;border-radius:5px;font-weight:700;color:#475467}
+.reviewchoice.correct{background:#12b981;border-color:#12b981;color:#fff}
+.reviewchoice.wrong{background:#ef4444;border-color:#ef4444;color:#fff}
+.reviewchoice.unanswered{background:#fff;border:2px solid #d97706;color:#b45309}
+.disclaimer{margin-top:16px;padding:10px 14px;background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid #f59e0b;border-radius:4px;font-size:12px;color:#475467}
+.result-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
 @media(max-width:800px){.question-grid{grid-template-columns:1fr}.timerbox{margin-left:0}.exambar{flex-wrap:wrap}select{width:100%;min-width:0}.timercontrols{margin-left:0}}
 @media(max-width:600px){.tabs{padding:0 4px}.tab{font-size:12px;padding:13px 4px}.choices{gap:5px}.choice{padding:7px 2px}.qrow{grid-template-columns:36px 1fr}.reviewchoices{gap:5px}}
 </style></head>
 <body>
 <header><div class="brand">CE Reference Book — Volume 4, 7th Edition</div><div class="sub">Ultimate Civil Engineering Answer Key System</div></header>
 <nav class="tabs"><button class="tab" data-s="MSTEC">MSTEC</button><button class="tab" data-s="HPGE">HPGE</button><button class="tab" data-s="PSAD">PSAD</button></nav>
-<main><section class="panel"><div class="panel-title">Question Viewer</div>
+<main><section class="panel"><div class="panel-title">Digital Answer Sheet</div>
 <div class="exambar"><select id="exam"></select><span id="meta" style="font-size:12px;color:#667085"></span>
 <div class="timerbox"><div class="timerlabel">EXAM TIMER</div><div class="timercontrols"><div class="timer" id="timer">06:00:00</div><button class="timerbtn" id="timerBtn" onclick="toggleTimer()">Start</button><button class="timerbtn" onclick="resetTimer()">Reset</button></div></div></div>
 <div class="examnote" id="examnote">To start the exam, press <b>Start</b>. The answer choices are locked until the timer is started.</div><div class="sheet"><div class="instructions">Select one answer for each item. All items are displayed at once. Item count matches the selected examination.</div><div id="questions" class="question-grid"><div class="question-column" id="leftQuestions"></div><div class="question-column" id="rightQuestions"></div></div></div>
 <div class="footerbar"><button class="primary" onclick="submitExam()">Submit Exam</button><button class="danger" onclick="resetExam()">Clear Answers</button><button class="secondary" onclick="clearHistory()">Clear Exam History</button><span class="status" id="status"></span></div>
 </section><section class="panel"><div class="panel-title">Past Attempts</div><div id="attempts"></div></section></main>
-<div class="modal" id="modal"><div class="modalbox"><h2 id="rt">Exam Result</h2><div class="score" id="score"></div><p id="summary" style="text-align:center"></p><h3>Answer Review</h3><div id="review"></div>
+<div class="modal" id="modal"><div class="modalbox"><h2 id="rt">Exam Result</h2><div class="score" id="score"></div><p id="summary" style="text-align:center"></p><h3>Answer Review</h3>
+<div class="review-legend">
+  <span><span class="dot c-correct"></span> Correct</span>
+  <span><span class="dot c-wrong"></span> Incorrect</span>
+  <span><span class="dot c-unanswered"></span> Unanswered (Correct Key)</span>
+</div>
+<div id="review"></div>
+<div class="disclaimer"><b>Note:</b> Answer key is based directly on the reference book. For potential erroneous answers or questions, please consult external sources.</div>
 <div class="result-actions"><button class="primary" onclick="closeModal()">Close</button><button class="secondary" onclick="retake()">Retake This Exam</button></div></div></div>
-</body></html>
 <script>
 const DATA={"PSAD":{"MAY 2018":["A","B","D","A","A","C","B","C","A","B","D","D","A","D","C","B","C","B","D","A","D","A","B","C","D","B","C","C","C","B","A","B","A","D","C","A","B","B","D","C","A","B","D","B","C","D","B","C","A","B","D","B","C","D","A","D","A","A","A","C","A","D","B","A","B","D","A","A","B","C","B","D","C","A","D"],"NOVEMBER 2018":["B","C","B","B","C","C","B","C","B","A","B","A","C","D","C","B","B","B","B","A","D","C","A","A","B","A","D","D","A","B","C","B","A","A","D","A","B","C","C","D","B","A","C","D","A","D","B","A","C","D","B","C","D","B","B","A","D","B","C","A","B","B","D","B","B","D","D","D","B","B","B","D","D","A","D"],"MAY 2017":["B","C","A","C","A","B","C","D","A","B","C","B","C","C","D","B","A","D","C","A","A","B","A","D","B","A","D","A","B","D","A","B","D","D","B","D","B","A","C","C","A","D","B","A","D","A","C","B","B","B","C","B","A","A","A","A","D","D","D","C","D","A","B","D","D","C"],"NOVEMBER 2017":["C","B","A","D","D","C","A","D","C","B","D","A","C","A","B","D","B","A","C","C","D","B","B","A","C","C","B","D","D","B","D","C","A","A","D","C","B","A","D","A","D","C","B","A","B","A","D","B","B","A","C","B","D","A","B","C","D","B","A","C","C","D","A","D","C","A","C","C","A","D","A","A"],"MAY 2016":["D","A","C","D","B","C","A","C","B","C","A","B","C","A","D","C","D","B","C","A","C","A","D","C","B","C","A","B","C","B","D","B","A","B","A","D","B","C","A","A","C","A","A","D","D","B","A","C","A","B","D","A","C","C","D","B","C","C","D","D","A","B","B","B","B","D","A","C","A","D","C","A","D","C","A"],"NOVEMBER 2016":["B","B","A","A","D","C","B","D","C","C","B","B","C","A","D","D","D","A","D","B","A","A","C","B","C","A","B","C","B","A","A","A","B","D","D","C","A","B","C","A","C","D","B","D","D","C","A","B","A","C","A","D","A","C","A","D","C","C","D","B","D","B","A","B","C","D","A","A","D","D","D","B","A","C","A"],"MAY 2015":["B","D","C","D","D","B","B","C","D","C","D","A","A","B","B","D","D","C","A","A","D","B","C","C","B","B","A","C","C","A","D","A","C","A","D","B","B","C","A","D","B","D","A","B","D","A","A","C","D","B","D","B","A","A","C","C","A","D","D","C","B","B","D","D","D","B","C","A","B","C","B","A","C","C","C","A","D","B","D","B","B","D","C","A","D"],"NOVEMBER 2015":["A","C","D","C","A","B","D","A","A","D","B","C","D","C","B","C","D","A","D","B","D","C","A","A","D","D","D","A","B","D","B","B","B","B","D","C","C","B","D","D","A","D","C","D","B","A","C","B","B","C","D","D","B","A","D","D","C","A","A","D","C","C","A","D","A","B","C","D","A","B","A","B","C","A","B","D","A","D","A","C","A","C","B","B","C","D","A","A"]},"HPGE":{"MAY 2018":["C","D","A","A","C","C","A","C","D","C","B","B","A","A","B","A","C","B","A","A","B","D","D","B","D","B","A","B","A","C","A","D","A","D","C","B","C","D","B","A","B","A","C","B","C","D","D","C","B","D"],"NOVEMBER 2018":["D","B","C","A","C","B","B","D","A","B","D","A","D","A","B","A","C","D","C","B","B","D","B","A","A","D","B","C","A","B","A","D","A","B","C","D","B","C","A","C","A","C","A","A","D","C","C","D","D","C"],"MAY 2017":["A","A","D","D","C","D","C","D","A","C","C","B","A","C","D","C","C","B","A","A","D","B","B","B","D","A","C","A","A","D","D","C","B","A","B","D","B","C","C","A","B","A","D","B","B","D","D"],"NOVEMBER 2017":["C","A","B","A","B","C","D","D","B","D","D","A","B","D","C","A","D","A","C","C","B","B","A","D","A","C","C","B","A","D","A","D","A","B","C","A","A","D","B","C","D","A","D","C","A","C","B","B","C"],"MAY 2016":["D","A","B","C","D","B","A","C","B","A","A","A","D","A","C","B","C","C","C","C","A","B","A","A","B","C","C","C","C","B","D","A","A","B","A","D","D","C","C","B","D","A","B","D","A","A","D","D","C","B"],"NOVEMBER 2016":["D","C","D","C","D","D","B","A","C","B","C","B","C","D","D","D","C","A","B","D","D","A","D","A","A","B","C","A","B","A","A","D","A","B","D","C","A","C","C","A","B","C","B","C","C","B","D","A","C","B"],"MAY 2015":["D","A","C","A","B","A","C","A","B","C","C","B","D","C","B","D","A","A","B","C","D","C","B","D","A","D","A","B","A","A","D","C","B","C","B","D","D","B","A","B","D","A","C","C","D","B","A","D","B","B","D","C","A","C","B","A","B","A","C","B","D","D","B","B","B","A","B","A","A","D","D","B","C","B","C","B","B","D","D","A","C","A"],"NOVEMBER 2015":["D","C","B","C","B","D","B","D","D","B","D","D","C","B","B","C","A","A","C","B","A","A","C","D","A","C","C","A","C","A","B","C","D","A","C","B","A","C","B","D","B","D","D","C","A","A","A","B","C","B","A","D","C","D","C","D","B","D","D","B","A","A","D","D","C","C","B","A","A","B","B","A","D","D","C","B","B","B","D","A"]},"MSTEC":{"MAY 2018":["D","A","D","D","C","B","B","C","D","D","C","C","A","A","B","A","A","C","C","C","C","A","D","B","D","C","A","C","C","D","D","A","B","D","B","D","B","A","C","D","C","B","D","D","C","A","A","B","D","A","A","A","A","B","A","C","A","C","C","B","C","A"],"NOVEMBER 2018":["B","C","D","D","B","C","B","D","B","C","A","A","B","D","A","B","A","C","B","D","C","D","A","B","B","B","C","A","A","C","B","B","B","D","B","B","B","A","A","C","D","D","D","B","D","D","A","A","B","D","D","A","A","C","D","A","B","D","A","D","D","A","C","A","C","A","C","A","A","C","B","A","A","D"],"MAY 2017":["C","A","B","D","C","A","A","B","B","C","C","A","A","B","C","C","D","D","B","D","D","C","C","A","B","D","C","D","B","A","C","D","D","B","B","A","A","C","C","B","C","D","A","A","A","D","C","D","D","D","A","B","A","D","D","A","B","C","B","C","A","D","A","C","D","D","B","A","B","B","B","D","D","C","C"],"NOVEMBER 2017":["A","B","D","D","A","C","D","A","C","B","A","A","A","C","D","D","D","D","C","C","D","A","B","B","D","A","B","A","B","A","C","A","B","A","C","B","B","A","A","B","A","A","C","C","C","C","B","B","D","C","D","A","D","D","C","C","A","B","D","A","A","A","C","D","B","C","B","B","C","D","D","B","D","B"],"MAY 2016":["C","B","B","B","A","A","D","A","A","D","A","A","C","C","D","D","C","D","C","B","B","D","A","C","B","D","C","C","D","D","A","B","C","A","A","D","C","A","B","A","D","C","D","A","C","C","B","A","C","D","A","D","B","B","B","B","A","D","C","B","C","A","D","A","C","D","D","D","A","B","B","A","B","B","C"],"NOVEMBER 2016":["D","A","B","C","D","B","C","D","D","A","A","D","B","A","B","C","D","B","B","A","D","A","B","D","C","B","C","B","A","C","C","D","A","D","A","D","B","A","B","D","C","D","C","D","C","B","D","D","A","C","C","A","C","A","A","A","B","B","B","D","D","D","D","B","D","C","D","D","A","B","C","A","C","B","A"],"MAY 2015":["A","B","C","B","A","B","D","B","A","B","A","D","B","A","C","D","A","A","D","D","A","D","C","A","B","C","B","C","C","B","C","B","B","C","B","D","A","A","B","D","B","A","D","D","B","C","B","B","B","A","A","B","B","B","D","A","B","A","D","C","D","B","C","C","B","A","D","A","A","C","D","C","D","C","D","D","D","A","A","A","A","D","B","C","D","A","C","D","A"],"NOVEMBER 2015":["A","C","A","B","C","D","D","A","D","A","C","C","B","C","D","C","C","D","A","D","A","C","D","A","A","B","A","C","A","D","A","B","A","A","B","D","B","D","D","C","B","D","B","D","C","D","A","A","A","D","B","D","A","B","A","C","C","C","B","D","B","B","D","B","A","D","C","D","C","C","C","C","C","C","A","B","B","A","D","C","B","A","B","A","B","D","A","C","B","D"]}};
 const DURATIONS={PSAD:21600,MSTEC:18000,HPGE:14400};
-let subject='PSAD',examName='',ans=[],elapsed=0,running=false,submitted=false,lastResult=null;
+let subject='PSAD',examName='',ans=[],accumulatedMs=0,startTime=null,running=false,submitted=false,lastResult=null;
 const root=document.documentElement,sel=document.getElementById('exam'),leftQ=document.getElementById('leftQuestions'),rightQ=document.getElementById('rightQuestions'),timer=document.getElementById('timer'),timerBtn=document.getElementById('timerBtn'),status=document.getElementById('status'),note=document.getElementById('examnote');
 const colors={MSTEC:['#2674d9','#eaf3ff'],HPGE:['#238636','#e8f5e9'],PSAD:['#d97706','#fff3df']};
+
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>switchSubject(t.dataset.s)));
-sel.addEventListener('change',()=>{examName=sel.value;ans=Array((DATA[subject][examName]||[]).length).fill(null);elapsed=0;running=false;submitted=false;lastResult=null;updateTimerUI();updateNote();render();});
-function switchSubject(s){subject=s;root.style.setProperty('--subject',colors[s][0]);root.style.setProperty('--softsub',colors[s][1]);document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.s===s));sel.disabled=false;sel.innerHTML='';const exams=DATA[s]||{};Object.keys(exams).forEach(n=>{const o=document.createElement('option');o.value=n;o.textContent=n;sel.appendChild(o)});examName=Object.keys(exams)[0]||'';ans=Array((exams[examName]||[]).length).fill(null);elapsed=0;running=false;submitted=false;lastResult=null;updateTimerUI();updateNote();render();renderAttempts();}
+sel.addEventListener('change',()=>{examName=sel.value;ans=Array((DATA[subject][examName]||[]).length).fill(null);accumulatedMs=0;startTime=null;running=false;submitted=false;lastResult=null;updateTimerUI();updateNote();render();});
+
+function getAttempts(){
+  try { return JSON.parse(localStorage.getItem('ceUltimateAttempts')) || []; }
+  catch(e) { return []; }
+}
+
+function getElapsedSeconds(){
+  let totalMs = accumulatedMs;
+  if(running && startTime) totalMs += (Date.now() - startTime);
+  return Math.floor(totalMs / 1000);
+}
+
+function switchSubject(s){subject=s;root.style.setProperty('--subject',colors[s][0]);root.style.setProperty('--softsub',colors[s][1]);document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.s===s));sel.disabled=false;sel.innerHTML='';const exams=DATA[s]||{};Object.keys(exams).forEach(n=>{const o=document.createElement('option');o.value=n;o.textContent=n;sel.appendChild(o)});examName=Object.keys(exams)[0]||'';ans=Array((exams[examName]||[]).length).fill(null);accumulatedMs=0;startTime=null;running=false;submitted=false;lastResult=null;updateTimerUI();updateNote();render();renderAttempts();}
 function duration(){return DURATIONS[subject]||21600}
 function fmt(v){const h=Math.floor(v/3600),m=Math.floor((v%3600)/60),s=v%60;return[h,m,s].map(x=>String(x).padStart(2,'0')).join(':')}
-function updateTimerUI(){timer.textContent=fmt(Math.max(0,duration()-elapsed));timerBtn.textContent=running?'Stop':'Start';timerBtn.classList.toggle('running',running);timerBtn.disabled=submitted;sel.disabled=false;}
-function updateNote(){if(lastResult)note.innerHTML='<b>Exam completed.</b> Review your result or choose <b>Retake This Exam</b> for a fresh attempt.';else if(running)note.innerHTML='<b>Exam in progress.</b> Press <b>Stop</b> to pause. Your selected answers remain available.';else if(elapsed>0)note.innerHTML='<b>Timer stopped.</b> Your selected answers remain available. Press <b>Start</b> to continue.';else note.innerHTML='To start the exam, press <b>Start</b>. The answer choices are locked until the timer is started.'}
-function toggleTimer(){if(submitted)return;if(elapsed>=duration()){submitExam(true);return}running=!running;updateTimerUI();updateNote();render();}
-function resetTimer(){if(submitted){if(!confirm('Reset this completed exam and prepare it for a new attempt?'))return;ans=Array((DATA[subject][examName]||[]).length).fill(null);submitted=false;lastResult=null}else if(elapsed>0){if(!confirm('Reset the timer to the full exam time? Your current answers will be kept.'))return}elapsed=0;running=false;updateTimerUI();updateNote();render();}
-function makeQuestion(i){const row=document.createElement('div');row.className='qrow';row.innerHTML='<div class="qno">'+(i+1)+'</div><div class="choices"></div>';const box=row.querySelector('.choices');const locked=!running&&elapsed===0&&!submitted;['A','B','C','D','E'].forEach(letter=>{const label=document.createElement('label');label.className='choice'+(ans[i]===letter?' selected':'')+(ans[i]==='E'&&letter==='E'?' e-selected':'')+(locked?' locked':'');label.innerHTML='<input type="radio" name="q'+i+'" '+(ans[i]===letter?'checked':'')+'><b>'+letter+'</b>';label.addEventListener('click',e=>{if(locked||submitted){e.preventDefault();return}ans[i]=letter;render();});box.appendChild(label)});return row}
+function updateTimerUI(){timer.textContent=fmt(Math.max(0,duration()-getElapsedSeconds()));timerBtn.textContent=running?'Stop':'Start';timerBtn.classList.toggle('running',running);timerBtn.disabled=submitted;sel.disabled=false;}
+function updateNote(){if(lastResult)note.innerHTML='<b>Exam completed.</b> Review your result or choose <b>Retake This Exam</b> for a fresh attempt.';else if(running)note.innerHTML='<b>Exam in progress.</b> Press <b>Stop</b> to pause. Your selected answers remain available.';else if(getElapsedSeconds()>0)note.innerHTML='<b>Timer stopped.</b> Your selected answers remain available. Press <b>Start</b> to continue.';else note.innerHTML='To start the exam, press <b>Start</b>. The answer choices are locked until the timer is started.'}
+
+function toggleTimer(){
+  if(submitted)return;
+  if(getElapsedSeconds()>=duration()){submitExam(true);return}
+  if(running){
+    accumulatedMs += (Date.now() - startTime);
+    startTime = null;
+    running = false;
+  } else {
+    startTime = Date.now();
+    running = true;
+  }
+  updateTimerUI();updateNote();render();
+}
+
+function resetTimer(){
+  if(submitted){
+    if(!confirm('Reset this completed exam and prepare it for a new attempt?'))return;
+    ans=Array((DATA[subject][examName]||[]).length).fill(null);submitted=false;lastResult=null;
+  } else if(getElapsedSeconds()>0){
+    if(!confirm('Reset the timer to the full exam time? Your current answers will be kept.'))return;
+  }
+  accumulatedMs=0;startTime=null;running=false;updateTimerUI();updateNote();render();
+}
+
+function makeQuestion(i){
+  const row=document.createElement('div');row.className='qrow';row.innerHTML='<div class="qno">'+(i+1)+'</div><div class="choices"></div>';
+  const box=row.querySelector('.choices');
+  const locked=!running&&getElapsedSeconds()===0&&!submitted;
+  ['A','B','C','D','E'].forEach(letter=>{
+    const label=document.createElement('label');
+    label.className='choice'+(ans[i]===letter?' selected':'')+(ans[i]==='E'&&letter==='E'?' e-selected':'')+(locked?' locked':'');
+    label.innerHTML='<input type="radio" name="q'+i+'" '+(ans[i]===letter?'checked':'')+'><b>'+letter+'</b>';
+    label.addEventListener('click',e=>{if(locked||submitted){e.preventDefault();return}ans[i]=letter;render();});
+    box.appendChild(label)
+  });
+  return row;
+}
+
 function render(){const key=DATA[subject][examName]||[];document.getElementById('meta').textContent=key.length+' items';leftQ.innerHTML='';rightQ.innerHTML='';const split=Math.ceil(key.length/2);key.forEach((_,i)=>(i<split?leftQ:rightQ).appendChild(makeQuestion(i)));status.textContent=ans.filter(Boolean).length+' / '+key.length+' answered';}
-setInterval(()=>{if(!running||submitted)return;elapsed++;const r=Math.max(0,duration()-elapsed);timer.textContent=fmt(r);if(r===0){running=false;updateTimerUI();updateNote();submitExam(true);}},1000);
-function buildReview(key){return key.map((correct,i)=>{const ua=ans[i];const choices=['A','B','C','D','E'].map(c=>{let cls='reviewchoice';if(c===correct)cls+=' correct';if(ua===c&&ua!==correct)cls+=' wrong';return '<div class="'+cls+'">'+c+'</div>';}).join('');return '<div class="review"><div><b>'+(i+1)+'.</b></div><div class="reviewchoices">'+choices+'</div></div>';}).join('');}
-function showResult(){const key=DATA[subject][examName];document.getElementById('rt').textContent=lastResult.auto?'Time Expired — Exam Submitted':'Exam Result';document.getElementById('score').textContent=lastResult.correct+' / '+key.length;document.getElementById('summary').textContent=lastResult.pct+'% • '+lastResult.answered+' answered • Time consumed: '+lastResult.time;document.getElementById('review').innerHTML=buildReview(key);document.getElementById('modal').classList.add('show');}
-function submitExam(auto=false){if(submitted){showResult();return}submitted=true;running=false;const key=DATA[subject][examName];const correct=ans.reduce((n,a,i)=>n+(a===key[i]?1:0),0);const pct=(correct/key.length*100).toFixed(2);lastResult={correct,pct,time:fmt(elapsed),answered:ans.filter(Boolean).length,auto};const a=JSON.parse(localStorage.getItem('ceUltimateAttempts')||'[]');a.push({subject,exam:examName,date:new Date().toLocaleString(),score:correct+'/'+key.length,pct:pct+'%',time:fmt(elapsed)});localStorage.setItem('ceUltimateAttempts',JSON.stringify(a));updateTimerUI();updateNote();renderAttempts();showResult();}
+
+setInterval(()=>{
+  if(!running||submitted)return;
+  const el=getElapsedSeconds();
+  const r=Math.max(0,duration()-el);
+  timer.textContent=fmt(r);
+  if(r===0){
+    running=false;accumulatedMs=duration()*1000;startTime=null;
+    updateTimerUI();updateNote();submitExam(true);
+  }
+},500);
+
+function buildReview(key, userAns = ans){
+  return key.map((correct,i)=>{
+    const ua = userAns[i];
+    const choices = ['A','B','C','D','E'].map(c=>{
+      let cls = 'reviewchoice';
+      if(!ua){
+        if(c === correct) cls += ' unanswered';
+      } else {
+        if(c === correct) cls += ' correct';
+        if(ua === c && ua !== correct) cls += ' wrong';
+      }
+      return '<div class="'+cls+'">'+c+'</div>';
+    }).join('');
+    return '<div class="review"><div><b>'+(i+1)+'.</b></div><div class="reviewchoices">'+choices+'</div></div>';
+  }).join('');
+}
+
+function showResult(){
+  const key=DATA[subject][examName];
+  const userAns = lastResult ? lastResult.ans : ans;
+  document.getElementById('rt').textContent=lastResult.auto?'Time Expired — Exam Submitted':'Exam Result';
+  document.getElementById('score').textContent=lastResult.correct+' / '+key.length;
+  document.getElementById('summary').textContent=lastResult.pct+'% • '+lastResult.answered+' answered • Time consumed: '+lastResult.time;
+  document.getElementById('review').innerHTML=buildReview(key, userAns);
+  document.getElementById('modal').classList.add('show');
+}
+
+function submitExam(auto=false){
+  if(submitted){showResult();return}
+  if(running){accumulatedMs += (Date.now() - startTime);startTime = null;running = false;}
+  submitted=true;
+  const el=getElapsedSeconds();
+  const key=DATA[subject][examName];
+  const correct=ans.reduce((n,a,i)=>n+(a===key[i]?1:0),0);
+  const pct=(correct/key.length*100).toFixed(2);
+  lastResult={correct,pct,time:fmt(el),answered:ans.filter(Boolean).length,auto,ans:[...ans]};
+  const a=getAttempts();
+  a.push({subject,exam:examName,date:new Date().toLocaleString(),score:correct+'/'+key.length,pct:pct+'%',time:fmt(el),ans:[...ans]});
+  try { localStorage.setItem('ceUltimateAttempts',JSON.stringify(a)); } catch(e){}
+  updateTimerUI();updateNote();renderAttempts();showResult();
+}
+
+function viewAttempt(idx){
+  const a = getAttempts();
+  const item = a[idx];
+  if(!item) return;
+  const key = (DATA[item.subject] && DATA[item.subject][item.exam]) || [];
+  const itemAns = item.ans || [];
+  document.getElementById('rt').textContent = 'Past Attempt — ' + item.subject + ' (' + item.exam + ')';
+  document.getElementById('score').textContent = item.score;
+  document.getElementById('summary').textContent = item.pct + ' • ' + itemAns.filter(Boolean).length + ' answered • Time consumed: ' + item.time;
+  document.getElementById('review').innerHTML = buildReview(key, itemAns);
+  document.getElementById('modal').classList.add('show');
+}
+
 function closeModal(){document.getElementById('modal').classList.remove('show');render();}
-function retake(){ans=Array((DATA[subject][examName]||[]).length).fill(null);elapsed=0;running=false;submitted=false;lastResult=null;document.getElementById('modal').classList.remove('show');updateTimerUI();updateNote();render();}
+function retake(){ans=Array((DATA[subject][examName]||[]).length).fill(null);accumulatedMs=0;startTime=null;running=false;submitted=false;lastResult=null;document.getElementById('modal').classList.remove('show');updateTimerUI();updateNote();render();}
 function resetExam(){if(confirm('Clear all selected answers for this examination?')){ans=Array((DATA[subject][examName]||[]).length).fill(null);render();}}
-function renderAttempts(){const a=JSON.parse(localStorage.getItem('ceUltimateAttempts')||'[]');document.getElementById('attempts').innerHTML=a.length?'<table class="attempts"><tr><th>#</th><th>Subject</th><th>Exam</th><th>Date</th><th>Score</th><th>%</th><th>Time</th></tr>'+a.map((x,i)=>'<tr><td>'+(i+1)+'</td><td>'+x.subject+'</td><td>'+x.exam+'</td><td>'+x.date+'</td><td>'+x.score+'</td><td>'+x.pct+'</td><td>'+x.time+'</td></tr>').join('')+'</table>':'<div style="padding:16px;color:#667085;font-size:13px">No attempts yet.</div>';}
-function clearHistory(){if(confirm('Clear ALL saved exam history for MSTEC, HPGE, and PSAD?')){localStorage.removeItem('ceUltimateAttempts');renderAttempts();}}
+
+function renderAttempts(){
+  const a=getAttempts();
+  document.getElementById('attempts').innerHTML=a.length?
+    '<table class="attempts"><tr><th>#</th><th>Subject</th><th>Exam</th><th>Date</th><th>Score</th><th>%</th><th>Time</th><th>Action</th></tr>'+
+    a.map((x,i)=>'<tr><td>'+(i+1)+'</td><td>'+x.subject+'</td><td>'+x.exam+'</td><td>'+x.date+'</td><td>'+x.score+'</td><td>'+x.pct+'</td><td>'+x.time+'</td><td><button class="secondary" style="padding:4px 10px;font-size:12px" onclick="viewAttempt('+i+')">View</button></td></tr>').join('')+
+    '</table>':
+    '<div style="padding:16px;color:#667085;font-size:13px">No attempts yet.</div>';
+}
+
+function clearHistory(){if(confirm('Clear ALL saved exam history for MSTEC, HPGE, and PSAD?')){try{localStorage.removeItem('ceUltimateAttempts');}catch(e){}renderAttempts();}}
 switchSubject(subject);
 </script>
+</body></html>
