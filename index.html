@@ -24,15 +24,15 @@ select{padding:9px 10px;border:1px solid #cbd2da;border-radius:4px;background:#f
 .footerbar{display:flex;align-items:center;gap:10px;padding:14px 20px;border-top:1px solid var(--line);background:#fafbfc}button{font-weight:700;border-radius:4px;padding:9px 15px;cursor:pointer}.primary{background:var(--subject);border:1px solid var(--subject);color:#fff}.secondary{background:#fff;border:1px solid #cbd2da;color:#344054}.danger{background:#fff;border:1px solid #d9534f;color:#c62828}.status{margin-left:auto;font-size:13px;color:#667085}
 .attempts{width:100%;border-collapse:collapse;font-size:13px}.attempts th,.attempts td{text-align:left;padding:11px 12px;border-bottom:1px solid #e5e7eb}.attempts th{background:#f8fafc}
 .modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.modalbox{background:#fff;border-radius:7px;width:min(900px,100%);max-height:88vh;overflow:auto;padding:24px}.score{text-align:center;font-size:44px;font-weight:800;color:var(--subject)}
-.review{display:grid;grid-template-columns:42px 1fr;align-items:center;padding:10px 0;border-bottom:1px solid #eee}.reviewchoices{display:grid;grid-template-columns:repeat(5,minmax(50px,1fr));gap:8px}.reviewchoice{display:flex;justify-content:center;align-items:center;min-height:42px;border:1px solid #cbd7e5;border-radius:5px;font-weight:700;color:#475467}
+.review{display:grid;grid-template-columns:110px 1fr;align-items:center;padding:10px 0;border-bottom:1px solid #eee}.reviewchoices{display:grid;grid-template-columns:repeat(5,minmax(50px,1fr));gap:8px}.reviewchoice{display:flex;justify-content:center;align-items:center;min-height:42px;border:1px solid #cbd7e5;border-radius:5px;font-weight:700;color:#475467}
 .reviewchoice.correct{background:#12b981;border-color:#12b981;color:#fff}
 .reviewchoice.wrong{background:#ef4444;border-color:#ef4444;color:#fff}
-.reviewchoice.wrong.e-wrong{background:#fff;border:2px solid #ef4444;color:#ef4444}
 .reviewchoice.unanswered{background:#fff;border:2px solid #d97706;color:#b45309}
+.badge-skipped{display:inline-block;padding:2px 6px;background:#fff3dc;color:#b45309;border:1px solid #f59e0b;border-radius:4px;font-size:10px;font-weight:700;margin-left:4px;letter-spacing:0.3px}
 .disclaimer{margin-top:16px;padding:10px 14px;background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid #f59e0b;border-radius:4px;font-size:12px;color:#475467}
 .result-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
 @media(max-width:800px){.question-grid{grid-template-columns:1fr}.timerbox{margin-left:0}.exambar{flex-wrap:wrap}select{width:100%;min-width:0}.timercontrols{margin-left:0}}
-@media(max-width:600px){.tabs{padding:0 4px}.tab{font-size:12px;padding:13px 4px}.choices{gap:5px}.choice{padding:7px 2px}.qrow{grid-template-columns:36px 1fr}.reviewchoices{gap:5px}}
+@media(max-width:600px){.tabs{padding:0 4px}.tab{font-size:12px;padding:13px 4px}.choices{gap:5px}.choice{padding:7px 2px}.qrow{grid-template-columns:36px 1fr}.reviewchoices{gap:5px}.review{grid-template-columns:90px 1fr}}
 </style></head>
 <body>
 <header><div class="brand">Civil Engineering Reference for Licensure Examination</div><div class="sub">Answer Key System by <i>[MR.ME]</i></div></header>
@@ -207,20 +207,21 @@ setInterval(() => {
 function buildReview(key, userAns = ans) {
   return key.map((correct, i) => {
     const ua = userAns[i];
+    const isSkipped = !ua;
     const choices = ['A','B','C','D','E'].map(c => {
       let cls = 'reviewchoice';
-      if (!ua) {
+      if (isSkipped) {
         if (c === correct) cls += ' unanswered';
       } else {
         if (c === correct) cls += ' correct';
         if (ua === c && ua !== correct) {
           cls += ' wrong';
-          if (c === 'E') cls += ' e-wrong';
         }
       }
       return '<div class="' + cls + '">' + c + '</div>';
     }).join('');
-    return '<div class="review"><div><b>' + (i+1) + '.</b></div><div class="reviewchoices">' + choices + '</div></div>';
+    const badge = isSkipped ? '<span class="badge-skipped">SKIPPED</span>' : '';
+    return '<div class="review"><div><b>' + (i+1) + '.</b>' + badge + '</div><div class="reviewchoices">' + choices + '</div></div>';
   }).join('');
 }
 
