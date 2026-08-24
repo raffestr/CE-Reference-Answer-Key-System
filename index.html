@@ -15,7 +15,7 @@ select{padding:9px 10px;border:1px solid #cbd2da;border-radius:4px;background:#f
 .timerbox{margin-left:auto;text-align:right}.timerlabel{font-size:11px;font-weight:700;color:#697586}.timer{font-size:25px;font-weight:700;color:var(--subject)}.timercontrols{display:flex;align-items:center;gap:7px}
 .timerbtn{padding:7px 11px;border:1px solid #cbd2da;background:#fff;color:#344054;border-radius:4px;font-size:12px}.timerbtn.running{background:var(--subject);border-color:var(--subject);color:#fff}.timerbtn:disabled{opacity:.5;cursor:not-allowed}
 .examnote{font-size:12px;color:#667085;padding:10px 20px;background:#fffdf5;border-bottom:1px solid #eee4bd}
-.sheet{padding:18px 20px}.instructions{font-size:13px;color:#687384;margin-bottom:16px}.question-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 34px;align-items:start}.question-column{min-width:0}
+.sheet{padding:18px 20px}.question-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 34px;align-items:start}.question-column{min-width:0}
 .qrow{display:grid;grid-template-columns:42px 1fr;align-items:center;min-height:54px;border-top:1px solid #e5e8ec}.qrow:first-child{border-top:0}.qno{font-weight:700;color:#475467}
 .choices{display:grid;grid-template-columns:repeat(5,minmax(44px,1fr));gap:7px}.choice{position:relative;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:9px 5px;border:1px solid #cbd7e5;border-radius:5px;min-height:40px;font-size:14px}.choice:hover{background:var(--softsub);border-color:#8fb2df}
 .choice input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
@@ -28,37 +28,325 @@ select{padding:9px 10px;border:1px solid #cbd2da;border-radius:4px;background:#f
 .reviewchoice.correct{background:#12b981;border-color:#12b981;color:#fff}
 .reviewchoice.wrong{background:#ef4444;border-color:#ef4444;color:#fff}
 .reviewchoice.unanswered{background:#fff;border:2px solid #d97706;color:#b45309}
-.badge-skipped{display:inline-block;padding:2px 6px;background:#fff3dc;color:#b45309;border:1px solid #f59e0b;border-radius:4px;font-size:10px;font-weight:700;margin-left:4px;letter-spacing:0.3px}
+.review-label{display:flex;align-items:center;justify-content:flex-start;gap:6px}
+.badge-skipped{display:inline-block;padding:2px 6px;background:#fff3dc;color:#b45309;border:1px solid #f59e0b;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.3px}
+.badge-wrong{display:inline-block;padding:2px 6px;background:#fef2f2;color:#991b1b;border:1px solid #ef4444;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.3px}
 .disclaimer{margin-top:16px;padding:10px 14px;background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid #f59e0b;border-radius:4px;font-size:12px;color:#475467}
 .result-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
 @media(max-width:800px){.question-grid{grid-template-columns:1fr}.timerbox{margin-left:0}.exambar{flex-wrap:wrap}select{width:100%;min-width:0}.timercontrols{margin-left:0}}
-@media(max-width:600px){.tabs{padding:0 4px}.tab{font-size:12px;padding:13px 4px}.choices{gap:5px}.choice{padding:7px 2px}.qrow{grid-template-columns:36px 1fr}.reviewchoices{gap:5px}.review{grid-template-columns:90px 1fr}}
+@media(max-width:600px){.tabs{padding:0 4px}.tab{font-size:12px;padding:13px 4px}.choices{gap:5px}.choice{padding:7px 2px}.qrow{grid-template-columns:36px 1fr}.reviewchoices{gap:5px}}
+
+/* Dark Mode & Shortcuts / Flagging Extensions */
+header { display: flex; align-items: center; justify-content: space-between; }
+.theme-btn { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 700; transition: background 0.2s; }
+.theme-btn:hover { background: rgba(255,255,255,0.25); }
+.qrow { transition: background 0.15s; padding: 4px 6px; border-radius: 4px; cursor: pointer; }
+.qrow.active-q { background: var(--softsub); outline: 2px solid var(--subject); outline-offset: -2px; }
+.qheader { display: flex; flex-direction: column; align-items: center; gap: 4px; justify-content: center; }
+.flag-btn { border:0; background:none; cursor:pointer; font-size:13px; padding:2px; opacity:0.35; transition: opacity 0.2s, transform 0.1s; }
+.flag-btn:hover { opacity:0.85; transform: scale(1.15); }
+.flag-btn.flagged { opacity:1; filter: drop-shadow(0 0 2px #f59e0b); }
+.shortcut-bar { display: flex; gap: 12px; font-size: 11px; color: #667085; padding: 6px 20px; background: #f0f4f8; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.shortcut-item { display: flex; align-items: center; gap: 4px; }
+.kbd { background: #fff; border: 1px solid #cbd2da; border-radius: 3px; padding: 1px 5px; font-weight: 700; font-family: monospace; box-shadow: 0 1px 1px #0001; font-size: 10px; }
+
+/* Question Jump Navigator (Palette) */
+.palette-container { padding: 10px 20px; background: #f8fafc; border-bottom: 1px solid var(--line); }
+.palette-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 11px; font-weight: 700; color: #475467; }
+
+.qpalette { display: flex; flex-wrap: wrap; gap: 5px; max-height: 105px; overflow-y: auto; padding: 6px 8px; position: relative; }
+.p-btn { width: 27px; height: 27px; padding: 0; border: 1px solid #cbd2da; background: #ffffff; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; position: relative; color: #344054; transition: all 0.15s; }
+.p-btn:hover { border-color: var(--subject); background: var(--softsub); }
+.p-btn.p-answered { background: var(--subject) !important; color: #ffffff !important; border-color: var(--subject) !important; }
+.p-btn.p-active { box-shadow: 0 0 0 2px var(--navy); z-index: 2; outline: none !important; }
+.p-btn.p-flagged { border-color: #f59e0b !important; }
+.p-btn.p-flagged::after { content: "🚩"; position: absolute; top: -4px; right: -4px; font-size: 10px; line-height: 1; z-index: 5; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.4)); }
+
+/* Dark Mode Palette Overrides */
+body.dark-mode { 
+  --bg: #0d1117; 
+  --line: #30363d; 
+  --navy: #161b22; 
+  --softsub: rgba(56, 139, 253, 0.15);
+  color: #c9d1d9; 
+}
+body.dark-mode header { background: #161b22; border-bottom: 1px solid #30363d; }
+body.dark-mode .brand { color: #f0f6fc; }
+body.dark-mode .sub { color: #8b949e; }
+body.dark-mode .panel, body.dark-mode .tabs, body.dark-mode .tab, body.dark-mode .exambar, 
+body.dark-mode select, body.dark-mode .timerbtn, body.dark-mode .footerbar, body.dark-mode .modalbox, 
+body.dark-mode .choice, body.dark-mode .attempts th, body.dark-mode .attempts td { 
+  background: #161b22; color: #c9d1d9; border-color: #30363d; 
+}
+body.dark-mode .tab { color: #8b949e; }
+body.dark-mode .tab.active { background: #1c2128; color: #f0f6fc; }
+body.dark-mode .choice { background: #21262d; border-color: #30363d; color: #c9d1d9; }
+body.dark-mode .choice:hover { background: #30363d; border-color: #58a6ff; }
+body.dark-mode .choice.selected { background: rgba(56, 139, 253, 0.2); border-color: #58a6ff; color: #58a6ff; }
+body.dark-mode .qrow.active-q { background: #1c2128; outline-color: var(--subject); }
+body.dark-mode .examnote { background: #1c1912; border-color: #4d3800; color: #d3a127; }
+body.dark-mode .shortcut-bar { background: #161b22; border-color: #30363d; color: #8b949e; }
+body.dark-mode .kbd { background: #21262d; border-color: #484f58; color: #c9d1d9; box-shadow: none; }
+body.dark-mode .disclaimer { background: #161b22; color: #8b949e; border-color: #30363d; }
+body.dark-mode .badge-skipped { background: #3d2a00; color: #fbbf24; border-color: #b45309; }
+body.dark-mode .badge-wrong { background: #450a0a; color: #fca5a5; border-color: #ef4444; }
+body.dark-mode .reviewchoice { background: #21262d; border-color: #30363d; color: #c9d1d9; }
+body.dark-mode .reviewchoice.correct { background: #0e6245; border-color: #12b981; color: #ecfdf5; }
+body.dark-mode .reviewchoice.wrong { background: #7f1d1d; border-color: #ef4444; color: #fef2f2; }
+body.dark-mode .reviewchoice.unanswered { background: #161b22; border-color: #d97706; color: #fbbf24; }
+body.dark-mode .palette-container { background: #161b22; border-color: #30363d; color: #c9d1d9; }
+body.dark-mode .palette-header { color: #8b949e; }
+body.dark-mode .p-btn { background: #21262d; border-color: #30363d; color: #c9d1d9; }
+body.dark-mode .p-btn:hover { background: #30363d; border-color: #58a6ff; }
+body.dark-mode .p-btn.p-answered { background: var(--subject) !important; color: #ffffff !important; border-color: var(--subject) !important; }
+body.dark-mode .p-btn.p-active { box-shadow: 0 0 0 2px #58a6ff; z-index: 2; }
+
+.palette-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 11px; font-weight: 700; color: #475467; flex-wrap: wrap; gap: 8px; }
+.palette-left { display: flex; align-items: center; gap: 12px; }
+.shortcut-inline { font-weight: 400; color: #667085; font-size: 10.5px; }
+body.dark-mode .shortcut-inline { color: #8b949e; }
+
+/* Low Time Warning Colors & Animations */
+.timer.timer-warning { color: #f59e0b !important; }
+.timer.timer-critical { color: #ef4444 !important; animation: timerPulse 1s infinite alternate; }
+@keyframes timerPulse {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.05); opacity: 0.85; }
+}
+
+/* Palette Controls, Toggle, and Filters */
+.nav-toggle-btn {
+  padding: 3px 8px; font-size: 11px; font-weight: 700; border: 1px solid #cbd2da;
+  background: #ffffff; color: #475467; border-radius: 4px; cursor: pointer; transition: all 0.15s;
+}
+.nav-toggle-btn:hover { background: #f1f5f9; color: #1e293b; }
+body.dark-mode .nav-toggle-btn { background: #21262d; border-color: #30363d; color: #c9d1d9; }
+body.dark-mode .nav-toggle-btn:hover { background: #30363d; color: #f0f6fc; }
+
+.hk-toggle {
+  display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600;
+  color: #475467; cursor: pointer; user-select: none; margin-left: 6px;
+}
+body.dark-mode .hk-toggle { color: #8b949e; }
+.hk-toggle input { cursor: pointer; margin: 0; }
+.kbd-inline { font-weight: 700; color: #16a34a; }
+.kbd-inline.off { color: #dc2626; }
+
+.palette-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.pal-filter-tabs { display: flex; gap: 3px; background: #e2e8f0; padding: 2px; border-radius: 5px; }
+body.dark-mode .pal-filter-tabs { background: #21262d; }
+.pal-ftab {
+  border: 0; background: transparent; padding: 3px 8px; font-size: 10.5px; font-weight: 700;
+  color: #475467; border-radius: 3px; cursor: pointer; transition: all 0.15s;
+}
+body.dark-mode .pal-ftab { color: #8b949e; }
+.pal-ftab.active { background: var(--subject); color: #ffffff; }
+
+.shortcut-bar-sub { margin-top: 4px; margin-bottom: 8px; font-size: 10.5px; color: #667085; }
+body.dark-mode .shortcut-bar-sub { color: #8b949e; }
+
+/* Pre-submission Confirmation Modal */
+.confirm-box { max-width: 520px; text-align: left; }
+.confirm-header { display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 14px; }
+.confirm-header h2 { margin: 0; font-size: 20px; font-weight: 800; color: var(--navy); }
+body.dark-mode .confirm-header h2 { color: #f0f6fc; }
+.confirm-icon { font-size: 24px; }
+.confirm-desc { font-size: 13px; color: #475467; margin-bottom: 16px; line-height: 1.4; }
+body.dark-mode .confirm-desc { color: #8b949e; }
+
+.confirm-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+.stat-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 6px; text-align: center; }
+body.dark-mode .stat-card { background: #161b22; border-color: #30363d; }
+.stat-val { font-size: 20px; font-weight: 800; color: #1e293b; }
+body.dark-mode .stat-val { color: #f0f6fc; }
+.stat-lbl { font-size: 10px; font-weight: 700; color: #64748b; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.3px; }
+body.dark-mode .stat-lbl { color: #8b949e; }
+.stat-card.stat-answered .stat-val { color: var(--subject); }
+.stat-card.stat-unans .stat-val { color: #d97706; }
+.stat-card.stat-flagged .stat-val { color: #b45309; }
+
+.confirm-timer-info { font-size: 12.5px; color: #475467; background: #f1f5f9; padding: 8px 12px; border-radius: 5px; margin-bottom: 14px; }
+body.dark-mode .confirm-timer-info { background: #21262d; color: #c9d1d9; }
+
+.confirm-warning-box {
+  padding: 10px 14px; background: #fffbe3; border: 1px solid #fde047; border-left: 4px solid #eab308;
+  border-radius: 5px; font-size: 12px; color: #854d0e; margin-bottom: 18px; line-height: 1.4;
+}
+body.dark-mode .confirm-warning-box { background: #2e2100; border-color: #713f12; color: #fef08a; }
+
+.danger-btn { background: #dc2626 !important; border-color: #dc2626 !important; color: #ffffff !important; }
+.danger-btn:hover { background: #b91c1c !important; }
+
+/* Sticky Top Controls on Mobile Screens */
+@media(max-width:800px) {
+  .exambar { position: sticky; top: 0; z-index: 80; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+  .confirm-stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .palette-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .palette-right { width: 100%; justify-content: space-between; }
+  .modalbox { width: 95%; max-height: 92vh; padding: 18px 14px; border-radius: 10px; }
+  .p-btn { width: 32px; height: 32px; font-size: 12px; }
+  .qpalette { max-height: 120px; }
+}
+
+/* Item 1: Remove active outline on question numbers & rows when Hotkeys are OFF */
+body.hotkeys-off .p-btn.p-active { box-shadow: none !important; }
+body.hotkeys-off .qrow.active-q { outline: none !important; background: transparent !important; }
+
+/* Filter Empty State Message & Counts */
+.pal-empty-msg { width: 100%; padding: 12px 14px; font-size: 11.5px; color: #64748b; background: #ffffff; border: 1px dashed #cbd2da; border-radius: 5px; text-align: center; }
+body.dark-mode .pal-empty-msg { background: #161b22; color: #8b949e; border-color: #30363d; }
+
+.pal-cnt-badge { font-size: 10px; opacity: 0.85; font-weight: 600; margin-left: 2px; }
+.shortcut-bar-sub { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; margin-bottom: 8px; flex-wrap: wrap; gap: 8px; }
+
+/* Refinements */
+.timerbtn.timer-reset{background:#fff7ed;border-color:#f59e0b;color:#9a3412}
+.auto-advance-toggle{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;color:#667085;cursor:pointer;user-select:none}
+.auto-advance-toggle input{cursor:pointer;margin:0}
+body.dark-mode .auto-advance-toggle{color:#8b949e}
+.p-btn.p-flagged.p-answered{border-color:#f59e0b!important;box-shadow:inset 0 0 0 1px #f59e0b}
+.history-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f8fafc;border-bottom:1px solid var(--line)}
+.history-toolbar select{min-width:140px;padding:6px 8px;font-size:12px}
+.history-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px}
+.history-stat{background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:10px;text-align:center}
+.history-stat .val{font-size:20px;font-weight:800;color:#1e293b}
+.history-stat .lbl{font-size:10px;font-weight:700;color:#64748b;margin-top:2px;text-transform:uppercase;letter-spacing:.3px}
+.history-stat.avg .val{color:var(--subject)}.history-stat.best .val{color:#16a34a}.history-stat.attempts .val{color:#7c3aed}.history-stat.low .val{color:#d97706}
+body.dark-mode .history-toolbar,body.dark-mode .history-summary{background:#161b22}
+body.dark-mode .history-stat{background:#21262d;border-color:#30363d}
+body.dark-mode .history-stat .val{color:#f0f6fc}.history-stat .low .val{color:#fbbf24}
+@media(max-width:800px){.history-summary{grid-template-columns:repeat(2,1fr)}}
 </style></head>
 <body>
-<header><div class="brand">Civil Engineering Reference for Licensure Examination</div><div class="sub">Answer Key System by <i>[MR.ME]</i></div></header>
+<header><div><div class="brand">Civil Engineering Reference for Licensure Examination</div><div class="sub">Answer Key System by [MR.ME]</div></div><button id="themeToggle" class="theme-btn" onclick="toggleDarkMode()">🌙 Dark</button></header>
 <nav class="tabs"><button class="tab" data-s="MSTEC">MSTEC</button><button class="tab" data-s="HPGE">HPGE</button><button class="tab" data-s="PSAD">PSAD</button></nav>
 <main><section class="panel"><div class="panel-title">Digital Answer Sheet</div>
 <div class="exambar">
 <select id="volSelect" class="vol-select" onchange="switchVolume(this.value)">
   <option value="Vol 5, 4th Ed">VOLUME 5 (4th Ed)</option>
   <option value="Vol 4, 7th Ed">VOLUME 4 (7th Ed)</option>
+  <option value="Vol 3, 2nd Ed">VOLUME 3 (2nd Ed)</option>
 </select>
 <select id="exam" class="exam-select"></select>
 <span id="meta" style="font-size:12px;color:#667085"></span>
-<div class="timerbox"><div class="timerlabel">EXAM TIMER</div><div class="timercontrols"><div class="timer" id="timer">06:00:00</div><button class="timerbtn" id="timerBtn" onclick="toggleTimer()">Start</button><button class="timerbtn" onclick="resetTimer()">Reset</button></div></div></div>
-<div class="examnote" id="examnote">To start the exam, press <b>Start</b>. The answer choices are locked until the timer is started. The exam will be submitted automatically once the timer has ended.</div><div class="sheet"><div class="instructions">Select one answer for each item. All items are displayed at once. Item count matches the selected examination.</div><div id="questions" class="question-grid"><div class="question-column" id="leftQuestions"></div><div class="question-column" id="rightQuestions"></div></div></div>
-<div class="footerbar"><button class="primary" onclick="submitExam()">Submit Exam</button><button class="danger" onclick="resetExam()">Clear Answers</button><button class="secondary" onclick="clearHistory()">Clear Exam History</button><span class="status" id="status"></span></div>
-</section><section class="panel"><div class="panel-title">Past Attempts</div><div id="attempts"></div></section></main>
+<div class="timerbox"><div class="timerlabel">EXAM TIMER</div><div class="timercontrols"><div class="timer" id="timer">06:00:00</div><button class="timerbtn" id="timerBtn" onclick="toggleTimer()">Start</button><button class="timerbtn timer-reset" onclick="resetTimer()">Reset Timer</button></div></div></div>
+<div class="examnote" id="examnote">To start the exam, press <b>Start</b>. Answer choices are locked until the timer starts.</div><div class="palette-container" id="paletteContainer">
+<div class="palette-header">
+  <div class="palette-left">
+    <b>Question Navigator</b>
+    <label class="hk-toggle" title="Enable or disable keyboard shortcuts A-E, Arrow keys, F, Backspace">
+      <input type="checkbox" id="hotkeysToggle" checked onchange="toggleHotkeys(this.checked)">
+      <span>Hotkeys <span id="hkStatusText" class="kbd-inline">ON</span></span>
+    </label>
+    <label class="auto-advance-toggle" title="Automatically move to the next question after answering">
+      <input type="checkbox" id="autoAdvanceToggle" checked onchange="toggleAutoAdvance(this.checked)">
+      <span>Auto-advance</span>
+    </label>
+  </div>
+  <div class="palette-right">
+    <div class="pal-filter-tabs">
+      <button class="pal-ftab active" id="pftAll" onclick="setPalFilter('all')">All <span id="cntAll" class="pal-cnt-badge">(0)</span></button>
+      <button class="pal-ftab" id="pftUnans" onclick="setPalFilter('unanswered')">Unanswered <span id="cntUnans" class="pal-cnt-badge">(0)</span></button>
+      <button class="pal-ftab" id="pftFlagged" onclick="setPalFilter('flagged')">Flagged <span id="cntFlagged" class="pal-cnt-badge">(0)</span></button>
+    </div>
+  </div>
+</div>
+<div id="shortcutSubBar" class="shortcut-bar-sub">
+  <button id="navToggleBtn" class="nav-toggle-btn" onclick="toggleNav()" title="Toggle Question Navigator Grid">Hide Navigator ▲</button>
+  <span class="shortcut-inline"><span class="kbd">A</span>–<span class="kbd">E</span> Select &nbsp;•&nbsp; <span class="kbd">▲</span><span class="kbd">▼</span> Nav &nbsp;•&nbsp; <span class="kbd">F</span> Flag &nbsp;•&nbsp; <span class="kbd">⌫</span> Clear</span>
+</div>
+<div id="qPalette" class="qpalette"></div>
+</div><div class="sheet"><div id="questions" class="question-grid"><div class="question-column" id="leftQuestions"></div><div class="question-column" id="rightQuestions"></div></div></div>
+<div class="footerbar"><button class="primary" onclick="submitExam()">Submit Exam</button><button class="danger" onclick="resetExam()">Restart Exam</button><button class="secondary" onclick="clearHistory()">Clear Exam History</button><span class="status" id="status"></span></div>
+</section><section class="panel">
+<div class="panel-title">Past Attempts</div>
+<div class="history-toolbar">
+  <select id="histVol" onchange="renderAttempts()"><option value="all">All Volumes</option></select>
+  <select id="histSubj" onchange="renderAttempts()"><option value="all">All Subjects</option></select>
+  <select id="histExam" onchange="renderAttempts()"><option value="all">All Exams</option></select>
+  <button class="secondary" style="padding:6px 10px;font-size:12px" onclick="clearHistoryFilters()">Clear Filters</button>
+</div>
+<div class="history-summary">
+  <div class="history-stat attempts"><div class="val" id="histAttempts">0</div><div class="lbl">Attempts</div></div>
+  <div class="history-stat avg"><div class="val" id="histAverage">—</div><div class="lbl">Average</div></div>
+  <div class="history-stat best"><div class="val" id="histBest">—</div><div class="lbl">Best</div></div>
+  <div class="history-stat low"><div class="val" id="histLowest">—</div><div class="lbl">Lowest</div></div>
+</div>
+<div id="attempts"></div>
+</section></main>
+<div class="modal" id="confirmModal">
+  <div class="modalbox confirm-box">
+    <div class="confirm-header">
+      <span class="confirm-icon">⚠️</span>
+      <h2>Submit Examination?</h2>
+    </div>
+    <p class="confirm-desc">Please review your examination status before final submission.</p>
+    
+    <div class="confirm-stats-grid">
+      <div class="stat-card">
+        <div class="stat-val" id="cStatTotal">0</div>
+        <div class="stat-lbl">Total Items</div>
+      </div>
+      <div class="stat-card stat-answered">
+        <div class="stat-val" id="cStatAns">0</div>
+        <div class="stat-lbl">Answered</div>
+      </div>
+      <div class="stat-card stat-unans">
+        <div class="stat-val" id="cStatUnans">0</div>
+        <div class="stat-lbl">Unanswered</div>
+      </div>
+      <div class="stat-card stat-flagged">
+        <div class="stat-val" id="cStatFlagged">0</div>
+        <div class="stat-lbl">Flagged</div>
+      </div>
+    </div>
+
+    <div class="confirm-timer-info">
+      ⏱️ Remaining Time: <strong id="cStatTime">00:00:00</strong>
+    </div>
+
+    <div id="cWarningNotice" class="confirm-warning-box"></div>
+
+    <div class="result-actions" style="justify-content:flex-end;">
+      <button class="secondary" onclick="closeConfirmModal()">Return to Exam</button>
+      <button class="primary danger-btn" onclick="performSubmit()">Confirm & Submit Exam</button>
+    </div>
+  </div>
+</div>
 <div class="modal" id="modal"><div class="modalbox"><h2 id="rt">Exam Result</h2><div class="score" id="score"></div><p id="summary" style="text-align:center"></p><h3>Answer Review</h3>
 <div id="review"></div>
 <div class="disclaimer"><b>Note:</b> Answer key is based directly on the reference book. For potential erroneous answers or questions, please consult external sources.</div>
 <div class="result-actions"><button class="primary" onclick="closeModal()">Close</button><button class="secondary" onclick="retake()">Retake This Exam</button></div></div></div>
 <script>
-const DATA = {"Vol 4, 7th Ed": {"PSAD": {"MAY 2018": ["A", "B", "D", "A", "A", "C", "B", "C", "A", "B", "D", "D", "A", "D", "C", "B", "C", "B", "D", "A", "D", "A", "B", "C", "D", "B", "C", "C", "C", "B", "A", "B", "A", "D", "C", "A", "B", "B", "D", "C", "A", "B", "D", "B", "C", "D", "B", "C", "A", "B", "D", "B", "C", "D", "A", "D", "A", "A", "A", "C", "A", "D", "B", "A", "B", "D", "A", "A", "B", "C", "B", "D", "C", "A", "D"], "NOVEMBER 2018": ["B", "C", "B", "B", "C", "C", "B", "C", "B", "A", "B", "A", "C", "D", "C", "B", "B", "B", "B", "A", "D", "C", "A", "A", "B", "A", "D", "D", "A", "B", "C", "B", "A", "A", "D", "A", "B", "C", "C", "D", "B", "A", "C", "D", "A", "D", "B", "A", "C", "D", "B", "C", "D", "B", "B", "A", "D", "B", "C", "A", "B", "B", "D", "B", "B", "D", "D", "D", "B", "B", "B", "D", "D", "A", "D"], "MAY 2017": ["B", "C", "A", "C", "A", "B", "C", "D", "A", "B", "C", "B", "C", "C", "D", "B", "A", "D", "C", "A", "A", "B", "A", "D", "B", "A", "D", "A", "B", "D", "A", "B", "D", "D", "B", "D", "B", "A", "C", "C", "A", "D", "B", "A", "D", "A", "C", "B", "B", "B", "C", "B", "A", "A", "A", "A", "D", "D", "D", "C", "D", "A", "B", "D", "D", "C"], "NOVEMBER 2017": ["C", "B", "A", "D", "D", "C", "A", "D", "C", "B", "D", "A", "C", "A", "B", "D", "B", "A", "C", "C", "D", "B", "B", "A", "C", "C", "B", "D", "D", "B", "D", "C", "A", "A", "D", "C", "B", "A", "D", "A", "D", "C", "B", "A", "B", "A", "D", "B", "B", "A", "C", "B", "D", "A", "B", "C", "D", "B", "A", "C", "C", "D", "A", "D", "C", "A", "C", "C", "A", "D", "A", "A"], "MAY 2016": ["D", "A", "C", "D", "B", "C", "A", "C", "B", "C", "A", "B", "C", "A", "D", "C", "D", "B", "C", "A", "C", "A", "D", "C", "B", "C", "A", "B", "C", "B", "D", "B", "A", "B", "A", "D", "B", "C", "A", "A", "C", "A", "A", "D", "D", "B", "A", "C", "A", "B", "D", "A", "C", "C", "D", "B", "C", "C", "D", "D", "A", "B", "B", "B", "B", "D", "A", "C", "A", "D", "C", "A", "D", "C", "A"], "NOVEMBER 2016": ["B", "B", "A", "A", "D", "C", "B", "D", "C", "C", "B", "B", "C", "A", "D", "D", "D", "A", "D", "B", "A", "A", "C", "B", "C", "A", "B", "C", "B", "A", "A", "A", "B", "D", "D", "C", "A", "B", "C", "A", "C", "D", "B", "D", "D", "C", "A", "B", "A", "C", "A", "D", "A", "C", "A", "D", "C", "C", "D", "B", "D", "B", "A", "B", "C", "D", "A", "A", "D", "D", "D", "B", "A", "C", "A"], "MAY 2015": ["B", "D", "C", "D", "D", "B", "B", "C", "D", "C", "D", "A", "A", "B", "B", "D", "D", "C", "A", "A", "D", "B", "C", "C", "B", "B", "A", "C", "C", "A", "D", "A", "C", "A", "D", "B", "B", "C", "A", "D", "B", "D", "A", "B", "D", "A", "A", "C", "D", "B", "D", "B", "A", "A", "C", "C", "A", "D", "D", "C", "B", "B", "D", "D", "D", "B", "C", "A", "B", "C", "B", "A", "C", "C", "C", "A", "D", "B", "D", "B", "B", "D", "C", "A", "D"], "NOVEMBER 2015": ["A", "C", "D", "C", "A", "B", "D", "A", "A", "D", "B", "C", "D", "C", "B", "C", "D", "A", "D", "B", "D", "C", "A", "A", "D", "D", "D", "A", "B", "D", "B", "B", "B", "B", "D", "C", "C", "B", "D", "D", "A", "D", "C", "D", "B", "A", "C", "B", "B", "C", "D", "D", "B", "A", "D", "D", "C", "A", "A", "D", "C", "C", "A", "D", "A", "B", "C", "D", "A", "B", "A", "B", "C", "A", "B", "D", "A", "D", "A", "C", "A", "C", "B", "B", "C", "D", "A", "A"]}, "HPGE": {"MAY 2018": ["C", "D", "A", "A", "C", "C", "A", "C", "D", "C", "B", "B", "A", "A", "B", "A", "C", "B", "A", "A", "B", "D", "D", "B", "D", "B", "A", "B", "A", "C", "A", "D", "A", "D", "C", "B", "C", "D", "B", "A", "B", "A", "C", "B", "C", "D", "D", "C", "B", "D"], "NOVEMBER 2018": ["D", "B", "C", "A", "C", "B", "B", "D", "A", "B", "D", "A", "D", "A", "B", "A", "C", "D", "C", "B", "B", "D", "B", "A", "A", "D", "B", "C", "A", "B", "A", "D", "A", "B", "C", "D", "B", "C", "A", "C", "A", "C", "A", "A", "D", "C", "C", "D", "D", "C"], "MAY 2017": ["A", "A", "D", "D", "C", "D", "C", "D", "A", "C", "C", "B", "A", "C", "D", "C", "C", "B", "A", "A", "D", "B", "B", "B", "D", "A", "C", "A", "A", "D", "D", "C", "B", "A", "B", "D", "B", "C", "C", "A", "B", "A", "D", "B", "B", "D", "D"], "NOVEMBER 2017": ["C", "A", "B", "A", "B", "C", "D", "D", "B", "D", "D", "A", "B", "D", "C", "A", "D", "A", "C", "C", "B", "B", "A", "D", "A", "C", "C", "B", "A", "D", "A", "D", "A", "B", "C", "A", "A", "D", "B", "C", "D", "A", "D", "C", "A", "C", "B", "B", "C"], "MAY 2016": ["D", "A", "B", "C", "D", "B", "A", "C", "B", "A", "A", "A", "D", "A", "C", "B", "C", "C", "C", "C", "A", "B", "A", "A", "B", "C", "C", "C", "C", "B", "D", "A", "A", "B", "A", "D", "D", "C", "C", "B", "D", "A", "B", "D", "A", "A", "D", "D", "C", "B"], "NOVEMBER 2016": ["D", "C", "D", "C", "D", "D", "B", "A", "C", "B", "C", "B", "C", "D", "D", "D", "C", "A", "B", "D", "D", "A", "D", "A", "A", "B", "C", "A", "B", "A", "A", "D", "A", "B", "D", "C", "A", "C", "C", "A", "B", "C", "B", "C", "C", "B", "D", "A", "C", "B"], "MAY 2015": ["D", "A", "C", "A", "B", "A", "C", "A", "B", "C", "C", "B", "D", "C", "B", "D", "A", "A", "B", "C", "D", "C", "B", "D", "A", "D", "A", "B", "A", "A", "D", "C", "B", "C", "B", "D", "D", "B", "A", "B", "D", "A", "C", "C", "D", "B", "A", "D", "B", "B", "D", "C", "A", "C", "B", "A", "B", "A", "C", "B", "D", "D", "B", "B", "B", "A", "B", "A", "A", "D", "D", "B", "C", "B", "C", "B", "B", "D", "D", "A", "C", "A"], "NOVEMBER 2015": ["D", "C", "B", "C", "B", "D", "B", "D", "D", "B", "D", "D", "C", "B", "B", "C", "A", "A", "C", "B", "A", "A", "C", "D", "A", "C", "C", "A", "C", "A", "B", "C", "D", "A", "C", "B", "A", "C", "B", "D", "B", "D", "D", "C", "A", "A", "A", "B", "C", "B", "A", "D", "C", "D", "C", "D", "B", "D", "D", "B", "A", "A", "D", "D", "C", "C", "B", "A", "A", "B", "B", "A", "D", "D", "C", "B", "B", "B", "D", "A"]}, "MSTEC": {"MAY 2018": ["D", "A", "D", "D", "C", "B", "B", "C", "D", "D", "C", "C", "A", "A", "B", "A", "A", "C", "C", "C", "C", "A", "D", "B", "D", "C", "A", "C", "C", "D", "D", "A", "B", "D", "B", "D", "B", "A", "C", "D", "C", "B", "D", "D", "C", "A", "A", "B", "D", "A", "A", "A", "A", "B", "A", "C", "A", "C", "C", "B", "C", "A"], "NOVEMBER 2018": ["B", "C", "D", "D", "B", "C", "B", "D", "B", "C", "A", "A", "B", "D", "A", "B", "A", "C", "B", "D", "C", "D", "A", "B", "B", "B", "C", "A", "A", "C", "B", "B", "B", "D", "B", "B", "B", "A", "A", "C", "D", "D", "D", "B", "D", "D", "A", "A", "B", "D", "D", "A", "A", "C", "D", "A", "B", "D", "A", "D", "D", "A", "C", "A", "C", "A", "C", "A", "A", "C", "B", "A", "A", "D"], "MAY 2017": ["C", "A", "B", "D", "C", "A", "A", "B", "B", "C", "C", "A", "A", "B", "C", "C", "D", "D", "B", "D", "D", "C", "C", "A", "B", "D", "C", "D", "B", "A", "C", "D", "D", "B", "B", "A", "A", "C", "C", "B", "C", "D", "A", "A", "A", "D", "C", "D", "D", "D", "A", "B", "A", "D", "D", "A", "B", "C", "B", "C", "A", "D", "A", "C", "D", "D", "B", "A", "B", "B", "B", "D", "D", "C", "C"], "NOVEMBER 2017": ["A", "B", "D", "D", "A", "C", "D", "A", "C", "B", "A", "A", "A", "C", "D", "D", "D", "D", "C", "C", "D", "A", "B", "B", "D", "A", "B", "A", "B", "A", "C", "A", "B", "A", "C", "B", "B", "A", "A", "B", "A", "A", "C", "C", "C", "C", "B", "B", "D", "C", "D", "A", "D", "D", "C", "C", "A", "B", "D", "A", "A", "A", "C", "D", "B", "C", "B", "B", "C", "D", "D", "B", "D", "B"], "MAY 2016": ["C", "B", "B", "B", "A", "A", "D", "A", "A", "D", "A", "A", "C", "C", "D", "D", "C", "D", "C", "B", "B", "D", "A", "C", "B", "D", "C", "C", "D", "D", "A", "B", "C", "A", "A", "D", "C", "A", "B", "A", "D", "C", "D", "A", "C", "C", "B", "A", "C", "D", "A", "D", "B", "B", "B", "B", "A", "D", "C", "B", "C", "A", "D", "A", "C", "D", "D", "D", "A", "B", "B", "A", "B", "B", "C"], "NOVEMBER 2016": ["D", "A", "B", "C", "D", "B", "C", "D", "D", "A", "A", "D", "B", "A", "B", "C", "D", "B", "B", "A", "D", "A", "B", "D", "C", "B", "C", "B", "A", "C", "C", "D", "A", "D", "A", "D", "B", "A", "B", "D", "C", "D", "C", "D", "C", "B", "D", "D", "A", "C", "C", "A", "C", "A", "A", "A", "B", "B", "B", "D", "D", "D", "D", "B", "D", "C", "D", "D", "A", "B", "C", "A", "C", "B", "A"], "MAY 2015": ["A", "B", "C", "B", "A", "B", "D", "B", "A", "B", "A", "D", "B", "A", "C", "D", "A", "A", "D", "D", "A", "D", "C", "A", "B", "C", "B", "C", "C", "B", "C", "B", "B", "C", "B", "D", "A", "A", "B", "D", "B", "A", "D", "D", "B", "C", "B", "B", "B", "A", "A", "B", "B", "B", "D", "A", "B", "A", "D", "C", "D", "B", "C", "C", "B", "A", "D", "A", "A", "C", "D", "C", "D", "C", "D", "D", "D", "A", "A", "A", "A", "D", "B", "C", "D", "A", "C", "D", "A"], "NOVEMBER 2015": ["A", "C", "A", "B", "C", "D", "D", "A", "D", "A", "C", "C", "B", "C", "D", "C", "C", "D", "A", "D", "A", "C", "D", "A", "A", "B", "A", "C", "A", "D", "A", "B", "A", "A", "B", "D", "B", "D", "D", "C", "B", "D", "B", "D", "C", "D", "A", "A", "A", "D", "B", "D", "A", "B", "A", "C", "C", "C", "B", "D", "B", "B", "D", "B", "A", "D", "C", "D", "C", "C", "C", "C", "C", "C", "A", "B", "B", "A", "D", "C", "B", "A", "B", "A", "B", "D", "A", "C", "B", "D"]}}, "Vol 5, 4th Ed": {"PSAD": {"MAY 2019": ["D", "C", "D", "D", "A", "B", "D", "B", "A", "D", "A", "D", "B", "A", "D", "D", "C", "A", "A", "C", "A", "A", "A", "B", "C", "D", "C", "B", "D", "A", "D", "C", "A", "C", "A", "D", "A", "B", "D", "A", "B", "C", "C", "B", "A", "D", "D", "A", "D", "C", "A", "A", "C", "D", "B", "A", "C", "D", "B", "A", "C", "B", "B", "B", "D", "C", "A", "C", "D"], "NOVEMBER 2019": ["B", "C", "D", "A", "D", "C", "D", "A", "B", "B", "C", "C", "A", "C", "D", "C", "D", "A", "B", "C", "A", "A", "D", "C", "C", "C", "D", "A", "D", "C", "B", "C", "A", "B", "D", "A", "A", "D", "A", "B", "D", "A", "D", "D", "A", "B", "A", "C", "B", "D", "D", "A", "D", "B", "D", "D", "A", "D", "B", "B", "D", "B", "D", "B", "B", "D", "C", "C", "B", "C", "D", "A", "B", "C", "D"], "NOVEMBER 2021": ["A", "D", "C", "B", "A", "D", "A", "B", "B", "D", "A", "D", "B", "A", "C", "A", "D", "D", "B", "D", "A", "D", "A", "C", "D", "C", "A", "C", "C", "B", "A", "D", "C", "D", "B", "B", "C", "B", "A", "A", "D", "B", "D", "C", "C", "C", "C", "B", "B", "D", "B", "A", "D", "B", "B", "C", "D", "A", "B", "D", "C", "A", "D", "B", "D", "A", "A", "B", "C"], "MAY 2022": ["C", "D", "D", "B", "A", "C", "D", "A", "C", "A", "B", "C", "D", "A", "B", "B", "A", "D", "C", "C", "A", "B", "B", "D", "A", "C", "C", "A", "B", "A", "B", "D", "A", "C", "C", "D", "C", "B", "A", "D", "C", "C", "D", "D", "B", "B", "D", "B", "A", "B", "A", "D", "C", "D", "A", "B", "A", "C", "B", "D", "D", "D", "A", "B", "C", "A", "A", "B", "A", "B", "D", "A"], "NOVEMBER 2022": ["C", "A", "B", "D", "B", "A", "C", "A", "D", "D", "D", "B", "B", "A", "C", "A", "B", "C", "A", "B", "B", "D", "B", "A", "A", "B", "C", "A", "C", "C", "B", "D", "B", "B", "D", "A", "C", "D", "A", "C", "D", "B", "C", "D", "C", "B", "C", "D", "D", "B", "A", "C", "C", "D", "B", "C", "C", "D", "B", "A", "C", "B", "B", "A", "C", "D", "C", "D", "C", "D", "A", "D", "B", "A", "C"], "APRIL 2023": ["D", "A", "A", "B", "C", "A", "D", "A", "D", "B", "D", "C", "A", "A", "B", "A", "A", "B", "B", "D", "C", "D", "D", "A", "B", "D", "D", "A", "B", "A", "D", "C", "A", "D", "A", "C", "D", "A", "C", "C", "D", "C", "D", "C", "B", "B", "C", "B", "C", "D", "D", "B", "A", "B", "D", "C", "C", "A", "B", "A", "A", "B", "C", "C", "D", "B", "D", "A", "D", "B", "C", "A", "D", "C"], "NOVEMBER 2023": ["B", "A", "D", "C", "D", "C", "B", "A", "C", "A", "D", "A", "A", "D", "C", "A", "A", "B", "B", "A", "D", "A", "B", "C", "D", "C", "B", "C", "C", "B", "D", "A", "A", "C", "B", "D", "D", "B", "A", "C", "D", "A", "C", "C", "A", "B", "B", "D", "C", "A", "B", "D", "D", "A", "C", "A", "D", "D", "B", "A", "B", "C", "A", "B", "B", "C", "D", "A", "D", "A", "C", "D"]}, "HPGE": {"MAY 2019": ["D", "B", "D", "B", "B", "A", "C", "C", "A", "C", "B", "C", "B", "C", "B", "D", "C", "D", "A", "B", "A", "D", "C", "B", "C", "B", "B", "B", "D", "C", "A", "A", "D", "D", "A", "C", "A", "B", "D", "B", "D", "C", "C", "A", "D", "A", "C"], "NOVEMBER 2019": ["C", "A", "C", "A", "A", "B", "C", "A", "A", "C", "B", "A", "C", "D", "B", "D", "A", "D", "A", "A", "C", "C", "B", "C", "D", "D", "C", "B", "D", "D", "A", "B", "D", "D", "B", "C", "A", "D", "C", "B", "B", "A", "D", "B", "D"], "NOVEMBER 2021": ["C", "D", "B", "B", "A", "D", "C", "C", "B", "D", "A", "B", "A", "D", "C", "A", "A", "D", "D", "A", "C", "D", "A", "B", "B", "D", "B", "A", "C", "D", "C", "B", "C", "C", "B", "C", "C", "A", "B", "D", "B", "A", "A", "D", "D", "A", "A", "B", "D", "C"], "MAY 2022": ["B", "D", "A", "C", "D", "A", "D", "B", "A", "B", "B", "C", "C", "A", "B", "B", "D", "C", "B", "A", "D", "C", "B", "C", "D", "C", "B", "B", "C", "C", "B", "D", "A", "D", "A", "A", "A", "C", "A", "D", "A", "D", "C", "C", "B", "C", "A"], "NOVEMBER 2022": ["D", "C", "D", "C", "A", "D", "B", "D", "D", "C", "A", "C", "A", "C", "C", "B", "D", "B", "D", "D", "B", "A", "A", "C", "A", "C", "A", "D", "D", "C", "A", "B", "B", "D", "D", "A", "C", "B", "B", "D", "A", "B", "A", "A", "A", "D", "C", "B", "B", "C"], "APRIL 2023": ["D", "D", "D", "B", "D", "C", "B", "B", "D", "B", "A", "C", "B", "D", "B", "B", "D", "A", "A", "D", "A", "D", "C", "B", "A", "A", "C", "B", "B", "C", "A", "D", "D", "C", "A", "B", "C", "A", "D", "C", "B", "B", "C", "B", "C", "D", "A", "D", "A", "D"], "NOVEMBER 2023": ["B", "C", "D", "D", "A", "B", "B", "A", "D", "A", "B", "C", "C", "B", "D", "C", "A", "B", "B", "A", "D", "C", "D", "C", "D", "A", "B", "D", "D", "D", "B", "B", "A", "A", "C", "B", "A", "A", "A", "A", "A", "C", "B", "C", "A", "D", "C", "B", "C", "D"]}, "MSTEC": {"MAY 2019": ["B", "D", "D", "A", "B", "B", "B", "A", "C", "D", "D", "B", "D", "B", "A", "A", "D", "B", "D", "C", "D", "A", "C", "C", "C", "B", "C", "D", "A", "D", "B", "D", "A", "A", "C", "A", "D", "C", "A", "B", "D", "C", "C", "A", "B", "A", "A", "C", "C", "A", "D", "C", "C", "B", "C", "A", "B", "A", "A", "A"], "NOVEMBER 2019": ["C", "B", "D", "A", "B", "D", "A", "A", "B", "A", "C", "B", "C", "C", "D", "D", "D", "B", "C", "B", "A", "A", "D", "C", "B", "C", "C", "D", "B", "A", "B", "D", "B", "D", "D", "A", "C", "A", "D", "B", "A", "A", "D", "C"], "NOVEMBER 2021": ["C", "A", "C", "A", "B", "D", "C", "D", "A", "A", "D", "A", "D", "C", "D", "B", "A", "C", "C", "B", "B", "B", "B", "B", "C", "A", "D", "C", "B", "D", "D", "C", "D", "C", "A", "D", "A", "D", "B", "C", "C", "B", "D", "C", "D", "A", "A", "C", "A", "A", "D", "A", "C", "D", "D", "B", "D", "D", "B", "B", "D", "B", "B", "D", "C", "B", "D", "A", "C"], "MAY 2022": ["D", "A", "B", "D", "D", "A", "A", "A", "B", "D", "A", "C", "B", "C", "C", "B", "A", "B", "D", "C", "C", "B", "C", "D", "B", "D", "B", "B", "D", "D", "B", "D", "C", "A", "A", "C", "D", "C", "B", "B", "B", "A", "D", "A", "D", "B", "C", "A", "D", "C", "C", "D", "D", "C", "D"], "NOVEMBER 2022": ["C", "B", "D", "B", "C", "D", "B", "C", "D", "B", "C", "A", "B", "A", "A", "A", "D", "C", "B", "A", "D", "B", "A", "B", "B", "B", "D", "D", "A", "D", "C", "A", "C", "B", "B", "A", "D", "C", "B", "B", "B", "C", "B", "D", "B", "C", "A", "D", "C", "B", "B", "B", "D", "D", "C", "D", "B", "B", "A", "C", "A", "D", "D", "C", "D", "D", "D", "A", "B", "A", "D", "D"], "APRIL 2023": ["D", "A", "B", "B", "A", "B", "A", "D", "A", "C", "C", "D", "C", "D", "B", "A", "A", "A", "D", "D", "A", "A", "C", "B", "D", "D", "C", "B", "D", "C", "C", "D", "C", "A", "A", "A", "C", "B", "D", "B", "B", "C", "B", "A", "B", "C", "C"], "NOVEMBER 2023": ["D", "B", "A", "B", "B", "C", "D", "D", "D", "A", "B", "D", "C", "D", "B", "A", "A", "C", "C", "D", "A", "A", "C", "B", "A", "B", "A", "B", "C", "B", "C", "D", "B", "A", "A", "A", "C", "C", "C", "D", "B", "A", "D", "A", "C", "C", "B", "D", "D", "D", "D", "C", "D", "B", "A", "C", "D", "D", "D", "A", "A", "B", "B", "C", "C", "C", "B", "C", "C", "B", "D", "A"]}}};
+const DATA = {"Vol 4, 7th Ed": {"PSAD": {"MAY 2018": ["A", "B", "D", "A", "A", "C", "B", "C", "A", "B", "D", "D", "A", "D", "C", "B", "C", "B", "D", "A", "D", "A", "B", "C", "D", "B", "C", "C", "C", "B", "A", "B", "A", "D", "C", "A", "B", "B", "D", "C", "A", "B", "D", "B", "C", "D", "B", "C", "A", "B", "D", "B", "C", "D", "A", "D", "A", "A", "A", "C", "A", "D", "B", "A", "B", "D", "A", "A", "B", "C", "B", "D", "C", "A", "D"], "NOVEMBER 2018": ["B", "C", "B", "B", "C", "C", "B", "C", "B", "A", "B", "A", "C", "D", "C", "B", "B", "B", "B", "A", "D", "C", "A", "A", "B", "A", "D", "D", "A", "B", "C", "B", "A", "A", "D", "A", "B", "C", "C", "D", "B", "A", "C", "D", "A", "D", "B", "A", "C", "D", "B", "C", "D", "B", "B", "A", "D", "B", "C", "A", "B", "B", "D", "B", "B", "D", "D", "D", "B", "B", "B", "D", "D", "A", "D"], "MAY 2017": ["B", "C", "A", "C", "A", "B", "C", "D", "A", "B", "C", "B", "C", "C", "D", "B", "A", "D", "C", "A", "A", "B", "A", "D", "B", "A", "D", "A", "B", "D", "A", "B", "D", "D", "B", "D", "B", "A", "C", "C", "A", "D", "B", "A", "D", "A", "C", "B", "B", "B", "C", "B", "A", "A", "A", "A", "D", "D", "D", "C", "D", "A", "B", "D", "D", "C"], "NOVEMBER 2017": ["C", "B", "A", "D", "D", "C", "A", "D", "C", "B", "D", "A", "C", "A", "B", "D", "B", "A", "C", "C", "D", "B", "B", "A", "C", "C", "B", "D", "D", "B", "D", "C", "A", "A", "D", "C", "B", "A", "D", "A", "D", "C", "B", "A", "B", "A", "D", "B", "B", "A", "C", "B", "D", "A", "B", "C", "D", "B", "A", "C", "C", "D", "A", "D", "C", "A", "C", "C", "A", "D", "A", "A"], "MAY 2016": ["D", "A", "C", "D", "B", "C", "A", "C", "B", "C", "A", "B", "C", "A", "D", "C", "D", "B", "C", "A", "C", "A", "D", "C", "B", "C", "A", "B", "C", "B", "D", "B", "A", "B", "A", "D", "B", "C", "A", "A", "C", "A", "A", "D", "D", "B", "A", "C", "A", "B", "D", "A", "C", "C", "D", "B", "C", "C", "D", "D", "A", "B", "B", "B", "B", "D", "A", "C", "A", "D", "C", "A", "D", "C", "A"], "NOVEMBER 2016": ["B", "B", "A", "A", "D", "C", "B", "D", "C", "C", "B", "B", "C", "A", "D", "D", "D", "A", "D", "B", "A", "A", "C", "B", "C", "A", "B", "C", "B", "A", "A", "A", "B", "D", "D", "C", "A", "B", "C", "A", "C", "D", "B", "D", "D", "C", "A", "B", "A", "C", "A", "D", "A", "C", "A", "D", "C", "C", "D", "B", "D", "B", "A", "B", "C", "D", "A", "A", "D", "D", "D", "B", "A", "C", "A"], "MAY 2015": ["B", "D", "C", "D", "D", "B", "B", "C", "D", "C", "D", "A", "A", "B", "B", "D", "D", "C", "A", "A", "D", "B", "C", "C", "B", "B", "A", "C", "C", "A", "D", "A", "C", "A", "D", "B", "B", "C", "A", "D", "B", "D", "A", "B", "D", "A", "A", "C", "D", "B", "D", "B", "A", "A", "C", "C", "A", "D", "D", "C", "B", "B", "D", "D", "D", "B", "C", "A", "B", "C", "B", "A", "C", "C", "C", "A", "D", "B", "D", "B", "B", "D", "C", "A", "D"], "NOVEMBER 2015": ["A", "C", "D", "C", "A", "B", "D", "A", "A", "D", "B", "C", "D", "C", "B", "C", "D", "A", "D", "B", "D", "C", "A", "A", "D", "D", "D", "A", "B", "D", "B", "B", "B", "B", "D", "C", "C", "B", "D", "D", "A", "D", "C", "D", "B", "A", "C", "B", "B", "C", "D", "D", "B", "A", "D", "D", "C", "A", "A", "D", "C", "C", "A", "D", "A", "B", "C", "D", "A", "B", "A", "B", "C", "A", "B", "D", "A", "D", "A", "C", "A", "C", "B", "B", "C", "D", "A", "A"]}, "HPGE": {"MAY 2018": ["C", "D", "A", "A", "C", "C", "A", "C", "D", "C", "B", "B", "A", "A", "B", "A", "C", "B", "A", "A", "B", "D", "D", "B", "D", "B", "A", "B", "A", "C", "A", "D", "A", "D", "C", "B", "C", "D", "B", "A", "B", "A", "C", "B", "C", "D", "D", "C", "B", "D"], "NOVEMBER 2018": ["D", "B", "C", "A", "C", "B", "B", "D", "A", "B", "D", "A", "D", "A", "B", "A", "C", "D", "C", "B", "B", "D", "B", "A", "A", "D", "B", "C", "A", "B", "A", "D", "A", "B", "C", "D", "B", "C", "A", "C", "A", "C", "A", "A", "D", "C", "C", "D", "D", "C"], "MAY 2017": ["A", "A", "D", "D", "C", "D", "C", "D", "A", "C", "C", "B", "A", "C", "D", "C", "C", "B", "A", "A", "D", "B", "B", "B", "D", "A", "C", "A", "A", "D", "D", "C", "B", "A", "B", "D", "B", "C", "C", "A", "B", "A", "D", "B", "B", "D", "D"], "NOVEMBER 2017": ["C", "A", "B", "A", "B", "C", "D", "D", "B", "D", "D", "A", "B", "D", "C", "A", "D", "A", "C", "C", "B", "B", "A", "D", "A", "C", "C", "B", "A", "D", "A", "D", "A", "B", "C", "A", "A", "D", "B", "C", "D", "A", "D", "C", "A", "C", "B", "B", "C"], "MAY 2016": ["D", "A", "B", "C", "D", "B", "A", "C", "B", "A", "A", "A", "D", "A", "C", "B", "C", "C", "C", "C", "A", "B", "A", "A", "B", "C", "C", "C", "C", "B", "D", "A", "A", "B", "A", "D", "D", "C", "C", "B", "D", "A", "B", "D", "A", "A", "D", "D", "C", "B"], "NOVEMBER 2016": ["D", "C", "D", "C", "D", "D", "B", "A", "C", "B", "C", "B", "C", "D", "D", "D", "C", "A", "B", "D", "D", "A", "D", "A", "A", "B", "C", "A", "B", "A", "A", "D", "A", "B", "D", "C", "A", "C", "C", "A", "B", "C", "B", "C", "C", "B", "D", "A", "C", "B"], "MAY 2015": ["D", "A", "C", "A", "B", "A", "C", "A", "B", "C", "C", "B", "D", "C", "B", "D", "A", "A", "B", "C", "D", "C", "B", "D", "A", "D", "A", "B", "A", "A", "D", "C", "B", "C", "B", "D", "D", "B", "A", "B", "D", "A", "C", "C", "D", "B", "A", "D", "B", "B", "D", "C", "A", "C", "B", "A", "B", "A", "C", "B", "D", "D", "B", "B", "B", "A", "B", "A", "A", "D", "D", "B", "C", "B", "C", "B", "B", "D", "D", "A", "C", "A"], "NOVEMBER 2015": ["D", "C", "B", "C", "B", "D", "B", "D", "D", "B", "D", "D", "C", "B", "B", "C", "A", "A", "C", "B", "A", "A", "C", "D", "A", "C", "C", "A", "C", "A", "B", "C", "D", "A", "C", "B", "A", "C", "B", "D", "B", "D", "D", "C", "A", "A", "A", "B", "C", "B", "A", "D", "C", "D", "C", "D", "B", "D", "D", "B", "A", "A", "D", "D", "C", "C", "B", "A", "A", "B", "B", "A", "D", "D", "C", "B", "B", "B", "D", "A"]}, "MSTEC": {"MAY 2018": ["D", "A", "D", "D", "C", "B", "B", "C", "D", "D", "C", "C", "A", "A", "B", "A", "A", "C", "C", "C", "C", "A", "D", "B", "D", "C", "A", "C", "C", "D", "D", "A", "B", "D", "B", "D", "B", "A", "C", "D", "C", "B", "D", "D", "C", "A", "A", "B", "D", "A", "A", "A", "A", "B", "A", "C", "A", "C", "C", "B", "C", "A"], "NOVEMBER 2018": ["B", "C", "D", "D", "B", "C", "B", "D", "B", "C", "A", "A", "B", "D", "A", "B", "A", "C", "B", "D", "C", "D", "A", "B", "B", "B", "C", "A", "A", "C", "B", "B", "B", "D", "B", "B", "B", "A", "A", "C", "D", "D", "D", "B", "D", "D", "A", "A", "B", "D", "D", "A", "A", "C", "D", "A", "B", "D", "A", "D", "D", "A", "C", "A", "C", "A", "C", "A", "A", "C", "B", "A", "A", "D"], "MAY 2017": ["C", "A", "B", "D", "C", "A", "A", "B", "B", "C", "C", "A", "A", "B", "C", "C", "D", "D", "B", "D", "D", "C", "C", "A", "B", "D", "C", "D", "B", "A", "C", "D", "D", "B", "B", "A", "A", "C", "C", "B", "C", "D", "A", "A", "A", "D", "C", "D", "D", "D", "A", "B", "A", "D", "D", "A", "B", "C", "B", "C", "A", "D", "A", "C", "D", "D", "B", "A", "B", "B", "B", "D", "D", "C", "C"], "NOVEMBER 2017": ["A", "B", "D", "D", "A", "C", "D", "A", "C", "B", "A", "A", "A", "C", "D", "D", "D", "D", "C", "C", "D", "A", "B", "B", "D", "A", "B", "A", "B", "A", "C", "A", "B", "A", "C", "B", "B", "A", "A", "B", "A", "A", "C", "C", "C", "C", "B", "B", "D", "C", "D", "A", "D", "D", "C", "C", "A", "B", "D", "A", "A", "A", "C", "D", "B", "C", "B", "B", "C", "D", "D", "B", "D", "B"], "MAY 2016": ["C", "B", "B", "B", "A", "A", "D", "A", "A", "D", "A", "A", "C", "C", "D", "D", "C", "D", "C", "B", "B", "D", "A", "C", "B", "D", "C", "C", "D", "D", "A", "B", "C", "A", "A", "D", "C", "A", "B", "A", "D", "C", "D", "A", "C", "C", "B", "A", "C", "D", "A", "D", "B", "B", "B", "B", "A", "D", "C", "B", "C", "A", "D", "A", "C", "D", "D", "D", "A", "B", "B", "A", "B", "B", "C"], "NOVEMBER 2016": ["D", "A", "B", "C", "D", "B", "C", "D", "D", "A", "A", "D", "B", "A", "B", "C", "D", "B", "B", "A", "D", "A", "B", "D", "C", "B", "C", "B", "A", "C", "C", "D", "A", "D", "A", "D", "B", "A", "B", "D", "C", "D", "C", "D", "C", "B", "D", "D", "A", "C", "C", "A", "C", "A", "A", "A", "B", "B", "B", "D", "D", "D", "D", "B", "D", "C", "D", "D", "A", "B", "C", "A", "C", "B", "A"], "MAY 2015": ["A", "B", "C", "B", "A", "B", "D", "B", "A", "B", "A", "D", "B", "A", "C", "D", "A", "A", "D", "D", "A", "D", "C", "A", "B", "C", "B", "C", "C", "B", "C", "B", "B", "C", "B", "D", "A", "A", "B", "D", "B", "A", "D", "D", "B", "C", "B", "B", "B", "A", "A", "B", "B", "B", "D", "A", "B", "A", "D", "C", "D", "B", "C", "C", "B", "A", "D", "A", "A", "C", "D", "C", "D", "C", "D", "D", "D", "A", "A", "A", "A", "D", "B", "C", "D", "A", "C", "D", "A"], "NOVEMBER 2015": ["A", "C", "A", "B", "C", "D", "D", "A", "D", "A", "C", "C", "B", "C", "D", "C", "C", "D", "A", "D", "A", "C", "D", "A", "A", "B", "A", "C", "A", "D", "A", "B", "A", "A", "B", "D", "B", "D", "D", "C", "B", "D", "B", "D", "C", "D", "A", "A", "A", "D", "B", "D", "A", "B", "A", "C", "C", "C", "B", "D", "B", "B", "D", "B", "A", "D", "C", "D", "C", "C", "C", "C", "C", "C", "A", "B", "B", "A", "D", "C", "B", "A", "B", "A", "B", "D", "A", "C", "B", "D"]}}, "Vol 5, 4th Ed": {"PSAD": {"MAY 2019": ["D", "C", "D", "D", "A", "B", "D", "B", "A", "D", "A", "D", "B", "A", "D", "D", "C", "A", "A", "C", "A", "A", "A", "B", "C", "D", "C", "B", "D", "A", "D", "C", "A", "C", "A", "D", "A", "B", "D", "A", "B", "C", "C", "B", "A", "D", "D", "A", "D", "C", "A", "A", "C", "D", "B", "A", "C", "D", "B", "A", "C", "B", "B", "B", "D", "C", "A", "C", "D"], "NOVEMBER 2019": ["B", "C", "D", "A", "D", "C", "D", "A", "B", "B", "C", "C", "A", "C", "D", "C", "D", "A", "B", "C", "A", "A", "D", "C", "C", "C", "D", "A", "D", "C", "B", "C", "A", "B", "D", "A", "A", "D", "A", "B", "D", "A", "D", "D", "A", "B", "A", "C", "B", "D", "D", "A", "D", "B", "D", "D", "A", "D", "B", "B", "D", "B", "D", "B", "B", "D", "C", "C", "B", "C", "D", "A", "B", "C", "D"], "NOVEMBER 2021": ["A", "D", "C", "B", "A", "D", "A", "B", "B", "D", "A", "D", "B", "A", "C", "A", "D", "D", "B", "D", "A", "D", "A", "C", "D", "C", "A", "C", "C", "B", "A", "D", "C", "D", "B", "B", "C", "B", "A", "A", "D", "B", "D", "C", "C", "C", "C", "B", "B", "D", "B", "A", "D", "B", "B", "C", "D", "A", "B", "D", "C", "A", "D", "B", "D", "A", "A", "B", "C"], "MAY 2022": ["C", "D", "D", "B", "A", "C", "D", "A", "C", "A", "B", "C", "D", "A", "B", "B", "A", "D", "C", "C", "A", "B", "B", "D", "A", "C", "C", "A", "B", "A", "B", "D", "A", "C", "C", "D", "C", "B", "A", "D", "C", "C", "D", "D", "B", "B", "D", "B", "A", "B", "A", "D", "C", "D", "A", "B", "A", "C", "B", "D", "D", "D", "A", "B", "C", "A", "A", "B", "A", "B", "D", "A"], "NOVEMBER 2022": ["C", "A", "B", "D", "B", "A", "C", "A", "D", "D", "D", "B", "B", "A", "C", "A", "B", "C", "A", "B", "B", "D", "B", "A", "A", "B", "C", "A", "C", "C", "B", "D", "B", "B", "D", "A", "C", "D", "A", "C", "D", "B", "C", "D", "C", "B", "C", "D", "D", "B", "A", "C", "C", "D", "B", "C", "C", "D", "B", "A", "C", "B", "B", "A", "C", "D", "C", "D", "C", "D", "A", "D", "B", "A", "C"], "APRIL 2023": ["D", "A", "A", "B", "C", "A", "D", "A", "D", "B", "D", "C", "A", "A", "B", "A", "A", "B", "B", "D", "C", "D", "D", "A", "B", "D", "D", "A", "B", "A", "D", "C", "A", "D", "A", "C", "D", "A", "C", "C", "D", "C", "D", "C", "B", "B", "C", "B", "C", "D", "D", "B", "A", "B", "D", "C", "C", "A", "B", "A", "A", "B", "C", "C", "D", "B", "D", "A", "D", "B", "C", "A", "D", "C"], "NOVEMBER 2023": ["B", "A", "D", "C", "D", "C", "B", "A", "C", "A", "D", "A", "A", "D", "C", "A", "A", "B", "B", "A", "D", "A", "B", "C", "D", "C", "B", "C", "C", "B", "D", "A", "A", "C", "B", "D", "D", "B", "A", "C", "D", "A", "C", "C", "A", "B", "B", "D", "C", "A", "B", "D", "D", "A", "C", "A", "D", "D", "B", "A", "B", "C", "A", "B", "B", "C", "D", "A", "D", "A", "C", "D"]}, "HPGE": {"MAY 2019": ["D", "B", "D", "B", "B", "A", "C", "C", "A", "C", "B", "C", "B", "C", "B", "D", "C", "D", "A", "B", "A", "D", "C", "B", "C", "B", "B", "B", "D", "C", "A", "A", "D", "D", "A", "C", "A", "B", "D", "B", "D", "C", "C", "A", "D", "A", "C"], "NOVEMBER 2019": ["C", "A", "C", "A", "A", "B", "C", "A", "A", "C", "B", "A", "C", "D", "B", "D", "A", "D", "A", "A", "C", "C", "B", "C", "D", "D", "C", "B", "D", "D", "A", "B", "D", "D", "B", "C", "A", "D", "C", "B", "B", "A", "D", "B", "D"], "NOVEMBER 2021": ["C", "D", "B", "B", "A", "D", "C", "C", "B", "D", "A", "B", "A", "D", "C", "A", "A", "D", "D", "A", "C", "D", "A", "B", "B", "D", "B", "A", "C", "D", "C", "B", "C", "C", "B", "C", "C", "A", "B", "D", "B", "A", "A", "D", "D", "A", "A", "B", "D", "C"], "MAY 2022": ["B", "D", "A", "C", "D", "A", "D", "B", "A", "B", "B", "C", "C", "A", "B", "B", "D", "C", "B", "A", "D", "C", "B", "C", "D", "C", "B", "B", "C", "C", "B", "D", "A", "D", "A", "A", "A", "C", "A", "D", "A", "D", "C", "C", "B", "C", "A"], "NOVEMBER 2022": ["D", "C", "D", "C", "A", "D", "B", "D", "D", "C", "A", "C", "A", "C", "C", "B", "D", "B", "D", "D", "B", "A", "A", "C", "A", "C", "A", "D", "D", "C", "A", "B", "B", "D", "D", "A", "C", "B", "B", "D", "A", "B", "A", "A", "A", "D", "C", "B", "B", "C"], "APRIL 2023": ["D", "D", "D", "B", "D", "C", "B", "B", "D", "B", "A", "C", "B", "D", "B", "B", "D", "A", "A", "D", "A", "D", "C", "B", "A", "A", "C", "B", "B", "C", "A", "D", "D", "C", "A", "B", "C", "A", "D", "C", "B", "B", "C", "B", "C", "D", "A", "D", "A", "D"], "NOVEMBER 2023": ["B", "C", "D", "D", "A", "B", "B", "A", "D", "A", "B", "C", "C", "B", "D", "C", "A", "B", "B", "A", "D", "C", "D", "C", "D", "A", "B", "D", "D", "D", "B", "B", "A", "A", "C", "B", "A", "A", "A", "A", "A", "C", "B", "C", "A", "D", "C", "B", "C", "D"]}, "MSTEC": {"MAY 2019": ["B", "D", "D", "A", "B", "B", "B", "A", "C", "D", "D", "B", "D", "B", "A", "A", "D", "B", "D", "C", "D", "A", "C", "C", "C", "B", "C", "D", "A", "D", "B", "D", "A", "A", "C", "A", "D", "C", "A", "B", "D", "C", "C", "A", "B", "A", "A", "C", "C", "A", "D", "C", "C", "B", "C", "A", "B", "A", "A", "A"], "NOVEMBER 2019": ["C", "B", "D", "A", "B", "D", "A", "A", "B", "A", "C", "B", "C", "C", "D", "D", "D", "B", "C", "B", "A", "A", "D", "C", "B", "C", "C", "D", "B", "A", "B", "D", "B", "D", "D", "A", "C", "A", "D", "B", "A", "A", "D", "C"], "NOVEMBER 2021": ["C", "A", "C", "A", "B", "D", "C", "D", "A", "A", "D", "A", "D", "C", "D", "B", "A", "C", "C", "B", "B", "B", "B", "B", "C", "A", "D", "C", "B", "D", "D", "C", "D", "C", "A", "D", "A", "D", "B", "C", "C", "B", "D", "C", "D", "A", "A", "C", "A", "A", "D", "A", "C", "D", "D", "B", "D", "D", "B", "B", "D", "B", "B", "D", "C", "B", "D", "A", "C"], "MAY 2022": ["D", "A", "B", "D", "D", "A", "A", "A", "B", "D", "A", "C", "B", "C", "C", "B", "A", "B", "D", "C", "C", "B", "C", "D", "B", "D", "B", "B", "D", "D", "B", "D", "C", "A", "A", "C", "D", "C", "B", "B", "B", "A", "D", "A", "D", "B", "C", "A", "D", "C", "C", "D", "D", "C", "D"], "NOVEMBER 2022": ["C", "B", "D", "B", "C", "D", "B", "C", "D", "B", "C", "A", "B", "A", "A", "A", "D", "C", "B", "A", "D", "B", "A", "B", "B", "B", "D", "D", "A", "D", "C", "A", "C", "B", "B", "A", "D", "C", "B", "B", "B", "C", "B", "D", "B", "C", "A", "D", "C", "B", "B", "B", "D", "D", "C", "D", "B", "B", "A", "C", "A", "D", "D", "C", "D", "D", "D", "A", "B", "A", "D", "D"], "APRIL 2023": ["D", "A", "B", "B", "A", "B", "A", "D", "A", "C", "C", "D", "C", "D", "B", "A", "A", "A", "D", "D", "A", "A", "C", "B", "D", "D", "C", "B", "D", "C", "C", "D", "C", "A", "A", "A", "C", "B", "D", "B", "B", "C", "B", "A", "B", "C", "C"], "NOVEMBER 2023": ["D", "B", "A", "B", "B", "C", "D", "D", "D", "A", "B", "D", "C", "D", "B", "A", "A", "C", "C", "D", "A", "A", "C", "B", "A", "B", "A", "B", "C", "B", "C", "D", "B", "A", "A", "A", "C", "C", "C", "D", "B", "A", "D", "A", "C", "C", "B", "D", "D", "D", "D", "C", "D", "B", "A", "C", "D", "D", "D", "A", "A", "B", "B", "C", "C", "C", "B", "C", "C", "B", "D", "A"]}}, "Vol 3, 2nd Ed": {"PSAD": {"MAY 2011": ["D", "B", "A", "A", "B", "A", "B", "C", "D", "A", "B", "C", "D", "C", "C", "C", "D", "D", "A", "B", "D", "D", "A", "C", "C", "C", "D", "D", "A", "B"], "NOVEMBER 2011": ["D", "B", "A", "A", "B", "A", "B", "C", "D", "A", "B", "C", "D", "C", "C", "C", "D", "D", "A", "B", "D", "D", "A", "C", "C", "C", "D", "D", "A", "B"], "MAY 2012": ["A", "B", "B", "D", "A", "D", "B", "A", "D", "B", "B", "D", "A", "B", "D", "A", "C", "A", "B", "C", "C", "A", "B", "D", "D", "B", "D", "A", "A", "D", "C", "C", "D", "A", "D", "C", "B", "B", "D", "B", "C", "D", "A", "A", "A", "B", "A", "A", "C", "C", "C", "A", "C", "B", "D", "A", "A", "C", "D", "C", "B", "D", "C", "D", "C", "A", "A", "B", "D", "A", "A", "A", "D", "B", "A", "C", "C", "D", "D", "B", "D", "A", "C", "A", "B", "C", "C", "A", "B", "A", "D", "C", "C", "A", "C", "A", "B", "D", "B", "A"], "NOVEMBER 2012": ["C", "A", "C", "C", "B", "D", "D", "C", "B", "D", "C", "C", "B", "B", "B", "C", "A", "B", "B", "C", "A", "B", "B", "A", "C", "B", "C", "C", "B", "A", "C", "D", "A", "B", "A", "C", "C", "A", "A", "C", "A", "D", "B", "C", "C", "D", "A", "C", "A", "D", "D", "C", "A", "B", "A", "A", "B", "D", "C", "C", "D", "A", "D", "D", "A", "C", "C", "C", "A", "B", "A", "A", "B", "D", "C", "A", "A", "B", "D", "B", "A", "C", "D", "C", "A", "C", "D", "D", "A", "D", "D", "B", "D", "D", "B", "C", "D", "A"], "MAY 2013": ["C", "D", "C", "B", "A", "B", "D", "C", "A", "B", "C", "A", "C", "C", "B", "D", "D", "A", "D", "D", "A", "C", "D", "B", "C", "A", "B", "D", "A", "B", "C", "C", "D", "C", "D", "D", "C", "A", "B", "D", "C", "B", "D", "B", "D", "A", "A", "D", "A", "B", "C", "A", "A", "C", "A", "A", "C", "B", "A", "A", "B", "A", "B", "A", "D", "B", "B", "B", "C", "D", "C", "B", "D", "D", "A", "A", "B", "D", "D", "A", "B", "B", "C", "A", "B", "A", "C", "D", "A", "B", "C", "D", "A", "B", "A", "D"], "NOVEMBER 2013": ["C", "B", "A", "D", "D", "C", "D", "A", "B", "A", "C", "A", "B", "B", "A", "A", "B", "C", "C", "B", "A", "C", "B", "C", "B", "D", "C", "A", "D", "C", "B", "C", "B", "A", "B", "B", "D", "C", "B", "D", "D", "A", "A", "B", "D", "A", "A", "C", "B", "A", "D", "C", "D", "C", "C", "D", "B", "D", "B", "A", "C", "A", "D", "D", "A", "B", "C", "A", "C", "D", "D", "C", "C", "B", "A", "D", "A", "D", "A", "C", "C", "D", "A", "B", "C", "B", "A", "B", "A", "A", "C", "D", "B"], "MAY 2014": ["C", "C", "D", "B", "A", "C", "A", "C", "D", "C", "A", "C", "B", "A", "B", "D", "D", "C", "C", "C", "A", "A", "D", "B", "B", "C", "C", "D", "B", "D", "C", "A", "B", "D", "B", "A", "A", "D", "D", "A", "C", "C", "C", "D", "C", "C", "D", "D", "C", "B", "D", "D", "B", "B", "C", "B", "C", "C", "A", "B", "B", "D", "A", "D", "B", "A", "D", "A", "D", "A", "B", "B", "A", "C", "A", "A", "C", "B", "B", "D", "B", "A", "D", "C", "B", "D", "D", "D", "B", "A", "A", "C", "B", "C", "A"], "DECEMBER 2014": ["A", "C", "C", "B", "C", "D", "C", "A", "C", "A", "D", "A", "B", "A", "B", "D", "C", "D", "B", "C", "B", "A", "C", "D", "B", "D", "C", "A", "D", "D", "B", "C", "A", "D", "A", "D", "B", "A", "D", "C", "B", "C", "D", "A", "B", "C", "D", "B", "A", "C", "C", "D", "A", "B", "B", "A", "A", "D", "D", "A", "B", "C", "D", "C", "B", "D", "A", "A", "C", "A", "B", "A", "B", "A", "B", "B", "C", "D", "C", "B", "A", "C", "B", "A", "D", "B", "A", "D"]}, "HPGE": {"MAY 2011": ["A", "C", "B", "B", "B", "C", "C", "D", "D", "C", "D", "A", "D", "A", "C", "D", "D", "A", "B", "C", "C", "A", "A", "B", "D", "A", "A", "B", "A", "C"], "NOVEMBER 2011": ["A", "C", "B", "B", "B", "C", "C", "D", "D", "C", "D", "A", "D", "A", "C", "D", "D", "A", "B", "C", "C", "A", "A", "B", "D", "A", "A", "B", "A", "C"], "MAY 2012": ["A", "D", "C", "B", "A", "C", "B", "A", "A", "D", "D", "C", "C", "B", "A", "A", "B", "C", "D", "B", "A", "C", "C", "A", "B", "A", "A", "C", "B", "B", "C", "A", "D", "B", "D", "B", "C", "C", "A", "D", "B", "B", "C", "C", "A", "B", "A", "A", "B", "B", "C", "D", "C", "C", "A", "A", "D", "C", "B", "B", "C", "C", "C", "D", "A", "B", "A", "B", "B", "A", "B", "D", "D", "B", "C", "A", "A", "D", "C", "D", "C", "A", "C", "B", "A", "B", "B", "D", "D", "D", "D", "A", "D", "B", "D", "A", "C", "B", "C", "A"], "NOVEMBER 2012": ["D", "D", "B", "A", "A", "C", "A", "C", "D", "B", "A", "D", "C", "C", "A", "B", "A", "C", "D", "D", "B", "D", "D", "A", "B", "A", "C", "A", "A", "B", "B", "B", "A", "B", "A", "C", "A", "B", "C", "A", "D", "C", "B", "A", "D", "A", "A", "D", "B", "C", "D", "B", "C", "A", "C", "D", "D", "D", "C", "A", "D", "B", "C", "D", "B", "A", "B", "C", "A", "C", "A", "B", "B", "A", "D", "A", "C", "C", "D", "A", "D", "A", "D", "C", "D", "C", "A", "C", "A", "C", "B", "C", "A", "D", "D", "B", "C", "A", "B"], "MAY 2013": ["C", "C", "D", "B", "A", "A", "A", "C", "B", "C", "C", "D", "A", "B", "D", "B", "A", "C", "A", "A", "D", "D", "D", "A", "A", "C", "C", "D", "C", "D", "D", "C", "A", "D", "D", "B", "C", "A", "B", "B", "D", "C", "A", "A", "B", "A", "A", "B", "B", "B", "D", "D", "A", "B", "D", "D", "B", "B", "C", "D", "D", "A", "C", "B", "D", "A", "A", "C", "C", "D", "D", "A", "B", "D", "A", "C", "B", "C", "C", "D", "A", "B", "D", "C", "B", "A", "B", "C", "D", "B", "A", "B", "C"], "NOVEMBER 2013": ["B", "B", "C", "C", "A", "B", "A", "B", "C", "C", "B", "D", "A", "D", "B", "D", "A", "A", "D", "D", "A", "D", "B", "C", "B", "A", "D", "B", "B", "C", "A", "A", "B", "A", "D", "A", "C", "C", "B", "D", "A", "D", "A", "C", "A", "C", "A", "D", "A", "D", "C", "D", "C", "B", "B", "A", "C", "D", "A", "B", "D", "C", "D", "C", "A", "D", "C", "D", "D", "B", "A", "A", "B", "C", "A", "B", "B", "D", "B", "B", "C", "A", "D", "C", "D", "A", "A", "A", "D", "A", "B", "B", "C"], "MAY 2014": ["C", "D", "A", "B", "D", "C", "A", "D", "B", "B", "A", "B", "C", "A", "D", "C", "B", "C", "B", "A", "D", "A", "B", "A", "C", "B", "D", "B", "C", "C", "C", "B", "C", "C", "D", "A", "C", "D", "D", "D", "C", "A", "C", "B", "D", "B", "C", "B", "C", "D", "C", "A", "B", "A", "A", "C", "A", "B", "C", "B", "D", "C", "D", "C", "A", "A", "C", "C", "B", "A", "D", "D", "A", "D", "D", "D", "A"], "DECEMBER 2014": ["B", "D", "C", "D", "A", "B", "A", "D", "B", "B", "A", "D", "D", "A", "C", "D", "B", "A", "B", "B", "A", "A", "A", "D", "A", "C", "B", "C", "C", "B", "B", "C", "D", "C", "C", "D", "C", "A", "B", "C", "D", "C", "A", "A", "D", "D", "B", "C", "C", "D", "B", "A", "B", "C", "D", "B", "B", "D", "B", "B", "A", "D", "A", "B", "A", "C", "B", "D", "C", "D", "B", "C", "A", "A", "D", "B", "A"]}, "MSTEC": {"MAY 2011": ["C", "B", "D", "B", "C", "D", "B", "A", "D", "B", "D", "A", "C", "A", "A", "D", "B", "A", "A", "C", "C", "A", "B", "A", "D", "D", "C", "D", "A", "B"], "NOVEMBER 2011": ["C", "B", "D", "B", "C", "D", "B", "A", "D", "B", "D", "A", "C", "A", "A", "D", "B", "A", "A", "C", "C", "A", "B", "A", "D", "D", "C", "D", "A", "B"], "MAY 2012": ["A", "C", "B", "D", "B", "B", "D", "C", "C", "A", "C", "B", "D", "A", "D", "D", "A", "A", "A", "A", "A", "D", "A", "D", "A", "B", "C", "A", "B", "D", "A", "C", "D", "A", "A", "D", "D", "A", "A", "D", "D", "C", "B", "C", "A", "C", "A", "B", "D", "D", "A", "A", "B", "D", "A", "C", "A", "C", "C", "D", "C", "D", "D", "B", "D", "B", "B", "A", "C", "B", "C", "D", "B", "A", "C", "C", "A", "A", "D", "C", "D", "A", "D", "C", "A", "A", "B", "B", "A", "C", "A", "C", "A", "B"], "NOVEMBER 2012": ["A", "C", "C", "B", "D", "D", "C", "C", "B", "A", "D", "C", "B", "A", "D", "B", "B", "B", "D", "D", "C", "D", "C", "D", "C", "A", "A", "B", "B", "B", "A", "D", "B", "B", "D", "B", "A", "D", "B", "C", "B", "D", "D", "B", "C", "D", "A", "C", "B", "B", "A", "C", "A", "B", "B", "B", "A", "A", "A", "D", "C", "C", "A", "A", "A", "D", "B", "C", "A", "B", "D", "B", "C", "A", "D", "C", "A", "D", "C", "D", "C", "C", "C", "B", "A", "B", "D", "A", "B", "A", "A", "D", "A", "C", "A", "C", "D", "A", "C", "D"], "MAY 2013": ["B", "C", "A", "A", "C", "B", "A", "C", "A", "D", "B", "A", "A", "D", "C", "B", "B", "D", "A", "B", "C", "B", "C", "D", "D", "D", "D", "A", "C", "B", "A", "B", "A", "A", "B", "B", "C", "D", "D", "A", "D", "D", "B", "A", "A", "C", "D", "B", "C", "D", "B", "A", "D", "D", "C", "A", "D", "C", "A", "A", "B", "B", "C", "D", "B", "C", "A", "B", "D", "B", "A", "C", "D", "A", "C", "D", "C", "D", "C", "B", "C", "D", "D", "D", "B", "A", "C", "A", "D", "B", "D", "B", "A", "C"], "NOVEMBER 2013": ["D", "A", "B", "B", "D", "A", "B", "D", "A", "A", "A", "C", "A", "B", "B", "D", "D", "C", "B", "C", "D", "C", "B", "D", "A", "C", "A", "D", "D", "B", "A", "A", "A", "C", "B", "C", "B", "A", "B", "B", "B", "B", "C", "D", "B", "D", "D", "A", "D", "D", "D", "C", "B", "B", "D", "D", "B", "A", "D", "D", "A", "C", "C", "A", "C", "C", "C", "D", "D", "A", "B", "A", "C", "C", "B", "A", "C", "D", "A", "A", "B", "C", "D", "A", "C", "A"], "MAY 2014": ["B", "C", "C", "C", "A", "A", "B", "B", "D", "D", "D", "C", "A", "C", "A", "D", "B", "B", "B", "D", "B", "D", "C", "B", "D", "A", "B", "D", "B", "D", "B", "C", "A", "C", "D", "C", "B", "B", "C", "B", "D", "D", "D", "D", "B", "A", "A", "A", "A", "D", "A", "D", "B", "B", "B", "A", "A", "D", "D", "A", "B", "B", "B", "C", "B", "A", "A", "C", "B", "A", "B", "B", "A", "A", "B", "C", "C", "A", "D", "A", "B", "B", "A", "A", "B", "D", "B", "D", "B", "D", "B", "B", "A"], "DECEMBER 2014": ["B", "D", "A", "D", "D", "B", "B", "A", "B", "B", "C", "B", "C", "C", "A", "D", "D", "B", "A", "C", "D", "C", "D", "D", "D", "B", "D", "A", "C", "B", "A", "D", "C", "B", "B", "C", "B", "A", "C", "A", "D", "B", "B", "C", "B", "B", "A", "A", "B", "D", "A", "C", "D", "D", "D", "A", "C", "A", "B", "C", "B", "B", "A", "A", "B", "A", "C", "C", "B", "D", "B", "C", "C", "D", "D", "B", "D", "D", "D", "A", "A", "B", "A", "D", "B", "C", "A", "B"]}}};
 const DURATIONS = {PSAD:21600, MSTEC:18000, HPGE:14400};
-let volume = 'Vol 5, 4th Ed', subject = 'MSTEC', examName = '', ans = [], accumulatedMs = 0, startTime = null, running = false, submitted = false, lastResult = null;
+let volume = 'Vol 5, 4th Ed', subject = 'MSTEC', examName = '', ans = [], flagged = [], activeQ = 0, accumulatedMs = 0, startTime = null, running = false, submitted = false, lastResult = null, hotkeysEnabled = true, navCollapsed = false, palFilter = 'all', autoAdvance = true;
 const root = document.documentElement, volSel = document.getElementById('volSelect'), sel = document.getElementById('exam'), leftQ = document.getElementById('leftQuestions'), rightQ = document.getElementById('rightQuestions'), timer = document.getElementById('timer'), timerBtn = document.getElementById('timerBtn'), status = document.getElementById('status'), note = document.getElementById('examnote');
 const colors = {MSTEC:['#2674d9','#eaf3ff'], HPGE:['#238636','#e8f5e9'], PSAD:['#d97706','#fff3df']};
+
+function toggleDarkMode() {
+  document.body.classList.toggle('dark-mode');
+  const isDark = document.body.classList.contains('dark-mode');
+  const btn = document.getElementById('themeToggle');
+  if (btn) btn.textContent = isDark ? '☀️ Light' : '🌙 Dark';
+  try { localStorage.setItem('ceDarkMode', isDark ? '1' : '0'); } catch(e){}
+}
+
+function loadDarkMode() {
+  try {
+    if (localStorage.getItem('ceDarkMode') === '1') {
+      document.body.classList.add('dark-mode');
+      const btn = document.getElementById('themeToggle');
+      if (btn) btn.textContent = '☀️ Light';
+    }
+  } catch(e){}
+}
+loadDarkMode();
+try {
+  autoAdvance = localStorage.getItem('ceAutoAdvance') !== '0';
+  const aa = document.getElementById('autoAdvanceToggle');
+  if (aa) aa.checked = autoAdvance;
+} catch(e) {}
 
 document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => switchSubject(t.dataset.s)));
 sel.addEventListener('change', () => {
@@ -69,8 +357,12 @@ sel.addEventListener('change', () => {
     }
   }
   examName = sel.value;
-  ans = Array(((DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) || []).length).fill(null);
+  const len = ((DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) || []).length;
+  ans = Array(len).fill(null);
+  flagged = Array(len).fill(false);
+  activeQ = 0;
   accumulatedMs = 0; startTime = null; running = false; submitted = false; lastResult = null;
+  clearDraft();
   updateTimerUI(); updateNote(); render();
 });
 
@@ -94,6 +386,7 @@ function switchSubject(s, force = false) {
   root.style.setProperty('--subject', colors[s][0]);
   root.style.setProperty('--softsub', colors[s][1]);
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.s === s));
+  clearDraft();
   updateExamDropdown();
 }
 
@@ -106,6 +399,7 @@ function switchVolume(v) {
     }
   }
   volume = v;
+  clearDraft();
   updateExamDropdown();
 }
 
@@ -120,7 +414,10 @@ function updateExamDropdown() {
     sel.appendChild(o);
   });
   examName = Object.keys(exams)[0] || '';
-  ans = Array(((exams[examName]) || []).length).fill(null);
+  const len = ((exams[examName]) || []).length;
+  ans = Array(len).fill(null);
+  flagged = Array(len).fill(false);
+  activeQ = 0;
   accumulatedMs = 0; startTime = null; running = false; submitted = false; lastResult = null;
   updateTimerUI(); updateNote(); render();
 }
@@ -128,18 +425,36 @@ function updateExamDropdown() {
 function duration() { return DURATIONS[subject] || 21600; }
 function fmt(v) { const h = Math.floor(v/3600), m = Math.floor((v%3600)/60), s = v%60; return [h,m,s].map(x => String(x).padStart(2,'0')).join(':'); }
 function updateTimerUI() {
-  timer.textContent = fmt(Math.max(0, duration() - getElapsedSeconds()));
+  const rem = Math.max(0, duration() - getElapsedSeconds());
+  timer.textContent = fmt(rem);
   timerBtn.textContent = running ? 'Stop' : 'Start';
   timerBtn.classList.toggle('running', running);
   timerBtn.disabled = submitted || !examName;
-  sel.disabled = running;
-  volSel.disabled = running;
+  sel.disabled = false;
+  volSel.disabled = false;
+
+  timer.classList.remove('timer-warning', 'timer-critical');
+  if (running && !submitted) {
+    if (rem <= 300) {
+      timer.classList.add('timer-critical');
+    } else if (rem <= 900) {
+      timer.classList.add('timer-warning');
+    }
+  }
 }
 function updateNote() {
-  if (lastResult) note.innerHTML = '<b>Exam completed.</b> Review your result or choose <b>Retake This Exam</b> for a fresh attempt.';
-  else if (running) note.innerHTML = '<b>Exam in progress.</b> Press <b>Stop</b> to pause. Your selected answers remain available.';
-  else if (getElapsedSeconds() > 0) note.innerHTML = '<b>Timer stopped.</b> Your selected answers remain available. Press <b>Start</b> to continue.';
-  else note.innerHTML = 'To start the exam, press <b>Start</b>. The answer choices are locked until the timer is started. The exam will be submitted automatically once the timer has ended.';
+  if (running) {
+    note.style.display = 'none';
+  } else if (lastResult) {
+    note.style.display = 'block';
+    note.innerHTML = '<b>Exam completed.</b> Review your result or click <b>Retake This Exam</b> for a new attempt.';
+  } else if (getElapsedSeconds() > 0) {
+    note.style.display = 'block';
+    note.innerHTML = '<b>Timer paused.</b> Selected answers are preserved. Press <b>Start</b> to resume.';
+  } else {
+    note.style.display = 'block';
+    note.innerHTML = 'To start the exam, press <b>Start</b>. Choices unlock once the timer begins.';
+  }
 }
 
 function toggleTimer() {
@@ -157,31 +472,145 @@ function toggleTimer() {
     startTime = Date.now();
     running = true;
   }
+  saveDraft();
   updateTimerUI(); updateNote(); render();
 }
 
-function resetTimer() {
-  if (submitted) {
-    if (!confirm('Reset this completed exam and prepare it for a new attempt?')) return;
-    ans = Array(((DATA[volume][subject][examName] || [])).length).fill(null); submitted = false; lastResult = null;
-  } else if (getElapsedSeconds() > 0) {
-    if (!confirm('Reset the timer to the full exam time? Your current answers will be kept.')) return;
-  }
-  accumulatedMs = 0; startTime = null; running = false; updateTimerUI(); updateNote(); render();
+function toggleAutoAdvance(enabled) {
+  autoAdvance = !!enabled;
+  try { localStorage.setItem('ceAutoAdvance', autoAdvance ? '1' : '0'); } catch(e) {}
+}
+
+function toggleFlag(i) {
+  if (i < 0 || i >= flagged.length) return;
+  flagged[i] = !flagged[i];
+  saveDraft();
+  render();
 }
 
 function makeQuestion(i) {
-  const row = document.createElement('div'); row.className = 'qrow'; row.innerHTML = '<div class="qno">' + (i+1) + '</div><div class="choices"></div>';
-  const box = row.querySelector('.choices');
+  const row = document.createElement('div');
+  row.className = 'qrow' + (i === activeQ ? ' active-q' : '');
+  row.id = 'qrow-' + i;
+  row.onclick = () => { if (activeQ !== i) { activeQ = i; render(); } };
+
+  const qhead = document.createElement('div');
+  qhead.className = 'qheader';
+  qhead.innerHTML = '<div class="qno">' + (i+1) + '</div><button class="flag-btn' + (flagged[i] ? ' flagged' : '') + '" onclick="event.stopPropagation();toggleFlag(' + i + ')" title="Flag question (F)">' + (flagged[i] ? '🚩' : '🏳️') + '</button>';
+  row.appendChild(qhead);
+
+  const box = document.createElement('div');
+  box.className = 'choices';
   const locked = !running && getElapsedSeconds() === 0 && !submitted;
+
   ['A','B','C','D','E'].forEach(letter => {
     const label = document.createElement('label');
     label.className = 'choice' + (ans[i] === letter ? ' selected' : '') + (ans[i] === 'E' && letter === 'E' ? ' e-selected' : '') + (locked ? ' locked' : '');
     label.innerHTML = '<input type="radio" name="q' + i + '" ' + (ans[i] === letter ? 'checked' : '') + '><b>' + letter + '</b>';
-    label.addEventListener('click', e => { if (locked || submitted) { e.preventDefault(); return; } ans[i] = letter; render(); });
+    label.addEventListener('click', e => {
+      if (locked || submitted) { e.preventDefault(); return; }
+      ans[i] = letter;
+      saveDraft();
+      if (autoAdvance && activeQ === i && i < ans.length - 1) activeQ++;
+      render();
+      if (autoAdvance) scrollToActive();
+    });
     box.appendChild(label);
   });
+
+  row.appendChild(box);
   return row;
+}
+
+function toggleNav() {
+  navCollapsed = !navCollapsed;
+  const pal = document.getElementById('qPalette');
+  const btn = document.getElementById('navToggleBtn');
+  if (pal) pal.style.display = navCollapsed ? 'none' : 'flex';
+  if (btn) btn.textContent = navCollapsed ? 'Show Navigator ▼' : 'Hide Navigator ▲';
+}
+
+function toggleHotkeys(enabled) {
+  hotkeysEnabled = enabled;
+  const txt = document.getElementById('hkStatusText');
+  if (txt) {
+    txt.textContent = enabled ? 'ON' : 'OFF';
+    txt.className = 'kbd-inline ' + (enabled ? '' : 'off');
+  }
+  document.body.classList.toggle('hotkeys-off', !enabled);
+  if (document.activeElement) document.activeElement.blur();
+  render();
+}
+
+function setPalFilter(f) {
+  palFilter = f;
+  ['pftAll', 'pftUnans', 'pftFlagged'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('active');
+  });
+  if (f === 'all' && document.getElementById('pftAll')) document.getElementById('pftAll').classList.add('active');
+  if (f === 'unanswered' && document.getElementById('pftUnans')) document.getElementById('pftUnans').classList.add('active');
+  if (f === 'flagged' && document.getElementById('pftFlagged')) document.getElementById('pftFlagged').classList.add('active');
+  renderPalette();
+}
+
+function updateFilterCounts() {
+  const key = (DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) || [];
+  const total = key.length;
+  const ansCount = ans.filter(Boolean).length;
+  const unansCount = total - ansCount;
+  const flagCount = flagged.filter(Boolean).length;
+
+  const cntAll = document.getElementById('cntAll');
+  const cntUnans = document.getElementById('cntUnans');
+  const cntFlagged = document.getElementById('cntFlagged');
+
+  if (cntAll) cntAll.textContent = '(' + total + ')';
+  if (cntUnans) cntUnans.textContent = '(' + unansCount + ')';
+  if (cntFlagged) cntFlagged.textContent = '(' + flagCount + ')';
+}
+
+function renderPalette() {
+  updateFilterCounts();
+  const pal = document.getElementById('qPalette');
+  if (!pal) return;
+  const key = (DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) || [];
+  pal.innerHTML = '';
+
+  let shownCount = 0;
+  key.forEach((_, i) => {
+    const isAns = Boolean(ans[i]);
+    const isFlg = Boolean(flagged[i]);
+    if (palFilter === 'unanswered' && isAns) return;
+    if (palFilter === 'flagged' && !isFlg) return;
+
+    shownCount++;
+    const btn = document.createElement('button');
+    let cls = 'p-btn';
+    if (isAns) cls += ' p-answered';
+    if (i === activeQ) cls += ' p-active';
+    if (isFlg) cls += ' p-flagged';
+    btn.className = cls;
+    btn.textContent = i + 1;
+    btn.title = 'Question ' + (i + 1) + (ans[i] ? ' (' + ans[i] + ')' : '') + (flagged[i] ? ' [Flagged]' : '');
+    btn.onclick = () => {
+      activeQ = i;
+      render();
+      scrollToActive();
+    };
+    pal.appendChild(btn);
+  });
+
+  if (shownCount === 0) {
+    const emptyMsg = document.createElement('div');
+    emptyMsg.className = 'pal-empty-msg';
+    if (palFilter === 'flagged') {
+      emptyMsg.innerHTML = '🚩 No flagged questions yet. Click 🏳️ next to any item to flag it for review.';
+    } else if (palFilter === 'unanswered') {
+      emptyMsg.innerHTML = '🎉 All questions answered! You are ready to submit your exam.';
+    }
+    pal.appendChild(emptyMsg);
+  }
 }
 
 function render() {
@@ -190,7 +619,10 @@ function render() {
   leftQ.innerHTML = ''; rightQ.innerHTML = '';
   const split = Math.ceil(key.length / 2);
   key.forEach((_, i) => (i < split ? leftQ : rightQ).appendChild(makeQuestion(i)));
-  status.textContent = ans.filter(Boolean).length + ' / ' + key.length + ' answered';
+  const ansCount = ans.filter(Boolean).length;
+  const flagCount = flagged.filter(Boolean).length;
+  status.textContent = ansCount + ' / ' + key.length + ' answered' + (flagCount ? ' • ' + flagCount + ' flagged 🚩' : '');
+  renderPalette();
 }
 
 setInterval(() => {
@@ -208,6 +640,7 @@ function buildReview(key, userAns = ans) {
   return key.map((correct, i) => {
     const ua = userAns[i];
     const isSkipped = !ua;
+    const isWrong = ua && ua !== correct;
     const choices = ['A','B','C','D','E'].map(c => {
       let cls = 'reviewchoice';
       if (isSkipped) {
@@ -220,8 +653,10 @@ function buildReview(key, userAns = ans) {
       }
       return '<div class="' + cls + '">' + c + '</div>';
     }).join('');
-    const badge = isSkipped ? '<span class="badge-skipped">SKIPPED</span>' : '';
-    return '<div class="review"><div><b>' + (i+1) + '.</b>' + badge + '</div><div class="reviewchoices">' + choices + '</div></div>';
+    let badge = '';
+    if (isSkipped) badge = '<span class="badge-skipped">SKIPPED</span>';
+    else if (isWrong) badge = '<span class="badge-wrong">INCORRECT</span>';
+    return '<div class="review"><div class="review-label"><b>' + (i+1) + '.</b>' + badge + '</div><div class="reviewchoices">' + choices + '</div></div>';
   }).join('');
 }
 
@@ -235,10 +670,50 @@ function showResult() {
   document.getElementById('modal').classList.add('show');
 }
 
-function submitExam(auto = false) {
+function confirmSubmit() {
   if (submitted) { showResult(); return; }
+  const key = (DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) || [];
+  const total = key.length;
+  const ansCount = ans.filter(Boolean).length;
+  const unansCount = total - ansCount;
+  const flagCount = flagged.filter(Boolean).length;
+  const el = getElapsedSeconds();
+  const remSecs = Math.max(0, duration() - el);
+
+  document.getElementById('cStatTotal').textContent = total;
+  document.getElementById('cStatAns').textContent = ansCount;
+  document.getElementById('cStatUnans').textContent = unansCount;
+  document.getElementById('cStatFlagged').textContent = flagCount;
+  document.getElementById('cStatTime').textContent = fmt(remSecs);
+
+  const warn = document.getElementById('cWarningNotice');
+  if (warn) {
+    if (unansCount > 0 && flagCount > 0) {
+      warn.style.display = 'block';
+      warn.innerHTML = '⚠️ <b>Attention:</b> You have <b>' + unansCount + ' unanswered item(s)</b> and <b>' + flagCount + ' flagged item(s)</b> remaining. Are you sure you want to finish now?';
+    } else if (unansCount > 0) {
+      warn.style.display = 'block';
+      warn.innerHTML = '⚠️ <b>Attention:</b> You have <b>' + unansCount + ' unanswered item(s)</b>. Unanswered items will be marked as skipped.';
+    } else if (flagCount > 0) {
+      warn.style.display = 'block';
+      warn.innerHTML = '📌 <b>Note:</b> You still have <b>' + flagCount + ' flagged item(s)</b>. Review them before completing if needed.';
+    } else {
+      warn.style.display = 'none';
+    }
+  }
+
+  document.getElementById('confirmModal').classList.add('show');
+}
+
+function closeConfirmModal() {
+  document.getElementById('confirmModal').classList.remove('show');
+}
+
+function performSubmit(auto = false) {
+  closeConfirmModal();
   if (running) { accumulatedMs += (Date.now() - startTime); startTime = null; running = false; }
   submitted = true;
+  clearDraft();
   const el = getElapsedSeconds();
   const key = DATA[volume][subject][examName];
   const correct = ans.reduce((n, a, i) => n + (a === key[i] ? 1 : 0), 0);
@@ -248,6 +723,16 @@ function submitExam(auto = false) {
   a.push({vol: volume, subject: subject, exam: examName, date: new Date().toLocaleString(), score: correct + '/' + key.length, pct: pct + '%', time: fmt(el), ans: [...ans]});
   try { localStorage.setItem('ceUltimateAttempts', JSON.stringify(a)); } catch(e){}
   updateTimerUI(); updateNote(); renderAttempts(); showResult();
+}
+
+function submitExam(auto = false) {
+  if (auto) {
+    performSubmit(true);
+  } else if (submitted) {
+    showResult();
+  } else {
+    confirmSubmit();
+  }
 }
 
 let currentViewedAttempt = null;
@@ -284,26 +769,219 @@ function retake() {
     sel.value = targetExam;
     examName = targetExam;
   }
-  ans = Array(((DATA[volume][subject][examName] || [])).length).fill(null);
+  const len = (DATA[volume][subject][examName] || []).length;
+  ans = Array(len).fill(null); flagged = Array(len).fill(false); activeQ = 0;
   accumulatedMs = 0; startTime = null; running = false; submitted = false; lastResult = null;
   currentViewedAttempt = null;
   document.getElementById('modal').classList.remove('show');
   updateTimerUI(); updateNote(); render();
 }
 
-function resetExam() { if (confirm('Clear all selected answers for this examination?')) { ans = Array(((DATA[volume][subject][examName] || [])).length).fill(null); render(); } }
+function clearAndRestartExam(promptUser = true) {
+  if (promptUser && !confirm('Clear all answers and restart this examination from scratch?')) {
+    return;
+  }
+  const len = ((DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) || []).length;
+  ans = Array(len).fill(null);
+  flagged = Array(len).fill(false);
+  activeQ = 0;
+  accumulatedMs = 0;
+  startTime = null;
+  running = false;
+  submitted = false;
+  lastResult = null;
+  clearDraft();
+  updateTimerUI();
+  updateNote();
+  render();
+}
+
+function resetExam() {
+  clearAndRestartExam(true);
+}
+
+function resetTimer() {
+  if (submitted) {
+    alert('This exam has already been submitted. Use “Retake This Exam” to start a new attempt.');
+    return;
+  }
+  if (getElapsedSeconds() > 0 || ans.some(Boolean) || flagged.some(Boolean)) {
+    if (!confirm('Reset the timer to the full exam time? Your current answers and flags will be kept.')) return;
+  }
+  accumulatedMs = 0;
+  startTime = null;
+  running = false;
+  saveDraft();
+  updateTimerUI();
+  updateNote();
+  render();
+}
+
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function populateHistoryFilters() {
+  const v=document.getElementById('histVol'), s=document.getElementById('histSubj'), e=document.getElementById('histExam');
+  if (!v || !s || !e) return;
+  const a=getAttempts();
+  const vols=[...new Set(a.map(x=>x.vol||'Vol 4, 7th Ed'))].sort();
+  const subs=[...new Set(a.map(x=>x.subject).filter(Boolean))].sort();
+  const exams=[...new Set(a.map(x=>x.exam).filter(Boolean))].sort();
+  const oldV=v.value, oldS=s.value, oldE=e.value;
+  v.innerHTML='<option value="all">All Volumes</option>'+vols.map(x=>'<option value="'+escapeHtml(x)+'">'+escapeHtml(x)+'</option>').join('');
+  s.innerHTML='<option value="all">All Subjects</option>'+subs.map(x=>'<option value="'+escapeHtml(x)+'">'+escapeHtml(x)+'</option>').join('');
+  e.innerHTML='<option value="all">All Exams</option>'+exams.map(x=>'<option value="'+escapeHtml(x)+'">'+escapeHtml(x)+'</option>').join('');
+  if ([...v.options].some(o=>o.value===oldV)) v.value=oldV;
+  if ([...s.options].some(o=>o.value===oldS)) s.value=oldS;
+  if ([...e.options].some(o=>o.value===oldE)) e.value=oldE;
+}
+
+function filteredHistory() {
+  const a=getAttempts(), v=document.getElementById('histVol')?.value||'all', s=document.getElementById('histSubj')?.value||'all', e=document.getElementById('histExam')?.value||'all';
+  return a.filter(x=>(v==='all'||(x.vol||'Vol 4, 7th Ed')===v)&&(s==='all'||x.subject===s)&&(e==='all'||x.exam===e));
+}
+
+function clearHistoryFilters() {
+  ['histVol','histSubj','histExam'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='all';});
+  renderAttempts();
+}
+
+function updateHistorySummary(a) {
+  const vals=a.map(x=>parseFloat(String(x.pct||'').replace('%',''))).filter(Number.isFinite);
+  const avg=vals.length?vals.reduce((x,y)=>x+y,0)/vals.length:NaN;
+  const best=vals.length?Math.max(...vals):NaN;
+  const low=vals.length?Math.min(...vals):NaN;
+  document.getElementById('histAttempts').textContent=a.length;
+  document.getElementById('histAverage').textContent=Number.isFinite(avg)?avg.toFixed(1)+'%':'—';
+  document.getElementById('histBest').textContent=Number.isFinite(best)?best.toFixed(1)+'%':'—';
+  document.getElementById('histLowest').textContent=Number.isFinite(low)?low.toFixed(1)+'%':'—';
+}
 
 function renderAttempts() {
-  const a = getAttempts();
-  document.getElementById('attempts').innerHTML = a.length ?
-    '<table class="attempts"><tr><th>#</th><th>Volume</th><th>Subject</th><th>Exam</th><th>Date</th><th>Score</th><th>%</th><th>Time</th><th>Action</th></tr>' +
-    a.map((x, i) => '<tr><td>' + (i+1) + '</td><td>' + (x.vol || 'Vol 4, 7th Ed') + '</td><td>' + x.subject + '</td><td>' + x.exam + '</td><td>' + x.date + '</td><td>' + x.score + '</td><td>' + x.pct + '</td><td>' + x.time + '</td><td><button class="secondary" style="padding:4px 10px;font-size:12px" onclick="viewAttempt(' + i + ')">View</button></td></tr>').join('') +
-    '</table>' :
-    '<div style="padding:16px;color:#667085;font-size:13px">No attempts yet.</div>';
+  populateHistoryFilters();
+  const a=filteredHistory();
+  updateHistorySummary(a);
+  const container=document.getElementById('attempts');
+  if (!container) return;
+  if (!a.length) {
+    container.innerHTML='<div style="padding:16px;color:#667085;font-size:13px">No attempts match the current filters.</div>';
+    return;
+  }
+  const all=getAttempts();
+  container.innerHTML='<table class="attempts"><tr><th>#</th><th>Volume</th><th>Subject</th><th>Exam</th><th>Date</th><th>Score</th><th>%</th><th>Time</th><th>Action</th></tr>'+
+    a.map(x=>{
+      const idx=all.indexOf(x);
+      return '<tr><td>'+(idx+1)+'</td><td>'+escapeHtml(x.vol||'Vol 4, 7th Ed')+'</td><td>'+escapeHtml(x.subject||'')+'</td><td>'+escapeHtml(x.exam||'')+'</td><td>'+escapeHtml(x.date||'')+'</td><td>'+escapeHtml(x.score||'')+'</td><td>'+escapeHtml(x.pct||'')+'</td><td>'+escapeHtml(x.time||'')+'</td><td><button class="secondary" style="padding:4px 10px;font-size:12px" onclick="viewAttempt('+idx+')">View</button></td></tr>';
+    }).join('')+
+    '</table>';
 }
 
 function clearHistory() { if (confirm('Clear ALL saved exam history for MSTEC, HPGE, and PSAD?')) { try { localStorage.removeItem('ceUltimateAttempts'); } catch(e){} renderAttempts(); } }
-switchSubject(subject, true);
+
+function saveDraft() {
+  if (submitted || (!running && !ans.some(Boolean) && !flagged.some(Boolean))) {
+    try { sessionStorage.removeItem('ceActiveDraft'); } catch(e){}
+    return;
+  }
+  const draftData = { volume, subject, examName, ans, flagged, activeQ, accumulatedMs, startTime: running ? startTime : null, running };
+  try { sessionStorage.setItem('ceActiveDraft', JSON.stringify(draftData)); } catch(e){}
+}
+
+function clearDraft() {
+  try { sessionStorage.removeItem('ceActiveDraft'); } catch(e){}
+}
+
+function restoreDraft() {
+  try {
+    const raw = sessionStorage.getItem('ceActiveDraft');
+    if (!raw) return false;
+    const d = JSON.parse(raw);
+    if (!d || !d.volume || !d.subject || !d.examName) return false;
+
+    volume = d.volume;
+    volSel.value = volume;
+    subject = d.subject;
+    root.style.setProperty('--subject', colors[subject][0]);
+    root.style.setProperty('--softsub', colors[subject][1]);
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.s === subject));
+
+    updateExamDropdown();
+    sel.value = d.examName;
+    examName = d.examName;
+
+    const key = (DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) || [];
+    ans = d.ans || Array(key.length).fill(null);
+    flagged = d.flagged || Array(key.length).fill(false);
+    activeQ = d.activeQ || 0;
+    accumulatedMs = d.accumulatedMs || 0;
+
+    if (d.running && d.startTime) {
+      startTime = d.startTime;
+      running = true;
+    } else {
+      running = false;
+      startTime = null;
+    }
+
+    updateTimerUI();
+    updateNote();
+    render();
+    return true;
+  } catch(e) {
+    return false;
+  }
+}
+
+function scrollToActive() {
+  const el = document.getElementById('qrow-' + activeQ);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+document.addEventListener('keydown', (e) => {
+  if (!hotkeysEnabled) return;
+  if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+  if (!running || submitted) return;
+
+  const key = e.key.toUpperCase();
+  const total = ((DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) || []).length;
+  if (!total) return;
+
+  if (['A', 'B', 'C', 'D', 'E'].includes(key)) {
+    ans[activeQ] = key;
+    saveDraft();
+    if (autoAdvance && activeQ < total - 1) activeQ++;
+    render();
+    if (autoAdvance) scrollToActive();
+  } else if (e.key === 'ArrowUp' || key === 'W') {
+    e.preventDefault();
+    if (activeQ > 0) { activeQ--; render(); scrollToActive(); }
+  } else if (e.key === 'ArrowDown' || key === 'S') {
+    e.preventDefault();
+    if (activeQ < total - 1) { activeQ++; render(); scrollToActive(); }
+  } else if (key === 'F') {
+    e.preventDefault();
+    toggleFlag(activeQ);
+  } else if (e.key === 'Backspace' || e.key === 'Delete') {
+    e.preventDefault();
+    ans[activeQ] = null;
+    saveDraft();
+    render();
+  }
+});
+
+window.addEventListener('beforeunload', (e) => {
+  if (!submitted && (running || (ans && ans.some(Boolean)))) {
+    saveDraft();
+    e.preventDefault();
+    e.returnValue = '';
+  }
+});
+
+if (!restoreDraft()) {
+  switchSubject(subject, true);
+}
 renderAttempts();
 </script>
 </body></html>
