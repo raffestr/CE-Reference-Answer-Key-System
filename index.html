@@ -65,9 +65,12 @@ select{padding:9px 10px;border:1px solid #cbd2da;border-radius:4px;background:#f
 
 @media(max-width:800px){.question-grid{grid-template-columns:1fr}.timerbox{margin-left:0}.exambar{flex-wrap:wrap;align-items:stretch}.select-group{width:100%}select{width:100%;min-width:0}.timercontrols{margin-left:0}}
 @media(max-width:600px){
-  .tabs{padding:0 4px}.tab{font-size:12px;padding:13px 4px}.choices{gap:5px}.choice{padding:7px 2px}.qrow{grid-template-columns:36px 1fr}.reviewchoices{gap:5px}
-  .review{grid-template-columns:115px 1fr;}
-  .reviewchoice{min-height:36px;font-size:13px;}
+  header { padding: 14px 16px; }
+  .brand { font-size: 16px; }
+  .tabs{padding:0 4px}.tab{font-size:12px;padding:13px 4px}.choices{gap:5px}.choice{padding:7px 2px}.qrow{grid-template-columns:36px 1fr}
+  .review{grid-template-columns:110px 1fr;}
+  .reviewchoices{gap:4px; grid-template-columns: repeat(5, minmax(0, 1fr));}
+  .reviewchoice{min-height:36px;font-size:12px;}
 }
 
 /* Dark Mode Extensions */
@@ -179,7 +182,7 @@ body.dark-mode .hk-toggle { color: #8b949e; }
 .kbd-inline { font-weight: 700; color: #16a34a; }
 .kbd-inline.off { color: #dc2626; }
 
-.palette-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.palette-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-left: auto; }
 .pal-filter-tabs { display: flex; gap: 3px; background: #e2e8f0; padding: 2px; border-radius: 5px; }
 body.dark-mode .pal-filter-tabs { background: #21262d; }
 .pal-ftab {
@@ -395,7 +398,7 @@ body.dark-mode .history-view-btn{background:#151f2b;color:#dce5ee;border-color:#
     </div>
   </div>
   <div class="palette-right">
-    <div class="pal-filter-tabs">
+    <div class="pal-filter-tabs" id="palFilterTabs">
       <button class="pal-ftab active" id="pftAll" onclick="setPalFilter('all')">All <span id="cntAll" class="pal-cnt-badge">(0)</span></button>
       <button class="pal-ftab" id="pftUnans" onclick="setPalFilter('unanswered')">Unanswered <span id="cntUnans" class="pal-cnt-badge">(0)</span></button>
       <button class="pal-ftab" id="pftFlagged" onclick="setPalFilter('flagged')">Flagged <span id="cntFlagged" class="pal-cnt-badge">(0)</span></button>
@@ -768,7 +771,9 @@ function toggleNav() {
 function applyNavState() {
   const pal = document.getElementById('qPalette');
   const btn = document.getElementById('navToggleBtn');
+  const filterTabs = document.getElementById('palFilterTabs');
   if (pal) pal.style.display = navCollapsed ? 'none' : 'flex';
+  if (filterTabs) filterTabs.style.display = navCollapsed ? 'none' : 'flex';
   if (btn) btn.textContent = navCollapsed ? 'Show Navigator ▼' : 'Hide Navigator ▲';
 }
 
