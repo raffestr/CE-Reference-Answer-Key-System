@@ -4,10 +4,21 @@
 <style>
 :root{--subject:#2674d9;--softsub:#eaf3ff;--navy:#172b4d;--line:#d9dee5;--bg:#f4f6f8}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:#202733;font-family:Arial,Helvetica,sans-serif}
-header{background:var(--navy);color:#fff;padding:18px 28px}.brand{font-size:20px;font-weight:700}.sub{font-size:12px;opacity:.75;margin-top:4px}
-.tabs{background:#fff;border-bottom:1px solid var(--line);display:flex;padding:0 max(8px,calc((100% - 1120px)/2));gap:4px}
-.tab{flex:1;border:0;border-bottom:4px solid transparent;background:#fff;padding:15px 12px;font-weight:800;font-size:15px;cursor:pointer;color:#475467}.tab.active{color:var(--subject);border-bottom-color:var(--subject);background:var(--softsub)}
-main{max-width:1120px;margin:22px auto;padding:0 18px}.panel{background:#fff;border:1px solid var(--line);border-radius:6px;margin-bottom:18px}.panel-title{font-size:20px;font-weight:700;padding:18px 20px;border-bottom:1px solid var(--line)}
+header{background:var(--navy);color:#fff;padding:18px 28px;display:flex;align-items:center;justify-content:space-between}.brand{font-size:20px;font-weight:700}.sub{font-size:12px;opacity:.75;margin-top:4px}
+.header-actions{display:flex;align-items:center;gap:8px}
+
+/* Enhanced Subject Tabs */
+.tabs{background:#fff;border-bottom:1px solid var(--line);display:flex;padding:0 max(8px,calc((100% - 1120px)/2));gap:6px;padding-top:6px}
+.tab{flex:1;border:1px solid var(--line);border-bottom:0;background:#f8fafc;padding:14px 12px;font-weight:800;font-size:15px;cursor:pointer;color:#64748b;border-radius:6px 6px 0 0;transition:all 0.2s}
+.tab[data-s="MSTEC"].active{background:#2674d9;color:#fff;border-color:#2674d9}
+.tab[data-s="HPGE"].active{background:#238636;color:#fff;border-color:#238636}
+.tab[data-s="PSAD"].active{background:#d97706;color:#fff;border-color:#d97706}
+
+/* Panel & Answer Sheet Card Accent */
+main{max-width:1120px;margin:22px auto;padding:0 18px}
+.panel{background:#fff;border:1px solid var(--line);border-top:5px solid var(--subject);border-radius:6px;margin-bottom:18px;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.panel-title{font-size:20px;font-weight:700;padding:18px 20px;border-bottom:1px solid var(--line);background:linear-gradient(180deg, var(--softsub) 0%, rgba(255,255,255,0) 100%)}
+
 .exambar{display:flex;align-items:flex-end;gap:16px;padding:14px 20px;background:#fafbfc;border-bottom:1px solid var(--line)}
 .select-group{display:flex;flex-direction:column;gap:4px}
 .select-label{font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#64748b}
@@ -26,7 +37,7 @@ select{padding:9px 10px;border:1px solid #cbd2da;border-radius:4px;background:#f
 .choice.selected{background:var(--softsub);border-color:var(--subject);box-shadow:0 0 0 1px var(--subject) inset}.choice.e-selected{background:#fff1f1;border-color:#ef4444;box-shadow:0 0 0 1px #ef4444 inset}.choice.locked{cursor:not-allowed;opacity:.62}.choice.locked:hover{background:#fff;border-color:#cbd7e5}
 .footerbar{display:flex;align-items:center;gap:10px;padding:14px 20px;border-top:1px solid var(--line);background:#fafbfc}button{font-weight:700;border-radius:4px;padding:9px 15px;cursor:pointer}.primary{background:var(--subject);border:1px solid var(--subject);color:#fff}.secondary{background:#fff;border:1px solid #cbd2da;color:#344054}.danger{background:#fff;border:1px solid #d9534f;color:#c62828}.status{margin-left:auto;font-size:13px;color:#667085}
 .attempts{width:100%;border-collapse:collapse;font-size:13px}.attempts th,.attempts td{text-align:left;padding:11px 12px;border-bottom:1px solid #e5e7eb}.attempts th{background:#f8fafc}
-.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.modalbox{background:#fff;border-radius:7px;width:min(900px,100%);max-height:88vh;overflow:auto;padding:24px}.score{text-align:center;font-size:44px;font-weight:800;color:var(--subject)}
+.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:20px;z-index:100}.modal.show{display:flex}.modalbox{background:#fff;border-radius:7px;width:min(900px,100%);max-height:88vh;overflow:auto;padding:24px}.score{text-align:center;font-size:44px;font-weight:800;color:var(--subject)}
 .review{display:grid;grid-template-columns:110px 1fr;align-items:center;padding:10px 0;border-bottom:1px solid #eee}.reviewchoices{display:grid;grid-template-columns:repeat(5,minmax(50px,1fr));gap:8px}.reviewchoice{display:flex;justify-content:center;align-items:center;min-height:42px;border:1px solid #cbd7e5;border-radius:5px;font-weight:700;color:#475467}
 .reviewchoice.correct{background:#12b981;border-color:#12b981;color:#fff}
 .reviewchoice.wrong{background:#ef4444;border-color:#ef4444;color:#fff}
@@ -40,7 +51,6 @@ select{padding:9px 10px;border:1px solid #cbd2da;border-radius:4px;background:#f
 @media(max-width:600px){.tabs{padding:0 4px}.tab{font-size:12px;padding:13px 4px}.choices{gap:5px}.choice{padding:7px 2px}.qrow{grid-template-columns:36px 1fr}.reviewchoices{gap:5px}}
 
 /* Dark Mode & Shortcuts / Flagging Extensions */
-header { display: flex; align-items: center; justify-content: space-between; }
 .theme-btn { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 700; transition: background 0.2s; }
 .theme-btn:hover { background: rgba(255,255,255,0.25); }
 .qrow { transition: background 0.15s; padding: 4px 6px; border-radius: 4px; cursor: pointer; }
@@ -77,13 +87,15 @@ body.dark-mode header { background: #161b22; border-bottom: 1px solid #30363d; }
 body.dark-mode .brand { color: #f0f6fc; }
 body.dark-mode .sub { color: #8b949e; }
 body.dark-mode .select-label { color: #8b949e; }
-body.dark-mode .panel, body.dark-mode .tabs, body.dark-mode .tab, body.dark-mode .exambar, 
+body.dark-mode .panel, body.dark-mode .tabs, body.dark-mode .exambar, 
 body.dark-mode select, body.dark-mode .timerbtn, body.dark-mode .footerbar, body.dark-mode .modalbox, 
 body.dark-mode .choice, body.dark-mode .attempts th, body.dark-mode .attempts td { 
   background: #161b22; color: #c9d1d9; border-color: #30363d; 
 }
-body.dark-mode .tab { color: #8b949e; }
-body.dark-mode .tab.active { background: #1c2128; color: #f0f6fc; }
+body.dark-mode .tab { background: #161b22; color: #8b949e; border-color: #30363d; }
+body.dark-mode .tab[data-s="MSTEC"].active { background: #2674d9; color: #fff; }
+body.dark-mode .tab[data-s="HPGE"].active { background: #238636; color: #fff; }
+body.dark-mode .tab[data-s="PSAD"].active { background: #d97706; color: #fff; }
 body.dark-mode .choice { background: #21262d; border-color: #30363d; color: #c9d1d9; }
 body.dark-mode .choice:hover { background: #30363d; border-color: #58a6ff; }
 body.dark-mode .choice.selected { background: rgba(56, 139, 253, 0.2); border-color: #58a6ff; color: #58a6ff; }
@@ -104,12 +116,16 @@ body.dark-mode .p-btn { background: #21262d; border-color: #30363d; color: #c9d1
 body.dark-mode .p-btn:hover { background: #30363d; border-color: #58a6ff; }
 body.dark-mode .p-btn.p-answered { background: var(--subject) !important; color: #ffffff !important; border-color: var(--subject) !important; }
 body.dark-mode .p-btn.p-active { box-shadow: 0 0 0 2px #58a6ff; z-index: 2; }
+body.dark-mode .about-content { color: #c9d1d9 !important; }
 
 .palette-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 11px; font-weight: 700; color: #475467; flex-wrap: wrap; gap: 8px; }
 .palette-left { display: flex; align-items: center; gap: 12px; min-width: 0; flex-wrap: wrap; }
 .palette-options { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; min-width: 0; }
 .shortcut-inline { font-weight: 400; color: #667085; font-size: 10.5px; white-space: nowrap; }
-.shortcut-inline[hidden] { display: none !important; }
+
+/* Fixed CSS rule ensuring [hidden] works on display: inline-flex elements */
+.shortcut-inline[hidden], .auto-advance-toggle[hidden] { display: none !important; }
+
 body.dark-mode .shortcut-inline { color: #8b949e; }
 
 /* Low Time Warning Colors & Animations */
@@ -196,7 +212,7 @@ body.dark-mode .confirm-warning-box { background: #2e2100; border-color: #713f12
   .qpalette { max-height: 120px; }
 }
 
-/* Item 1: Remove active outline on question numbers & rows when Hotkeys are OFF */
+/* Remove active outline on question numbers & rows when Hotkeys are OFF */
 body.hotkeys-off .p-btn.p-active { box-shadow: none !important; }
 body.hotkeys-off .qrow.active-q { outline: none !important; background: transparent !important; }
 
@@ -246,11 +262,9 @@ body.dark-mode {
   color:#d7e0ea;
 }
 body.dark-mode main{color:#d7e0ea;}
-body.dark-mode .panel{background:#111923;border-color:#283545;}
+body.dark-mode .panel{background:#111923;border-color:#283545;border-top-color:var(--subject);}
 body.dark-mode .panel-title{color:#eef4fa;border-color:#283545;}
 body.dark-mode .tabs{background:#0f1722;border-color:#283545;}
-body.dark-mode .tab{background:#0f1722;color:#95a6b8;}
-body.dark-mode .tab.active{background:#172130;color:#f3f7fb;}
 body.dark-mode .exambar{background:#0f1722;border-color:#283545;}
 body.dark-mode select{background:#151f2b;color:#e4ebf2;border-color:#39495a;}
 body.dark-mode .timerlabel{color:#91a2b4;}
@@ -307,7 +321,16 @@ body.dark-mode .history-view-btn{background:#151f2b;color:#dce5ee;border-color:#
 }
 </style></head>
 <body>
-<header><div><div class="brand">Civil Engineering Reference for Licensure Examination</div><div class="sub">Answer Key System by [MR.ME]</div></div><button id="themeToggle" class="theme-btn" onclick="toggleDarkMode()">🌙 Dark</button></header>
+<header>
+  <div>
+    <div class="brand">Civil Engineering Reference for Licensure Examination</div>
+    <div class="sub">Answer Key System by [MR.ME]</div>
+  </div>
+  <div class="header-actions">
+    <button id="aboutBtn" class="theme-btn" onclick="openAboutModal()">ℹ️ About</button>
+    <button id="themeToggle" class="theme-btn" onclick="toggleDarkMode()">🌙 Dark</button>
+  </div>
+</header>
 <nav class="tabs"><button class="tab" data-s="MSTEC">MSTEC</button><button class="tab" data-s="HPGE">HPGE</button><button class="tab" data-s="PSAD">PSAD</button></nav>
 <main><section class="panel"><div class="panel-title">Digital Answer Sheet</div>
 <div class="exambar">
@@ -355,8 +378,8 @@ body.dark-mode .history-view-btn{background:#151f2b;color:#dce5ee;border-color:#
 <div id="qPalette" class="qpalette"></div>
 </div><div class="sheet"><div id="questions" class="question-grid"><div class="question-column" id="leftQuestions"></div><div class="question-column" id="rightQuestions"></div></div></div>
 <div class="footerbar"><button class="primary" onclick="submitExam()">Submit Exam</button><button class="danger" onclick="resetExam()">Restart Exam</button><button class="secondary" onclick="clearHistory()">Clear Exam History</button><span class="status" id="status"></span></div>
-</section><section class="panel">
-<div class="panel-title">Past Attempts</div>
+</section><section class="panel" style="border-top-color:#64748b;">
+<div class="panel-title" style="background:none;">Past Attempts</div>
 <div class="history-toolbar">
   <select id="histVol" onchange="renderAttempts()"><option value="all">All Volumes</option></select>
   <select id="histSubj" onchange="renderAttempts()"><option value="all">All Subjects</option></select>
@@ -371,6 +394,56 @@ body.dark-mode .history-view-btn{background:#151f2b;color:#dce5ee;border-color:#
 </div>
 <div id="attempts"></div>
 </section></main>
+
+<div class="modal" id="aboutModal">
+  <div class="modalbox" style="max-width:650px;">
+    <div class="confirm-header" style="justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:24px;">ℹ️</span>
+        <h2 style="margin:0;font-size:20px;font-weight:800;">About & How to Use</h2>
+      </div>
+      <button class="secondary" style="padding:4px 10px;font-size:12px;" onclick="closeAboutModal()">✕</button>
+    </div>
+    
+    <div class="about-content" style="font-size:13px;line-height:1.6;color:#344054;">
+      <p style="margin-top:0;"><b>Civil Engineering Reference for Licensure Examination</b> is a practice testing application designed to evaluate and verify your answers against reference reviewers.</p>
+      
+      <div style="margin-top:14px;">
+        <b style="color:var(--subject);display:block;margin-bottom:6px;">🚀 Quick Start Guide</b>
+        <ol style="margin:0;padding-left:20px;">
+          <li><b>Select Reference & Session:</b> Choose the Reference Volume and Exam Session from the top dropdowns.</li>
+          <li><b>Choose Subject:</b> Switch tabs between <b>MSTEC</b>, <b>HPGE</b>, and <b>PSAD</b>.</li>
+          <li><b>Start Exam:</b> Press <b>Start</b> in the timer box to unlock answer choices and begin timing.</li>
+          <li><b>Answer & Flag:</b> Select choices (A–E) for each item. Use 🏳️ to flag questions for review.</li>
+          <li><b>Submit:</b> Click <b>Submit Exam</b> to view your score, breakdown, and itemized answer review.</li>
+        </ol>
+      </div>
+
+      <div style="margin-top:14px;">
+        <b style="color:var(--subject);display:block;margin-bottom:6px;">⏱️ Standard Board Timers</b>
+        <ul style="margin:0;padding-left:20px;">
+          <li><b>PSAD</b> (Structural Engineering & Construction): 6 Hours</li>
+          <li><b>MSTEC</b> (Mathematics, Surveying & Transportation Engineering): 5 Hours</li>
+          <li><b>HPGE</b> (Hydraulics & Geotechnical Engineering): 4 Hours</li>
+        </ul>
+      </div>
+
+      <div style="margin-top:14px;">
+        <b style="color:var(--subject);display:block;margin-bottom:6px;">💾 Saved Progress & Attempt History</b>
+        <p style="margin:0;">Your exam attempt history is saved directly on your browser device. Reloading or refreshing the page resets active unsubmitted exams to ensure fresh practice attempts.</p>
+      </div>
+
+      <div class="disclaimer" style="margin-top:16px;">
+        <b>Disclaimer:</b> All answer keys are transcribed directly from published reference books. For potential erroneous answers or questions, please consult external references.
+      </div>
+    </div>
+
+    <div class="result-actions" style="justify-content:flex-end;margin-top:20px;">
+      <button class="primary" onclick="closeAboutModal()">Got it!</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal" id="confirmModal">
   <div class="modalbox confirm-box">
     <div class="confirm-header">
@@ -421,6 +494,13 @@ let volume = 'Vol 5, 4th Ed', subject = 'MSTEC', examName = '', ans = [], flagge
 const root = document.documentElement, volSel = document.getElementById('volSelect'), sel = document.getElementById('exam'), leftQ = document.getElementById('leftQuestions'), rightQ = document.getElementById('rightQuestions'), timer = document.getElementById('timer'), timerBtn = document.getElementById('timerBtn'), status = document.getElementById('status'), note = document.getElementById('examnote');
 const colors = {MSTEC:['#2674d9','#eaf3ff'], HPGE:['#238636','#e8f5e9'], PSAD:['#d97706','#fff3df']};
 
+function openAboutModal() {
+  document.getElementById('aboutModal').classList.add('show');
+}
+function closeAboutModal() {
+  document.getElementById('aboutModal').classList.remove('show');
+}
+
 function toggleDarkMode() {
   document.body.classList.toggle('dark-mode');
   const isDark = document.body.classList.contains('dark-mode');
@@ -460,7 +540,6 @@ sel.addEventListener('change', () => {
   flagged = Array(len).fill(false);
   activeQ = 0;
   accumulatedMs = 0; startTime = null; running = false; submitted = false; lastResult = null;
-  clearDraft();
   updateTimerUI(); updateNote(); render();
 });
 
@@ -485,7 +564,6 @@ function switchSubject(s, force = false) {
   root.style.setProperty('--subject', colors[s][0]);
   root.style.setProperty('--softsub', colors[s][1]);
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.s === s));
-  clearDraft();
   updateExamDropdown(preferredExam);
 }
 
@@ -499,7 +577,6 @@ function switchVolume(v) {
   }
   const preferredExam = examName;
   volume = v;
-  clearDraft();
   updateExamDropdown(preferredExam);
 }
 
@@ -574,7 +651,6 @@ function toggleTimer() {
     startTime = Date.now();
     running = true;
   }
-  saveDraft();
   updateTimerUI(); updateNote(); render();
 }
 
@@ -586,7 +662,6 @@ function toggleAutoAdvance(enabled) {
 function toggleFlag(i) {
   if (i < 0 || i >= flagged.length) return;
   flagged[i] = !flagged[i];
-  saveDraft();
   render();
 }
 
@@ -603,8 +678,6 @@ function makeQuestion(i) {
 
   const box = document.createElement('div');
   box.className = 'choices';
-  // Choices are locked only before the exam has ever been started.
-  // Once the timer has started, they remain selectable even when paused.
   const locked = !submitted && !running && getElapsedSeconds() === 0;
 
   ['A','B','C','D','E'].forEach(letter => {
@@ -620,7 +693,6 @@ function makeQuestion(i) {
       if (choice.disabled || submitted) return;
       const clearing = ans[i] === letter;
       ans[i] = clearing ? null : letter;
-      saveDraft();
       if (!clearing && autoAdvance && activeQ === i && i < ans.length - 1) activeQ++;
       render();
       if (!clearing && autoAdvance) scrollToActive();
@@ -837,7 +909,6 @@ function performSubmit(auto = false) {
   closeConfirmModal();
   if (running) { accumulatedMs += (Date.now() - startTime); startTime = null; running = false; }
   submitted = true;
-  clearDraft();
   const el = getElapsedSeconds();
   const key = DATA[volume][subject][examName];
   const correct = ans.reduce((n, a, i) => n + (a === key[i] ? 1 : 0), 0);
@@ -912,7 +983,6 @@ function clearAndRestartExam(promptUser = true) {
   running = false;
   submitted = false;
   lastResult = null;
-  clearDraft();
   updateTimerUI();
   updateNote();
   render();
@@ -933,12 +1003,10 @@ function resetTimer() {
   accumulatedMs = 0;
   startTime = null;
   running = false;
-  saveDraft();
   updateTimerUI();
   updateNote();
   render();
 }
-
 
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -1005,58 +1073,6 @@ function renderAttempts() {
 
 function clearHistory() { if (confirm('Clear ALL saved exam history for MSTEC, HPGE, and PSAD?')) { try { localStorage.removeItem('ceUltimateAttempts'); } catch(e){} renderAttempts(); } }
 
-function saveDraft() {
-  if (submitted || (!running && !ans.some(Boolean) && !flagged.some(Boolean))) {
-    try { sessionStorage.removeItem('ceActiveDraft'); } catch(e){}
-    return;
-  }
-  const draftData = { volume, subject, examName, ans, flagged, activeQ, accumulatedMs, startTime: running ? startTime : null, running };
-  try { sessionStorage.setItem('ceActiveDraft', JSON.stringify(draftData)); } catch(e){}
-}
-
-function clearDraft() {
-  try { sessionStorage.removeItem('ceActiveDraft'); } catch(e){}
-}
-
-function restoreDraft() {
-  try {
-    const raw = sessionStorage.getItem('ceActiveDraft');
-    if (!raw) return false;
-    const d = JSON.parse(raw);
-    if (!d || !d.volume || !d.subject || !d.examName) return false;
-
-    volume = d.volume;
-    volSel.value = volume;
-    subject = d.subject;
-    root.style.setProperty('--subject', colors[subject][0]);
-    root.style.setProperty('--softsub', colors[subject][1]);
-    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.s === subject));
-
-    updateExamDropdown(d.examName);
-
-    const key = (DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) || [];
-    ans = d.ans || Array(key.length).fill(null);
-    flagged = d.flagged || Array(key.length).fill(false);
-    activeQ = d.activeQ || 0;
-    accumulatedMs = d.accumulatedMs || 0;
-
-    if (d.running && d.startTime) {
-      startTime = d.startTime;
-      running = true;
-    } else {
-      running = false;
-      startTime = null;
-    }
-
-    updateTimerUI();
-    updateNote();
-    render();
-    return true;
-  } catch(e) {
-    return false;
-  }
-}
-
 function scrollToActive() {
   const el = document.getElementById('qrow-' + activeQ);
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -1073,7 +1089,6 @@ document.addEventListener('keydown', (e) => {
 
   if (['A', 'B', 'C', 'D', 'E'].includes(key)) {
     ans[activeQ] = key;
-    saveDraft();
     if (autoAdvance && activeQ < total - 1) activeQ++;
     render();
     if (autoAdvance) scrollToActive();
@@ -1089,14 +1104,12 @@ document.addEventListener('keydown', (e) => {
   } else if (e.key === 'Backspace' || e.key === 'Delete') {
     e.preventDefault();
     ans[activeQ] = null;
-    saveDraft();
     render();
   }
 });
 
 window.addEventListener('beforeunload', (e) => {
   if (!submitted && (running || (ans && ans.some(Boolean)))) {
-    saveDraft();
     e.preventDefault();
     e.returnValue = '';
   }
@@ -1107,9 +1120,7 @@ async function startApp() {
     const response = await fetch('answers.json');
     DATA = await response.json();
 
-    if (!restoreDraft()) {
-      switchSubject(subject, true);
-    }
+    switchSubject(subject, true);
     toggleHotkeys(hotkeysEnabled);
     applyNavState();
     renderAttempts();
