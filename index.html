@@ -244,7 +244,7 @@ body.dark-mode .history-stat .val{color:#f0f6fc}.history-stat .low .val{color:#f
         <input type="checkbox" id="hotkeysToggle" onchange="toggleHotkeys(this.checked)">
         <span>Hotkeys <span id="hkStatusText" class="kbd-inline off">OFF</span></span>
       </label>
-      <label class="auto-advance-toggle" id="autoAdvanceLabel" title="Automatically move to the next question after answering" hidden>
+      <label class="auto-advance-toggle" title="Automatically move to the next question after answering">
         <input type="checkbox" id="autoAdvanceToggle" onchange="toggleAutoAdvance(this.checked)">
         <span>Auto-advance</span>
       </label>
@@ -325,7 +325,7 @@ body.dark-mode .history-stat .val{color:#f0f6fc}.history-stat .low .val{color:#f
 <script>
 let DATA = {}
 const DURATIONS = {PSAD:21600, MSTEC:18000, HPGE:14400};
-let volume = 'Vol 5, 4th Ed', subject = 'MSTEC', examName = '', ans = [], flagged = [], activeQ = 0, accumulatedMs = 0, startTime = null, running = false, submitted = false, lastResult = null, hotkeysEnabled = false, navCollapsed = true, palFilter = 'all', autoAdvance = true;
+let volume = 'Vol 5, 4th Ed', subject = 'MSTEC', examName = '', ans = [], flagged = [], activeQ = 0, accumulatedMs = 0, startTime = null, running = false, submitted = false, lastResult = null, hotkeysEnabled = false, navCollapsed = true, palFilter = 'all', autoAdvance = false;
 const root = document.documentElement, volSel = document.getElementById('volSelect'), sel = document.getElementById('exam'), leftQ = document.getElementById('leftQuestions'), rightQ = document.getElementById('rightQuestions'), timer = document.getElementById('timer'), timerBtn = document.getElementById('timerBtn'), status = document.getElementById('status'), note = document.getElementById('examnote');
 const colors = {MSTEC:['#2674d9','#eaf3ff'], HPGE:['#238636','#e8f5e9'], PSAD:['#d97706','#fff3df']};
 
@@ -348,8 +348,7 @@ function loadDarkMode() {
 }
 loadDarkMode();
 try {
-  const savedAA = localStorage.getItem('ceAutoAdvance');
-  autoAdvance = savedAA !== null ? savedAA === '1' : true;
+  autoAdvance = localStorage.getItem('ceAutoAdvance') === '1';
   const aa = document.getElementById('autoAdvanceToggle');
   if (aa) aa.checked = autoAdvance;
 } catch(e) {}
@@ -556,18 +555,13 @@ function toggleHotkeys(enabled) {
   hotkeysEnabled = !!enabled;
   const txt = document.getElementById('hkStatusText');
   const guide = document.getElementById('shortcutGuide');
-  const aaLabel = document.getElementById('autoAdvanceLabel');
   const toggle = document.getElementById('hotkeysToggle');
-
   if (toggle) toggle.checked = hotkeysEnabled;
   if (txt) {
     txt.textContent = hotkeysEnabled ? 'ON' : 'OFF';
     txt.className = 'kbd-inline ' + (hotkeysEnabled ? '' : 'off');
   }
-
   if (guide) guide.hidden = !hotkeysEnabled;
-  if (aaLabel) aaLabel.hidden = !hotkeysEnabled;
-
   document.body.classList.toggle('hotkeys-off', !hotkeysEnabled);
   if (document.activeElement) document.activeElement.blur();
   render();
