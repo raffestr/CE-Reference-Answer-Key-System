@@ -8,9 +8,11 @@ header{background:var(--navy);color:#fff;padding:18px 28px}.brand{font-size:20px
 .tabs{background:#fff;border-bottom:1px solid var(--line);display:flex;padding:0 max(8px,calc((100% - 1120px)/2));gap:4px}
 .tab{flex:1;border:0;border-bottom:4px solid transparent;background:#fff;padding:15px 12px;font-weight:800;font-size:15px;cursor:pointer;color:#475467}.tab.active{color:var(--subject);border-bottom-color:var(--subject);background:var(--softsub)}
 main{max-width:1120px;margin:22px auto;padding:0 18px}.panel{background:#fff;border:1px solid var(--line);border-radius:6px;margin-bottom:18px}.panel-title{font-size:20px;font-weight:700;padding:18px 20px;border-bottom:1px solid var(--line)}
-.exambar{display:flex;align-items:center;gap:12px;padding:14px 20px;background:#fafbfc;border-bottom:1px solid var(--line)}
+.exambar{display:flex;align-items:flex-end;gap:16px;padding:14px 20px;background:#fafbfc;border-bottom:1px solid var(--line)}
+.select-group{display:flex;flex-direction:column;gap:4px}
+.select-label{font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#64748b}
 select{padding:9px 10px;border:1px solid #cbd2da;border-radius:4px;background:#fff;font-size:13px}
-.vol-select{min-width:160px;font-weight:700;color:var(--navy)}
+.vol-select{min-width:170px;font-weight:700;color:var(--navy)}
 .exam-select{min-width:240px}
 .timerbox{margin-left:auto;text-align:right}.timerlabel{font-size:11px;font-weight:700;color:#697586}.timer{font-size:25px;font-weight:700;color:var(--subject)}.timercontrols{display:flex;align-items:center;gap:7px}
 .timerbtn{padding:7px 11px;border:1px solid #cbd2da;background:#fff;color:#344054;border-radius:4px;font-size:12px}.timerbtn.running{background:var(--subject);border-color:var(--subject);color:#fff}.timerbtn:disabled{opacity:.5;cursor:not-allowed}
@@ -34,7 +36,7 @@ select{padding:9px 10px;border:1px solid #cbd2da;border-radius:4px;background:#f
 .badge-wrong{display:inline-block;padding:2px 6px;background:#fef2f2;color:#991b1b;border:1px solid #ef4444;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.3px}
 .disclaimer{margin-top:16px;padding:10px 14px;background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid #f59e0b;border-radius:4px;font-size:12px;color:#475467}
 .result-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-@media(max-width:800px){.question-grid{grid-template-columns:1fr}.timerbox{margin-left:0}.exambar{flex-wrap:wrap}select{width:100%;min-width:0}.timercontrols{margin-left:0}}
+@media(max-width:800px){.question-grid{grid-template-columns:1fr}.timerbox{margin-left:0}.exambar{flex-wrap:wrap;align-items:stretch}.select-group{width:100%}select{width:100%;min-width:0}.timercontrols{margin-left:0}}
 @media(max-width:600px){.tabs{padding:0 4px}.tab{font-size:12px;padding:13px 4px}.choices{gap:5px}.choice{padding:7px 2px}.qrow{grid-template-columns:36px 1fr}.reviewchoices{gap:5px}}
 
 /* Dark Mode & Shortcuts / Flagging Extensions */
@@ -63,7 +65,7 @@ header { display: flex; align-items: center; justify-content: space-between; }
 .p-btn.p-flagged { border-color: #f59e0b !important; }
 .p-btn.p-flagged::after { content: "🚩"; position: absolute; top: -4px; right: -4px; font-size: 10px; line-height: 1; z-index: 5; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.4)); }
 
-/* Dark Mode Palette Overrides */
+/* Dark Mode Overrides */
 body.dark-mode { 
   --bg: #0d1117; 
   --line: #30363d; 
@@ -74,6 +76,7 @@ body.dark-mode {
 body.dark-mode header { background: #161b22; border-bottom: 1px solid #30363d; }
 body.dark-mode .brand { color: #f0f6fc; }
 body.dark-mode .sub { color: #8b949e; }
+body.dark-mode .select-label { color: #8b949e; }
 body.dark-mode .panel, body.dark-mode .tabs, body.dark-mode .tab, body.dark-mode .exambar, 
 body.dark-mode select, body.dark-mode .timerbtn, body.dark-mode .footerbar, body.dark-mode .modalbox, 
 body.dark-mode .choice, body.dark-mode .attempts th, body.dark-mode .attempts td { 
@@ -168,7 +171,7 @@ body.dark-mode .stat-lbl { color: #8b949e; }
 .stat-card.stat-flagged .stat-val { color: #b45309; }
 
 .confirm-timer-info { font-size: 12.5px; color: #475467; background: #f1f5f9; padding: 8px 12px; border-radius: 5px; margin-bottom: 14px; }
-body.dark-mode .confirm-timer-info { background: #21262d; color: #c9d1d9; }
+body.dark-mode .confirm-timer-info { background: #21262d; color: #cdd8e3; }
 
 .confirm-warning-box {
   padding: 10px 14px; background: #fffbe3; border: 1px solid #fde047; border-left: 4px solid #eab308;
@@ -221,19 +224,108 @@ body.dark-mode .history-toolbar,body.dark-mode .history-summary{background:#161b
 body.dark-mode .history-stat{background:#21262d;border-color:#30363d}
 body.dark-mode .history-stat .val{color:#f0f6fc}.history-stat .low .val{color:#fbbf24}
 @media(max-width:800px){.history-summary{grid-template-columns:repeat(2,1fr)}}
-/* Final polish: compact navigator controls + stronger dark theme + mobile history cards */\n@media(max-width:800px){\n  .attempts{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;}\n  .attempts thead{display:none;}\n  .attempts, .attempts tbody, .attempts tbody tr, .attempts tbody td{display:block;width:100%;}\n  .attempts tbody tr{margin:0 14px 12px;width:calc(100% - 28px);background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 12px;box-shadow:0 1px 2px rgba(16,24,40,.04);}\n  .attempts tbody td{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:8px 2px;border-bottom:1px solid #edf1f5;text-align:right;}\n  .attempts tbody td:last-child{border-bottom:0;padding-bottom:3px;}\n  .attempts tbody td::before{content:attr(data-label);font-weight:700;color:#667085;text-align:left;flex:0 0 auto;}\n  .attempts tbody td:first-child{padding-top:3px;}\n  .attempts tbody td:first-child::before{color:#344054;}\n  .attempts .history-view-btn{margin-left:auto;min-width:64px;}\n}\nbody.dark-mode {\n  --bg:#0b111a;\n  --line:#283545;\n  --navy:#101823;\n  --softsub:rgba(88,166,255,.14);\n  background:#0b111a;\n  color:#d7e0ea;\n}\nbody.dark-mode main{color:#d7e0ea;}\nbody.dark-mode .panel{background:#111923;border-color:#283545;}\nbody.dark-mode .panel-title{color:#eef4fa;border-color:#283545;}\nbody.dark-mode .tabs{background:#0f1722;border-color:#283545;}\nbody.dark-mode .tab{background:#0f1722;color:#95a6b8;}\nbody.dark-mode .tab.active{background:#172130;color:#f3f7fb;}\nbody.dark-mode .exambar{background:#0f1722;border-color:#283545;}\nbody.dark-mode select{background:#151f2b;color:#e4ebf2;border-color:#39495a;}\nbody.dark-mode .timerlabel{color:#91a2b4;}\nbody.dark-mode .timer{color:#69aafc;}\nbody.dark-mode .timerbtn{background:#151f2b;color:#dce5ee;border-color:#39495a;}\nbody.dark-mode .timerbtn.running{background:#2674d9;border-color:#2674d9;color:#fff;}\nbody.dark-mode .timerbtn.timer-reset{background:#2b2117;border-color:#b7791f;color:#f4c675;}\nbody.dark-mode .examnote{background:#211d13;border-color:#4f4327;color:#d5b46b;}\nbody.dark-mode .palette-container{background:#101923;border-color:#283545;}\nbody.dark-mode .palette-header{color:#b5c4d3;}\nbody.dark-mode .nav-toggle-btn{background:#151f2b;color:#d5e0ea;border-color:#39495a;}\nbody.dark-mode .pal-filter-tabs{background:#1b2633;}\nbody.dark-mode .pal-ftab{color:#aebdcb;}\nbody.dark-mode .pal-ftab.active{color:#fff;}\nbody.dark-mode .qpalette{background:#101923;}\nbody.dark-mode .p-btn{background:#17212d;border-color:#334354;color:#d8e2ec;}\nbody.dark-mode .p-btn:hover{background:#233244;border-color:#69aafc;}\nbody.dark-mode .p-btn.p-active{box-shadow:0 0 0 2px #69aafc;}\nbody.dark-mode .sheet{background:#111923;}\nbody.dark-mode .qrow{border-color:#253444;}\nbody.dark-mode .qno{color:#b9c8d7;}\nbody.dark-mode .choice{background:#17212d;border-color:#334354;color:#d7e1ea;}\nbody.dark-mode .choice:hover{background:#233244;border-color:#69aafc;}\nbody.dark-mode .choice.selected{background:rgba(56,139,253,.18);border-color:#69aafc;color:#9bc7ff;}\nbody.dark-mode .choice.e-selected{background:rgba(239,68,68,.16);border-color:#f87171;}\nbody.dark-mode .footerbar{background:#0f1722;border-color:#283545;}\nbody.dark-mode .secondary{background:#151f2b;border-color:#39495a;color:#dce5ee;}\nbody.dark-mode .status{color:#94a5b5;}\nbody.dark-mode .attempts th{background:#151f2b;color:#bfcbd7;border-color:#283545;}\nbody.dark-mode .attempts td{background:#111923;color:#d7e0ea;border-color:#283545;}\nbody.dark-mode .history-toolbar{background:#0f1722;border-color:#283545;}\nbody.dark-mode .history-summary{background:#0f1722;}\nbody.dark-mode .history-stat{background:#151f2b;border-color:#2c3a4a;}\nbody.dark-mode .history-stat .val{color:#eef4fa;}\nbody.dark-mode .history-stat.attempts .val{color:#b48cff;}\nbody.dark-mode .history-stat.avg .val{color:#69aafc;}\nbody.dark-mode .history-stat.best .val{color:#48d597;}\nbody.dark-mode .history-stat.low .val{color:#f4b95f;}\nbody.dark-mode .history-stat .lbl{color:#93a4b6;}\nbody.dark-mode .modalbox{background:#111923;color:#d7e0ea;}\nbody.dark-mode .review{border-color:#283545;}\nbody.dark-mode .reviewchoice{background:#17212d;border-color:#334354;color:#d7e1ea;}\nbody.dark-mode .disclaimer{background:#0f1722;border-color:#344454;color:#95a6b8;}\nbody.dark-mode .confirm-header{border-color:#283545;}\nbody.dark-mode .confirm-desc{color:#9aabbd;}\nbody.dark-mode .stat-card{background:#151f2b;border-color:#2c3a4a;}\nbody.dark-mode .confirm-timer-info{background:#17212d;color:#cdd8e3;}\nbody.dark-mode .history-view-btn{background:#151f2b;color:#dce5ee;border-color:#39495a;}\n@media(max-width:800px){\n  body.dark-mode .attempts tbody tr{background:#111923;border-color:#2c3a4a;box-shadow:none;}\n  body.dark-mode .attempts tbody td{background:transparent;border-color:#263544;}\n  body.dark-mode .attempts tbody td::before{color:#93a4b6;}\n  body.dark-mode .attempts tbody td:first-child::before{color:#c7d3de;}\n}\n</style></head>
+
+@media(max-width:800px){
+  .attempts{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;}
+  .attempts thead{display:none;}
+  .attempts, .attempts tbody, .attempts tbody tr, .attempts tbody td{display:block;width:100%;}
+  .attempts tbody tr{margin:0 14px 12px;width:calc(100% - 28px);background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 12px;box-shadow:0 1px 2px rgba(16,24,40,.04);}
+  .attempts tbody td{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:8px 2px;border-bottom:1px solid #edf1f5;text-align:right;}
+  .attempts tbody td:last-child{border-bottom:0;padding-bottom:3px;}
+  .attempts tbody td::before{content:attr(data-label);font-weight:700;color:#667085;text-align:left;flex:0 0 auto;}
+  .attempts tbody td:first-child{padding-top:3px;}
+  .attempts tbody td:first-child::before{color:#344054;}
+  .attempts .history-view-btn{margin-left:auto;min-width:64px;}
+}
+body.dark-mode {
+  --bg:#0b111a;
+  --line:#283545;
+  --navy:#101823;
+  --softsub:rgba(88,166,255,.14);
+  background:#0b111a;
+  color:#d7e0ea;
+}
+body.dark-mode main{color:#d7e0ea;}
+body.dark-mode .panel{background:#111923;border-color:#283545;}
+body.dark-mode .panel-title{color:#eef4fa;border-color:#283545;}
+body.dark-mode .tabs{background:#0f1722;border-color:#283545;}
+body.dark-mode .tab{background:#0f1722;color:#95a6b8;}
+body.dark-mode .tab.active{background:#172130;color:#f3f7fb;}
+body.dark-mode .exambar{background:#0f1722;border-color:#283545;}
+body.dark-mode select{background:#151f2b;color:#e4ebf2;border-color:#39495a;}
+body.dark-mode .timerlabel{color:#91a2b4;}
+body.dark-mode .timer{color:#69aafc;}
+body.dark-mode .timerbtn{background:#151f2b;color:#dce5ee;border-color:#39495a;}
+body.dark-mode .timerbtn.running{background:#2674d9;border-color:#2674d9;color:#fff;}
+body.dark-mode .timerbtn.timer-reset{background:#2b2117;border-color:#b7791f;color:#f4c675;}
+body.dark-mode .examnote{background:#211d13;border-color:#4f4327;color:#d5b46b;}
+body.dark-mode .palette-container{background:#101923;border-color:#283545;}
+body.dark-mode .palette-header{color:#b5c4d3;}
+body.dark-mode .nav-toggle-btn{background:#151f2b;color:#d5e0ea;border-color:#39495a;}
+body.dark-mode .pal-filter-tabs{background:#1b2633;}
+body.dark-mode .pal-ftab{color:#aebdcb;}
+body.dark-mode .pal-ftab.active{color:#fff;}
+body.dark-mode .qpalette{background:#101923;}
+body.dark-mode .p-btn{background:#17212d;border-color:#334354;color:#d8e2ec;}
+body.dark-mode .p-btn:hover{background:#233244;border-color:#69aafc;}
+body.dark-mode .p-btn.p-active{box-shadow:0 0 0 2px #69aafc;}
+body.dark-mode .sheet{background:#111923;}
+body.dark-mode .qrow{border-color:#253444;}
+body.dark-mode .qno{color:#b9c8d7;}
+body.dark-mode .choice{background:#17212d;border-color:#334354;color:#d7e1ea;}
+body.dark-mode .choice:hover{background:#233244;border-color:#69aafc;}
+body.dark-mode .choice.selected{background:rgba(56,139,253,.18);border-color:#69aafc;color:#9bc7ff;}
+body.dark-mode .choice.e-selected{background:rgba(239,68,68,.16);border-color:#f87171;}
+body.dark-mode .footerbar{background:#0f1722;border-color:#283545;}
+body.dark-mode .secondary{background:#151f2b;border-color:#39495a;color:#dce5ee;}
+body.dark-mode .status{color:#94a5b5;}
+body.dark-mode .attempts th{background:#151f2b;color:#bfcbd7;border-color:#283545;}
+body.dark-mode .attempts td{background:#111923;color:#d7e0ea;border-color:#283545;}
+body.dark-mode .history-toolbar{background:#0f1722;border-color:#283545;}
+body.dark-mode .history-summary{background:#0f1722;}
+body.dark-mode .history-stat{background:#151f2b;border-color:#2c3a4a;}
+body.dark-mode .history-stat .val{color:#eef4fa;}
+body.dark-mode .history-stat.attempts .val{color:#b48cff;}
+body.dark-mode .history-stat.avg .val{color:#69aafc;}
+body.dark-mode .history-stat.best .val{color:#48d597;}
+body.dark-mode .history-stat.low .val{color:#f4b95f;}
+body.dark-mode .history-stat .lbl{color:#93a4b6;}
+body.dark-mode .modalbox{background:#111923;color:#d7e0ea;}
+body.dark-mode .review{border-color:#283545;}
+body.dark-mode .reviewchoice{background:#17212d;border-color:#334354;color:#d7e1ea;}
+body.dark-mode .disclaimer{background:#0f1722;border-color:#344454;color:#95a6b8;}
+body.dark-mode .confirm-header{border-color:#283545;}
+body.dark-mode .confirm-desc{color:#9aabbd;}
+body.dark-mode .stat-card{background:#151f2b;border-color:#2c3a4a;}
+body.dark-mode .confirm-timer-info{background:#17212d;color:#cdd8e3;}
+body.dark-mode .history-view-btn{background:#151f2b;color:#dce5ee;border-color:#39495a;}
+@media(max-width:800px){
+  body.dark-mode .attempts tbody tr{background:#111923;border-color:#2c3a4a;box-shadow:none;}
+  body.dark-mode .attempts tbody td{background:transparent;border-color:#263544;}
+  body.dark-mode .attempts tbody td::before{color:#93a4b6;}
+  body.dark-mode .attempts tbody td:first-child::before{color:#c7d3de;}
+}
+</style></head>
 <body>
 <header><div><div class="brand">Civil Engineering Reference for Licensure Examination</div><div class="sub">Answer Key System by [MR.ME]</div></div><button id="themeToggle" class="theme-btn" onclick="toggleDarkMode()">🌙 Dark</button></header>
 <nav class="tabs"><button class="tab" data-s="MSTEC">MSTEC</button><button class="tab" data-s="HPGE">HPGE</button><button class="tab" data-s="PSAD">PSAD</button></nav>
 <main><section class="panel"><div class="panel-title">Digital Answer Sheet</div>
 <div class="exambar">
-<select id="volSelect" class="vol-select" onchange="switchVolume(this.value)">
-  <option value="Vol 5, 4th Ed">VOLUME 5 (4th Ed)</option>
-  <option value="Vol 4, 7th Ed">VOLUME 4 (7th Ed)</option>
-  <option value="Vol 3, 2nd Ed">VOLUME 3 (2nd Ed)</option>
-</select>
-<select id="exam" class="exam-select"></select>
-<span id="meta" style="font-size:12px;color:#667085"></span>
+<div class="select-group">
+  <label class="select-label" for="volSelect">Reference Book</label>
+  <select id="volSelect" class="vol-select" onchange="switchVolume(this.value)">
+    <option value="Vol 5, 4th Ed">VOLUME 5 (4th Ed)</option>
+    <option value="Vol 4, 7th Ed">VOLUME 4 (7th Ed)</option>
+    <option value="Vol 3, 2nd Ed">VOLUME 3 (2nd Ed)</option>
+  </select>
+</div>
+<div class="select-group">
+  <label class="select-label" for="exam">Licensure Exam Session</label>
+  <div style="display:flex;align-items:center;gap:8px">
+    <select id="exam" class="exam-select"></select>
+    <span id="meta" style="font-size:12px;color:#667085;font-weight:600"></span>
+  </div>
+</div>
 <div class="timerbox"><div class="timerlabel">EXAM TIMER</div><div class="timercontrols"><div class="timer" id="timer">06:00:00</div><button class="timerbtn" id="timerBtn" onclick="toggleTimer()">Start</button><button class="timerbtn timer-reset" onclick="resetTimer()">Reset Timer</button></div></div></div>
 <div class="examnote" id="examnote">To start the exam, press <b>Start</b>. Answer choices are locked until the timer starts.</div><div class="palette-container" id="paletteContainer">
 <div class="palette-header">
@@ -244,7 +336,7 @@ body.dark-mode .history-stat .val{color:#f0f6fc}.history-stat .low .val{color:#f
         <input type="checkbox" id="hotkeysToggle" onchange="toggleHotkeys(this.checked)">
         <span>Hotkeys <span id="hkStatusText" class="kbd-inline off">OFF</span></span>
       </label>
-      <label class="auto-advance-toggle" title="Automatically move to the next question after answering">
+      <label class="auto-advance-toggle" id="autoAdvanceLabel" title="Automatically move to the next question after answering" hidden>
         <input type="checkbox" id="autoAdvanceToggle" onchange="toggleAutoAdvance(this.checked)">
         <span>Auto-advance</span>
       </label>
@@ -325,7 +417,7 @@ body.dark-mode .history-stat .val{color:#f0f6fc}.history-stat .low .val{color:#f
 <script>
 let DATA = {}
 const DURATIONS = {PSAD:21600, MSTEC:18000, HPGE:14400};
-let volume = 'Vol 5, 4th Ed', subject = 'MSTEC', examName = '', ans = [], flagged = [], activeQ = 0, accumulatedMs = 0, startTime = null, running = false, submitted = false, lastResult = null, hotkeysEnabled = false, navCollapsed = true, palFilter = 'all', autoAdvance = false;
+let volume = 'Vol 5, 4th Ed', subject = 'MSTEC', examName = '', ans = [], flagged = [], activeQ = 0, accumulatedMs = 0, startTime = null, running = false, submitted = false, lastResult = null, hotkeysEnabled = false, navCollapsed = true, palFilter = 'all', autoAdvance = true;
 const root = document.documentElement, volSel = document.getElementById('volSelect'), sel = document.getElementById('exam'), leftQ = document.getElementById('leftQuestions'), rightQ = document.getElementById('rightQuestions'), timer = document.getElementById('timer'), timerBtn = document.getElementById('timerBtn'), status = document.getElementById('status'), note = document.getElementById('examnote');
 const colors = {MSTEC:['#2674d9','#eaf3ff'], HPGE:['#238636','#e8f5e9'], PSAD:['#d97706','#fff3df']};
 
@@ -348,7 +440,8 @@ function loadDarkMode() {
 }
 loadDarkMode();
 try {
-  autoAdvance = localStorage.getItem('ceAutoAdvance') === '1';
+  const savedAA = localStorage.getItem('ceAutoAdvance');
+  autoAdvance = savedAA !== null ? savedAA === '1' : true;
   const aa = document.getElementById('autoAdvanceToggle');
   if (aa) aa.checked = autoAdvance;
 } catch(e) {}
@@ -555,13 +648,18 @@ function toggleHotkeys(enabled) {
   hotkeysEnabled = !!enabled;
   const txt = document.getElementById('hkStatusText');
   const guide = document.getElementById('shortcutGuide');
+  const aaLabel = document.getElementById('autoAdvanceLabel');
   const toggle = document.getElementById('hotkeysToggle');
+
   if (toggle) toggle.checked = hotkeysEnabled;
   if (txt) {
     txt.textContent = hotkeysEnabled ? 'ON' : 'OFF';
     txt.className = 'kbd-inline ' + (hotkeysEnabled ? '' : 'off');
   }
+
   if (guide) guide.hidden = !hotkeysEnabled;
+  if (aaLabel) aaLabel.hidden = !hotkeysEnabled;
+
   document.body.classList.toggle('hotkeys-off', !hotkeysEnabled);
   if (document.activeElement) document.activeElement.blur();
   render();
