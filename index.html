@@ -67,7 +67,7 @@ select{padding:9px 10px;border:1px solid #cbd2da;border-radius:4px;background:#f
 @media(max-width:600px){
   header { padding: 14px 16px; }
   .brand { font-size: 16px; }
-  .tabs{padding:0 4px}.tab{font-size:12px;padding:13px 4px}.choices{gap:5px}.choice{padding:14px 2px} /* Increased Mobile Touch Target */
+  .tabs{padding:0 4px}.tab{font-size:12px;padding:13px 4px}.choices{gap:5px}.choice{padding:14px 2px}
   .qrow{grid-template-columns:36px 1fr}
   .review{grid-template-columns:110px 1fr;}
   .reviewchoices{gap:4px; grid-template-columns: repeat(5, minmax(0, 1fr));}
@@ -214,7 +214,6 @@ body.dark-mode .confirm-warning-box { background: rgba(234, 179, 8, 0.1); border
 
 /* Sticky Top Controls on Mobile Screens */
 @media(max-width:800px) {
-  /* Let exambar scroll out of view naturally to save space, remove sticky */
   .exambar { position: relative; } 
   .confirm-stats-grid { grid-template-columns: repeat(2, 1fr); }
   .palette-header { flex-direction: column; align-items: stretch; gap: 9px; }
@@ -327,6 +326,7 @@ body.dark-mode .history-view-btn{background:#1e293b;color:#e2e8f0;border-color:#
     <option value="Vol 5, 4th Ed">VOLUME 5 (4th Ed)</option>
     <option value="Vol 4, 7th Ed">VOLUME 4 (7th Ed)</option>
     <option value="Vol 3, 2nd Ed">VOLUME 3 (2nd Ed)</option>
+    <option value="Vol 1">VOLUME 1</option>
   </select>
 </div>
 <div class="select-group">
@@ -397,7 +397,7 @@ body.dark-mode .history-view-btn{background:#1e293b;color:#e2e8f0;border-color:#
     </div>
     
     <div class="about-content" style="font-size:13px;line-height:1.6;color:#344054;">
-      <p style="margin-top:0;"><b>Civil Engineering Reference for Licensure Examination Digital Answer Key System</b> is a practice exam application designed to simulate the board exam setting and grade your answers against the reference books.</p>
+      <p style="margin-top:0;"><b>Civil Engineering Reference for Licensure Examination Digital Answer Key System</b> is a practice exam tool designed to test and grade your answers against the reference book reviewers.</p>
       
       <div style="margin-top:14px;">
         <b style="color:var(--subject);display:block;margin-bottom:6px;">🚀 Quick Start Guide</b>
@@ -629,11 +629,14 @@ function updateExamDropdown(preferredExam = '') {
     });
     examName = names.includes(preferredExam) ? preferredExam : '';
     sel.value = examName;
+  } else if (volume) {
+    examName = '';
+    sel.innerHTML = '<option value="" selected disabled>Coming Soon...</option>';
   } else {
     examName = '';
   }
   
-  const len = (volume && examName && DATA[volume][subject][examName]) ? DATA[volume][subject][examName].length : 0;
+  const len = (volume && examName && DATA[volume][subject] && DATA[volume][subject][examName]) ? DATA[volume][subject][examName].length : 0;
   ans = Array(len).fill(null);
   flagged = Array(len).fill(false);
   activeQ = 0;
@@ -645,13 +648,15 @@ function duration() { return DURATIONS[subject] || 21600; }
 function fmt(v) { const h = Math.floor(v/3600), m = Math.floor((v%3600)/60), s = v%60; return [h,m,s].map(x => String(x).padStart(2,'0')).join(':'); }
 function updateTimerUI() {
   const rem = Math.max(0, duration() - getElapsedSeconds());
+  const hasSubject = volume && DATA[volume] && DATA[volume][subject];
+  
   timer.textContent = fmt(rem);
   timerBtn.textContent = running ? 'Pause' : 'Start';
   timerBtn.classList.toggle('running', running);
-  timerBtn.disabled = submitted || !volume || !examName;
-  sel.disabled = !volume;
+  timerBtn.disabled = submitted || !volume || !examName || !hasSubject;
+  sel.disabled = !volume || !hasSubject;
   volSel.disabled = false;
-  submitBtn.disabled = !volume || !examName || submitted;
+  submitBtn.disabled = !volume || !examName || submitted || !hasSubject;
 
   timer.classList.remove('timer-warning', 'timer-critical');
   if (running && !submitted) {
@@ -663,7 +668,12 @@ function updateTimerUI() {
   }
 }
 function updateNote() {
-  if (!volume || !examName) {
+  const hasSubject = volume && DATA[volume] && DATA[volume][subject];
+
+  if (volume && !hasSubject) {
+    note.style.display = 'block';
+    note.innerHTML = 'Data for <b>' + subject + '</b> in this volume is currently unavailable.';
+  } else if (!volume || !examName) {
     note.style.display = 'block';
     note.innerHTML = 'Please select a Reference Book and Exam Session to begin.';
   } else if (running) {
@@ -797,7 +807,8 @@ function setPalFilter(f) {
 }
 
 function updateFilterCounts() {
-  const key = (volume && examName && DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) || [];
+  const hasSubject = volume && DATA[volume] && DATA[volume][subject];
+  const key = (hasSubject && examName && DATA[volume][subject][examName]) || [];
   const total = key.length;
   const ansCount = ans.filter(Boolean).length;
   const unansCount = total - ansCount;
@@ -817,7 +828,8 @@ function renderPalette() {
   const pal = document.getElementById('qPalette');
   if (!pal) return;
   applyNavState();
-  const key = (volume && examName && DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) || [];
+  const hasSubject = volume && DATA[volume] && DATA[volume][subject];
+  const key = (hasSubject && examName && DATA[volume][subject][examName]) || [];
   pal.innerHTML = '';
 
   let shownCount = 0;
@@ -847,7 +859,10 @@ function renderPalette() {
   if (shownCount === 0) {
     const emptyMsg = document.createElement('div');
     emptyMsg.className = 'pal-empty-msg';
-    if (!volume || !examName) {
+    
+    if (volume && !hasSubject) {
+      emptyMsg.innerHTML = 'Data for this subject is coming soon.';
+    } else if (!volume || !examName) {
       emptyMsg.innerHTML = 'Select a Reference Book and Exam Session to begin.';
     } else if (palFilter === 'flagged') {
       emptyMsg.innerHTML = '🚩 No flagged questions yet. Click 🏳️ next to any item to flag it for review.';
@@ -861,13 +876,17 @@ function renderPalette() {
 }
 
 function render() {
-  const key = (volume && examName && DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) || [];
+  const hasSubject = volume && DATA[volume] && DATA[volume][subject];
+  const key = (hasSubject && examName && DATA[volume][subject][examName]) || [];
   
   if (key.length === 0) {
-    leftQ.innerHTML = '<div style="padding: 40px 20px; text-align: center; color: #64748b; font-size: 14px; grid-column: 1 / -1; border: 2px dashed var(--line); border-radius: 8px;">Please select a Reference Book and Licensure Exam Session above to load the question sheet.</div>';
+    let msg = 'Please select a Reference Book and Licensure Exam Session above to load the question sheet.';
+    if (volume && !hasSubject) msg = 'Answers for <b>' + subject + '</b> in <b>' + volume + '</b> are not yet available. Please check back later!';
+    
+    leftQ.innerHTML = '<div style="padding: 40px 20px; text-align: center; color: #64748b; font-size: 14px; grid-column: 1 / -1; border: 2px dashed var(--line); border-radius: 8px;">' + msg + '</div>';
     rightQ.innerHTML = '';
     document.getElementById('meta').textContent = '';
-    status.textContent = 'Awaiting exam selection...';
+    status.textContent = hasSubject ? 'Awaiting exam selection...' : 'Subject Unavailable';
     renderPalette();
     return;
   }
@@ -1131,7 +1150,7 @@ function retake() {
     document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.s === subject));
     updateExamDropdown(targetExam);
   }
-  const len = (DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) ? DATA[volume][subject][examName].length : 0;
+  const len = (volume && examName && DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) ? DATA[volume][subject][examName].length : 0;
   ans = Array(len).fill(null); flagged = Array(len).fill(false); activeQ = 0;
   accumulatedMs = 0; startTime = null; running = false; submitted = false; lastResult = null;
   currentViewedAttempt = null;
@@ -1302,7 +1321,8 @@ document.addEventListener('keydown', (e) => {
   if (!running || submitted || !volume || !examName) return;
 
   const key = e.key.toUpperCase();
-  const total = ((DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) || []).length;
+  const hasSubject = volume && DATA[volume] && DATA[volume][subject];
+  const total = (hasSubject && DATA[volume][subject][examName]) ? DATA[volume][subject][examName].length : 0;
   if (!total) return;
 
   if (['A', 'B', 'C', 'D', 'E'].includes(key)) {
