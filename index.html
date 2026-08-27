@@ -23,10 +23,10 @@ main{max-width:1120px;margin:22px auto;padding:0 18px}
 .select-group{display:flex;flex-direction:column;gap:4px}
 .select-label{font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#64748b}
 select{padding:9px 10px;border:1px solid #cbd2da;border-radius:4px;background:#fff;font-size:13px}
-.vol-select{min-width:170px;font-weight:700;color:var(--navy)}
+.vol-select{min-width:190px;font-weight:700;color:var(--navy)}
 .exam-select{min-width:240px}
 .timerbox{margin-left:auto;text-align:right}.timerlabel{font-size:11px;font-weight:700;color:#697586}.timer{font-size:25px;font-weight:700;color:var(--subject)}.timercontrols{display:flex;align-items:center;gap:7px}
-.timerbtn{padding:7px 11px;border:1px solid #cbd2da;background:#fff;color:#344054;border-radius:4px;font-size:12px}.timerbtn.running{background:var(--subject);border-color:var(--subject);color:#fff}.timerbtn:disabled{opacity:.5;cursor:not-allowed}
+.timerbtn{padding:7px 11px;border:1px solid #cbd2da;background:#fff;color:#344054;border-radius:4px;font-size:12px}.timerbtn.running{background:var(--subject);border-color:var(--subject);color:#fff}.timerbtn:disabled{opacity:.4;cursor:not-allowed}
 .examnote{font-size:12px;color:#667085;padding:10px 20px;background:#fffdf5;border-bottom:1px solid #eee4bd}
 .sheet{padding:18px 20px}.question-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 34px;align-items:start}.question-column{min-width:0}
 .qrow{display:grid;grid-template-columns:42px 1fr;align-items:center;min-height:54px;border-top:1px solid #e5e8ec}.qrow:first-child{border-top:0}.qno{font-weight:700;color:#475467}
@@ -35,7 +35,7 @@ select{padding:9px 10px;border:1px solid #cbd2da;border-radius:4px;background:#f
 .choice:focus-within{outline:2px solid var(--subject);outline-offset:1px}
 .choice:disabled{cursor:not-allowed}.choice:disabled:hover{background:inherit}.choice b{font:inherit}
 .choice.selected{background:var(--softsub);border-color:var(--subject);box-shadow:0 0 0 1px var(--subject) inset}.choice.e-selected{background:#fff1f1;border-color:#ef4444;box-shadow:0 0 0 1px #ef4444 inset}.choice.locked{cursor:not-allowed;opacity:.62}.choice.locked:hover{background:#fff;border-color:#cbd7e5}
-.footerbar{display:flex;align-items:center;gap:10px;padding:14px 20px;border-top:1px solid var(--line);background:#fafbfc}button{font-weight:700;border-radius:4px;padding:9px 15px;cursor:pointer}.primary{background:var(--subject);border:1px solid var(--subject);color:#fff}.secondary{background:#fff;border:1px solid #cbd2da;color:#344054}.danger{background:#fff;border:1px solid #d9534f;color:#c62828}.status{margin-left:auto;font-size:13px;color:#667085}
+.footerbar{display:flex;align-items:center;gap:10px;padding:14px 20px;border-top:1px solid var(--line);background:#fafbfc}button{font-weight:700;border-radius:4px;padding:9px 15px;cursor:pointer}.primary{background:var(--subject);border:1px solid var(--subject);color:#fff}.primary:disabled{opacity:0.6;cursor:not-allowed;}.secondary{background:#fff;border:1px solid #cbd2da;color:#344054}.danger{background:#fff;border:1px solid #d9534f;color:#c62828}.status{margin-left:auto;font-size:13px;color:#667085}
 .attempts{width:100%;border-collapse:collapse;font-size:13px}.attempts th,.attempts td{text-align:left;padding:11px 12px;border-bottom:1px solid #e5e7eb}.attempts th{background:#f8fafc}
 .modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:20px;z-index:100}.modal.show{display:flex}.modalbox{background:#fff;border-radius:7px;width:min(900px,100%);max-height:88vh;overflow:auto;padding:24px}.score{text-align:center;font-size:44px;font-weight:800;color:var(--subject)}
 
@@ -67,7 +67,8 @@ select{padding:9px 10px;border:1px solid #cbd2da;border-radius:4px;background:#f
 @media(max-width:600px){
   header { padding: 14px 16px; }
   .brand { font-size: 16px; }
-  .tabs{padding:0 4px}.tab{font-size:12px;padding:13px 4px}.choices{gap:5px}.choice{padding:7px 2px}.qrow{grid-template-columns:36px 1fr}
+  .tabs{padding:0 4px}.tab{font-size:12px;padding:13px 4px}.choices{gap:5px}.choice{padding:14px 2px} /* Increased Mobile Touch Target */
+  .qrow{grid-template-columns:36px 1fr}
   .review{grid-template-columns:110px 1fr;}
   .reviewchoices{gap:4px; grid-template-columns: repeat(5, minmax(0, 1fr));}
   .reviewchoice{min-height:36px;font-size:12px;}
@@ -91,7 +92,7 @@ select{padding:9px 10px;border:1px solid #cbd2da;border-radius:4px;background:#f
 
 .qpalette { display: flex; flex-wrap: wrap; gap: 5px; max-height: 105px; overflow-y: auto; padding: 6px 8px; position: relative; }
 .qpalette.has-more::after { content: ''; position: sticky; display: block; width: 100%; height: 16px; margin-top: -16px; bottom: 0; left: 0; background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,0.95)); pointer-events: none; }
-body.dark-mode .qpalette.has-more::after { background: linear-gradient(rgba(16,25,35,0), rgba(16,25,35,0.95)); }
+body.dark-mode .qpalette.has-more::after { background: linear-gradient(rgba(15,23,42,0), rgba(15,23,42,0.95)); }
 .p-btn { width: 27px; height: 27px; padding: 0; border: 1px solid #cbd2da; background: #ffffff; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; position: relative; color: #344054; transition: all 0.15s; }
 .p-btn:hover { border-color: var(--subject); background: var(--softsub); }
 .p-btn.p-answered { background: var(--subject) !important; color: #ffffff !important; border-color: var(--subject) !important; }
@@ -99,38 +100,38 @@ body.dark-mode .qpalette.has-more::after { background: linear-gradient(rgba(16,2
 .p-btn.p-flagged { border-color: #f59e0b !important; }
 .p-btn.p-flagged::after { content: "🚩"; position: absolute; top: -4px; right: -4px; font-size: 10px; line-height: 1; z-index: 5; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.4)); }
 
-/* Dark Mode Overrides */
+/* Dark Mode Overrides (Cool Slate Theme) */
 body.dark-mode { 
-  --bg: #0d1117; 
-  --line: #30363d; 
-  --navy: #161b22; 
-  --softsub: rgba(56, 139, 253, 0.15);
-  color: #c9d1d9; 
+  --bg: #020617; 
+  --line: #334155; 
+  --navy: #0f172a; 
+  --softsub: rgba(56, 139, 253, 0.12);
+  color: #e2e8f0; 
 }
-body.dark-mode header { background: #161b22; border-bottom: 1px solid #30363d; }
-body.dark-mode .brand { color: #f0f6fc; }
-body.dark-mode .sub { color: #8b949e; }
-body.dark-mode .select-label { color: #8b949e; }
-body.dark-mode .tab { background: #161b22; color: #8b949e; border-color: #30363d; }
-body.dark-mode .tab[data-s="MSTEC"].active { background: #2674d9; color: #fff; }
-body.dark-mode .tab[data-s="HPGE"].active { background: #238636; color: #fff; }
-body.dark-mode .tab[data-s="PSAD"].active { background: #d97706; color: #fff; }
-body.dark-mode .qrow.active-q { background: #1c2128; outline-color: var(--subject); }
-body.dark-mode .shortcut-bar { background: #161b22; border-color: #30363d; color: #8b949e; }
-body.dark-mode .kbd { background: #21262d; border-color: #484f58; color: #c9d1d9; box-shadow: none; }
-body.dark-mode .badge-skipped { background: #3d2a00; color: #fbbf24; border-color: #b45309; }
-body.dark-mode .badge-wrong { background: #450a0a; color: #fca5a5; border-color: #ef4444; }
-body.dark-mode .badge-flagged { background: #2e1065; color: #c4b5fd; border-color: #7c3aed; }
-body.dark-mode .reviewchoice.correct { background: #0e6245; border-color: #12b981; color: #ecfdf5; }
+body.dark-mode header { background: #0f172a; border-bottom: 1px solid #1e293b; }
+body.dark-mode .brand { color: #f8fafc; }
+body.dark-mode .sub { color: #94a3b8; }
+body.dark-mode .select-label { color: #94a3b8; }
+body.dark-mode .tab { background: #0f172a; color: #94a3b8; border-color: #334155; }
+body.dark-mode .tab[data-s="MSTEC"].active { background: #2674d9; color: #fff; border-color: #2674d9; }
+body.dark-mode .tab[data-s="HPGE"].active { background: #16a34a; color: #fff; border-color: #16a34a; }
+body.dark-mode .tab[data-s="PSAD"].active { background: #d97706; color: #fff; border-color: #d97706; }
+body.dark-mode .qrow.active-q { background: #1e293b; outline-color: var(--subject); }
+body.dark-mode .shortcut-bar { background: #0f172a; border-color: #334155; color: #94a3b8; }
+body.dark-mode .kbd { background: #1e293b; border-color: #475569; color: #e2e8f0; box-shadow: none; }
+body.dark-mode .badge-skipped { background: rgba(217, 119, 6, 0.15); color: #fbbf24; border-color: #b45309; }
+body.dark-mode .badge-wrong { background: rgba(220, 38, 38, 0.15); color: #fca5a5; border-color: #ef4444; }
+body.dark-mode .badge-flagged { background: rgba(124, 58, 237, 0.15); color: #c4b5fd; border-color: #7c3aed; }
+body.dark-mode .reviewchoice.correct { background: #065f46; border-color: #10b981; color: #ecfdf5; }
 body.dark-mode .reviewchoice.wrong { background: #7f1d1d; border-color: #ef4444; color: #fef2f2; }
-body.dark-mode .reviewchoice.unanswered { background: #161b22; border-color: #d97706; color: #fbbf24; }
+body.dark-mode .reviewchoice.unanswered { background: #0f172a; border-color: #b45309; color: #fbbf24; }
 body.dark-mode .p-btn.p-answered { background: var(--subject) !important; color: #ffffff !important; border-color: var(--subject) !important; }
-body.dark-mode .about-content { color: #c9d1d9 !important; }
-body.dark-mode .review-header-bar h3 { color: #f0f6fc; }
-body.dark-mode .r-badge.r-correct { background: #064e3b; color: #a7f3d0; border-color: #047857; }
-body.dark-mode .r-badge.r-wrong { background: #7f1d1d; color: #fca5a5; border-color: #b91c1c; }
-body.dark-mode .r-badge.r-skipped { background: #451a03; color: #fde047; border-color: #b45309; }
-body.dark-mode .r-badge.r-flagged { background: #2e1065; color: #ddd6fe; border-color: #7c3aed; }
+body.dark-mode .about-content { color: #cbd5e1 !important; }
+body.dark-mode .review-header-bar h3 { color: #f8fafc; }
+body.dark-mode .r-badge.r-correct { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border-color: #059669; }
+body.dark-mode .r-badge.r-wrong { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border-color: #dc2626; }
+body.dark-mode .r-badge.r-skipped { background: rgba(245, 158, 11, 0.15); color: #fde047; border-color: #d97706; }
+body.dark-mode .r-badge.r-flagged { background: rgba(139, 92, 246, 0.15); color: #ddd6fe; border-color: #7c3aed; }
 
 .palette-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 11px; font-weight: 700; color: #475467; flex-wrap: wrap; gap: 8px; }
 .palette-left { display: flex; align-items: center; gap: 12px; min-width: 0; flex-wrap: wrap; }
@@ -139,7 +140,7 @@ body.dark-mode .r-badge.r-flagged { background: #2e1065; color: #ddd6fe; border-
 
 .shortcut-inline[hidden], .auto-advance-toggle[hidden] { display: none !important; }
 
-body.dark-mode .shortcut-inline { color: #8b949e; }
+body.dark-mode .shortcut-inline { color: #94a3b8; }
 
 /* Low Time Warning Colors & Animations */
 .timer.timer-warning { color: #f59e0b !important; }
@@ -155,26 +156,26 @@ body.dark-mode .shortcut-inline { color: #8b949e; }
   background: #ffffff; color: #475467; border-radius: 4px; cursor: pointer; transition: all 0.15s;
 }
 .nav-toggle-btn:hover { background: #f1f5f9; color: #1e293b; }
-body.dark-mode .nav-toggle-btn { background: #21262d; border-color: #30363d; color: #c9d1d9; }
-body.dark-mode .nav-toggle-btn:hover { background: #30363d; color: #f0f6fc; }
+body.dark-mode .nav-toggle-btn { background: #1e293b; border-color: #334155; color: #e2e8f0; }
+body.dark-mode .nav-toggle-btn:hover { background: #334155; color: #f8fafc; }
 
 .hk-toggle {
   display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600;
   color: #475467; cursor: pointer; user-select: none; margin-left: 6px;
 }
-body.dark-mode .hk-toggle { color: #8b949e; }
+body.dark-mode .hk-toggle { color: #94a3b8; }
 .hk-toggle input { cursor: pointer; margin: 0; }
 .kbd-inline { font-weight: 700; color: #16a34a; }
 .kbd-inline.off { color: #dc2626; }
 
 .palette-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-left: auto; }
 .pal-filter-tabs { display: flex; gap: 3px; background: #e2e8f0; padding: 2px; border-radius: 5px; }
-body.dark-mode .pal-filter-tabs { background: #21262d; }
+body.dark-mode .pal-filter-tabs { background: #1e293b; }
 .pal-ftab {
   border: 0; background: transparent; padding: 3px 8px; font-size: 10.5px; font-weight: 700;
   color: #475467; border-radius: 3px; cursor: pointer; transition: all 0.15s;
 }
-body.dark-mode .pal-ftab { color: #8b949e; }
+body.dark-mode .pal-ftab { color: #94a3b8; }
 .pal-ftab.active { background: var(--subject); color: #ffffff; }
 
 .shortcut-bar-sub { display:none !important; }
@@ -183,37 +184,38 @@ body.dark-mode .pal-ftab { color: #8b949e; }
 .confirm-box { max-width: 520px; text-align: left; }
 .confirm-header { display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 14px; }
 .confirm-header h2 { margin: 0; font-size: 20px; font-weight: 800; color: var(--navy); }
-body.dark-mode .confirm-header h2 { color: #f0f6fc; }
+body.dark-mode .confirm-header h2 { color: #f8fafc; }
 .confirm-icon { font-size: 24px; }
 .confirm-desc { font-size: 13px; color: #475467; margin-bottom: 16px; line-height: 1.4; }
-body.dark-mode .confirm-desc { color: #8b949e; }
+body.dark-mode .confirm-desc { color: #94a3b8; }
 
 .confirm-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
 .stat-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 6px; text-align: center; }
-body.dark-mode .stat-card { background: #161b22; border-color: #30363d; }
+body.dark-mode .stat-card { background: #0f172a; border-color: #334155; }
 .stat-val { font-size: 20px; font-weight: 800; color: #1e293b; }
-body.dark-mode .stat-val { color: #f0f6fc; }
+body.dark-mode .stat-val { color: #f8fafc; }
 .stat-lbl { font-size: 10px; font-weight: 700; color: #64748b; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.3px; }
-body.dark-mode .stat-lbl { color: #8b949e; }
+body.dark-mode .stat-lbl { color: #94a3b8; }
 .stat-card.stat-answered .stat-val { color: var(--subject); }
 .stat-card.stat-unans .stat-val { color: #d97706; }
 .stat-card.stat-flagged .stat-val { color: #b45309; }
 
 .confirm-timer-info { font-size: 12.5px; color: #475467; background: #f1f5f9; padding: 8px 12px; border-radius: 5px; margin-bottom: 14px; }
-body.dark-mode .confirm-timer-info { background: #21262d; color: #cdd8e3; }
+body.dark-mode .confirm-timer-info { background: #1e293b; color: #e2e8f0; }
 
 .confirm-warning-box {
   padding: 10px 14px; background: #fffbe3; border: 1px solid #fde047; border-left: 4px solid #eab308;
   border-radius: 5px; font-size: 12px; color: #854d0e; margin-bottom: 18px; line-height: 1.4;
 }
-body.dark-mode .confirm-warning-box { background: #2e2100; border-color: #713f12; color: #fef08a; }
+body.dark-mode .confirm-warning-box { background: rgba(234, 179, 8, 0.1); border-color: rgba(202, 138, 4, 0.5); color: #fde047; }
 
 .danger-btn { background: #dc2626 !important; border-color: #dc2626 !important; color: #ffffff !important; }
 .danger-btn:hover { background: #b91c1c !important; }
 
 /* Sticky Top Controls on Mobile Screens */
 @media(max-width:800px) {
-  .exambar { position: sticky; top: 0; z-index: 80; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+  /* Let exambar scroll out of view naturally to save space, remove sticky */
+  .exambar { position: relative; } 
   .confirm-stats-grid { grid-template-columns: repeat(2, 1fr); }
   .palette-header { flex-direction: column; align-items: stretch; gap: 9px; }
   .palette-left { gap: 8px; }
@@ -231,7 +233,7 @@ body.hotkeys-off .qrow.active-q { outline: none !important; background: transpar
 
 /* Filter Empty State Message & Counts */
 .pal-empty-msg { width: 100%; padding: 12px 14px; font-size: 11.5px; color: #64748b; background: #ffffff; border: 1px dashed #cbd2da; border-radius: 5px; text-align: center; }
-body.dark-mode .pal-empty-msg { background: #161b22; color: #8b949e; border-color: #30363d; }
+body.dark-mode .pal-empty-msg { background: #0f172a; color: #94a3b8; border-color: #334155; }
 
 .pal-cnt-badge { font-size: 10px; opacity: 0.85; font-weight: 600; margin-left: 2px; }
 
@@ -239,7 +241,7 @@ body.dark-mode .pal-empty-msg { background: #161b22; color: #8b949e; border-colo
 .timerbtn.timer-reset{background:#fff7ed;border-color:#f59e0b;color:#9a3412}
 .auto-advance-toggle{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;color:#667085;cursor:pointer;user-select:none}
 .auto-advance-toggle input{cursor:pointer;margin:0}
-body.dark-mode .auto-advance-toggle{color:#8b949e}
+body.dark-mode .auto-advance-toggle{color:#94a3b8}
 .p-btn.p-flagged.p-answered{border-color:#f59e0b!important;box-shadow:inset 0 0 0 1px #f59e0b}
 .history-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f8fafc;border-bottom:1px solid var(--line)}
 .history-toolbar select{min-width:130px;padding:6px 8px;font-size:12px}
@@ -249,90 +251,59 @@ body.dark-mode .auto-advance-toggle{color:#8b949e}
 .history-stat .lbl{font-size:10px;font-weight:700;color:#64748b;margin-top:2px;text-transform:uppercase;letter-spacing:.3px}
 .history-stat.avg .val{color:var(--subject)}.history-stat.best .val{color:#16a34a}.history-stat.attempts .val{color:#7c3aed}.history-stat.low .val{color:#d97706}
 .history-stat.trend .val{color:#10b981}.history-stat.trend .val.negative{color:#ef4444}
-body.dark-mode .history-toolbar,body.dark-mode .history-summary{background:#161b22}
-body.dark-mode .history-stat{background:#21262d;border-color:#30363d}
-body.dark-mode .history-stat .val{color:#f0f6fc}.history-stat .low .val{color:#fbbf24}
 
-@media(max-width:800px){
-  .history-summary{grid-template-columns:repeat(3,1fr)}
-  .attempts{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;}
-  .attempts thead{display:none;}
-  .attempts, .attempts tbody, .attempts tbody tr, .attempts tbody td{display:block;width:100%;}
-  .attempts tbody tr{margin:0 14px 12px;width:calc(100% - 28px);background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 12px;box-shadow:0 1px 2px rgba(16,24,40,.04);}
-  .attempts tbody td{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:8px 2px;border-bottom:1px solid #edf1f5;text-align:right;}
-  .attempts tbody td:last-child{border-bottom:0;padding-bottom:3px;}
-  .attempts tbody td::before{content:attr(data-label);font-weight:700;color:#667085;text-align:left;flex:0 0 auto;}
-  .attempts tbody td:first-child{padding-top:3px;}
-  .attempts tbody td:first-child::before{color:#344054;}
-  .attempts .history-view-btn{margin-left:auto;min-width:54px;}
-}
-@media(max-width:500px){.history-summary{grid-template-columns:repeat(2,1fr)}}
-
-body.dark-mode {
-  --bg:#0b111a;
-  --line:#283545;
-  --navy:#101823;
-  --softsub:rgba(88,166,255,.14);
-  background:#0b111a;
-  color:#d7e0ea;
-}
-body.dark-mode main{color:#d7e0ea;}
-body.dark-mode .panel{background:#111923;border-color:#283545;border-top-color:var(--subject);}
-body.dark-mode .panel-title{color:#eef4fa;border-color:#283545;}
-body.dark-mode .tabs{background:#0f1722;border-color:#283545;}
-body.dark-mode .exambar{background:#0f1722;border-color:#283545;}
-body.dark-mode select{background:#151f2b;color:#e4ebf2;border-color:#39495a;}
-body.dark-mode .timerlabel{color:#91a2b4;}
-body.dark-mode .timer{color:#69aafc;}
-body.dark-mode .timerbtn{background:#151f2b;color:#dce5ee;border-color:#39495a;}
+/* Remaining Dark Mode Overrides */
+body.dark-mode main{color:#e2e8f0;}
+body.dark-mode .panel{background:#0f172a;border-color:#334155;border-top-color:var(--subject);}
+body.dark-mode .panel-title{color:#f8fafc;border-color:#334155;}
+body.dark-mode .tabs{background:#020617;border-color:#334155;}
+body.dark-mode .exambar{background:#020617;border-color:#334155;}
+body.dark-mode select{background:#1e293b;color:#f1f5f9;border-color:#475569;}
+body.dark-mode .timerlabel{color:#94a3b8;}
+body.dark-mode .timer{color:#60a5fa;}
+body.dark-mode .timerbtn{background:#1e293b;color:#e2e8f0;border-color:#475569;}
 body.dark-mode .timerbtn.running{background:#2674d9;border-color:#2674d9;color:#fff;}
-body.dark-mode .timerbtn.timer-reset{background:#2b2117;border-color:#b7791f;color:#f4c675;}
-body.dark-mode .examnote{background:#211d13;border-color:#4f4327;color:#d5b46b;}
-body.dark-mode .palette-container{background:#101923;border-color:#283545;}
-body.dark-mode .palette-header{color:#b5c4d3;}
-body.dark-mode .nav-toggle-btn{background:#151f2b;color:#d5e0ea;border-color:#39495a;}
-body.dark-mode .pal-filter-tabs{background:#1b2633;}
-body.dark-mode .pal-ftab{color:#aebdcb;}
-body.dark-mode .pal-ftab.active{color:#fff;}
-body.dark-mode .qpalette{background:#101923;}
-body.dark-mode .p-btn{background:#17212d;border-color:#334354;color:#d8e2ec;}
-body.dark-mode .p-btn:hover{background:#233244;border-color:#69aafc;}
-body.dark-mode .p-btn.p-active{box-shadow:0 0 0 2px #69aafc;}
-body.dark-mode .sheet{background:#111923;}
-body.dark-mode .qrow{border-color:#253444;}
-body.dark-mode .qno{color:#b9c8d7;}
-body.dark-mode .choice{background:#17212d;border-color:#334354;color:#d7e1ea;}
-body.dark-mode .choice:hover{background:#233244;border-color:#69aafc;}
-body.dark-mode .choice.selected{background:rgba(56,139,253,.18);border-color:#69aafc;color:#9bc7ff;}
+body.dark-mode .timerbtn.timer-reset{background:rgba(217, 119, 6, 0.15);border-color:#b45309;color:#fbbf24;}
+body.dark-mode .examnote{background:rgba(217, 119, 6, 0.1);border-color:#b45309;color:#fde047;}
+body.dark-mode .palette-container{background:#0f172a;border-color:#334155;}
+body.dark-mode .palette-header{color:#cbd5e1;}
+body.dark-mode .qpalette{background:#0f172a;}
+body.dark-mode .p-btn{background:#1e293b;border-color:#475569;color:#e2e8f0;}
+body.dark-mode .p-btn:hover{background:#334155;border-color:#60a5fa;}
+body.dark-mode .p-btn.p-active{box-shadow:0 0 0 2px #60a5fa;}
+body.dark-mode .sheet{background:#0f172a;}
+body.dark-mode .qrow{border-color:#1e293b;}
+body.dark-mode .qno{color:#cbd5e1;}
+body.dark-mode .choice{background:#1e293b;border-color:#475569;color:#e2e8f0;}
+body.dark-mode .choice:hover{background:#334155;border-color:#60a5fa;}
+body.dark-mode .choice.selected{background:rgba(56,139,253,.18);border-color:#60a5fa;color:#93c5fd;}
 body.dark-mode .choice.e-selected{background:rgba(239,68,68,.16);border-color:#f87171;}
-body.dark-mode .footerbar{background:#0f1722;border-color:#283545;}
-body.dark-mode .secondary{background:#151f2b;border-color:#39495a;color:#dce5ee;}
-body.dark-mode .status{color:#94a5b5;}
-body.dark-mode .attempts th{background:#151f2b;color:#bfcbd7;border-color:#283545;}
-body.dark-mode .attempts td{background:#111923;color:#d7e0ea;border-color:#283545;}
-body.dark-mode .history-toolbar{background:#0f1722;border-color:#283545;}
-body.dark-mode .history-summary{background:#0f1722;}
-body.dark-mode .history-stat{background:#151f2b;border-color:#2c3a4a;}
-body.dark-mode .history-stat .val{color:#eef4fa;}
-body.dark-mode .history-stat.attempts .val{color:#b48cff;}
-body.dark-mode .history-stat.avg .val{color:#69aafc;}
-body.dark-mode .history-stat.best .val{color:#48d597;}
-body.dark-mode .history-stat.low .val{color:#f4b95f;}
-body.dark-mode .history-stat .lbl{color:#93a4b6;}
-body.dark-mode .modalbox{background:#111923;color:#d7e0ea;}
-body.dark-mode .review{border-color:#283545;}
-body.dark-mode .reviewchoice{background:#17212d;border-color:#334354;color:#d7e1ea;}
-body.dark-mode .disclaimer{background:#0f1722;border-color:#344454;color:#95a6b8;}
-body.dark-mode .confirm-header{border-color:#283545;}
-body.dark-mode .confirm-desc{color:#9aabbd;}
-body.dark-mode .stat-card{background:#151f2b;border-color:#2c3a4a;}
-body.dark-mode .confirm-timer-info{background:#17212d;color:#cdd8e3;}
-body.dark-mode .history-view-btn{background:#151f2b;color:#dce5ee;border-color:#39495a;}
+body.dark-mode .footerbar{background:#020617;border-color:#334155;}
+body.dark-mode .secondary{background:#1e293b;border-color:#475569;color:#e2e8f0;}
+body.dark-mode .status{color:#94a3b8;}
+body.dark-mode .attempts th{background:#1e293b;color:#cbd5e1;border-color:#334155;}
+body.dark-mode .attempts td{background:#0f172a;color:#e2e8f0;border-color:#334155;}
+body.dark-mode .history-toolbar{background:#020617;border-color:#334155;}
+body.dark-mode .history-summary{background:#020617;}
+body.dark-mode .history-stat{background:#1e293b;border-color:#334155;}
+body.dark-mode .history-stat .val{color:#f8fafc;}
+body.dark-mode .history-stat.attempts .val{color:#a78bfa;}
+body.dark-mode .history-stat.avg .val{color:#60a5fa;}
+body.dark-mode .history-stat.best .val{color:#34d399;}
+body.dark-mode .history-stat.low .val{color:#fbbf24;}
+body.dark-mode .history-stat .lbl{color:#94a3b8;}
+body.dark-mode .modalbox{background:#0f172a;color:#e2e8f0;}
+body.dark-mode .review{border-color:#334155;}
+body.dark-mode .reviewchoice{background:#1e293b;border-color:#475569;color:#e2e8f0;}
+body.dark-mode .disclaimer{background:#020617;border-color:#334155;color:#94a3b8;}
+body.dark-mode .confirm-header{border-color:#334155;}
+body.dark-mode .stat-card{background:#1e293b;border-color:#334155;}
+body.dark-mode .history-view-btn{background:#1e293b;color:#e2e8f0;border-color:#475569;}
 @media(max-width:800px){
-  body.dark-mode .attempts tbody tr{background:#111923;border-color:#2c3a4a;box-shadow:none;}
-  body.dark-mode .attempts tbody td{background:transparent;border-color:#263544;}
-  body.dark-mode .attempts tbody td::before{color:#93a4b6;}
-  body.dark-mode .attempts tbody td:first-child::before{color:#c7d3de;}
+  body.dark-mode .attempts tbody tr{background:#0f172a;border-color:#334155;box-shadow:none;}
+  body.dark-mode .attempts tbody td{background:transparent;border-color:#1e293b;}
+  body.dark-mode .attempts tbody td::before{color:#94a3b8;}
+  body.dark-mode .attempts tbody td:first-child::before{color:#cbd5e1;}
 }
 </style></head>
 <body>
@@ -352,6 +323,7 @@ body.dark-mode .history-view-btn{background:#151f2b;color:#dce5ee;border-color:#
 <div class="select-group">
   <label class="select-label" for="volSelect">Reference Book</label>
   <select id="volSelect" class="vol-select" onchange="switchVolume(this.value)">
+    <option value="" selected disabled>Select Reference Book</option>
     <option value="Vol 5, 4th Ed">VOLUME 5 (4th Ed)</option>
     <option value="Vol 4, 7th Ed">VOLUME 4 (7th Ed)</option>
     <option value="Vol 3, 2nd Ed">VOLUME 3 (2nd Ed)</option>
@@ -360,12 +332,14 @@ body.dark-mode .history-view-btn{background:#151f2b;color:#dce5ee;border-color:#
 <div class="select-group">
   <label class="select-label" for="exam">Licensure Exam Session</label>
   <div style="display:flex;align-items:center;gap:8px">
-    <select id="exam" class="exam-select"></select>
+    <select id="exam" class="exam-select">
+      <option value="" selected disabled>Select Exam Session</option>
+    </select>
     <span id="meta" style="font-size:12px;color:#667085;font-weight:600"></span>
   </div>
 </div>
 <div class="timerbox"><div class="timerlabel">EXAM TIMER</div><div class="timercontrols"><div class="timer" id="timer">06:00:00</div><button class="timerbtn" id="timerBtn" onclick="toggleTimer()">Start</button><button class="timerbtn timer-reset" onclick="resetTimer()">Reset Timer</button></div></div></div>
-<div class="examnote" id="examnote">To start the exam, press <b>Start</b>. Answer choices are locked until the timer starts.</div><div class="palette-container" id="paletteContainer">
+<div class="examnote" id="examnote">Please select a Reference Book and Exam Session to begin.</div><div class="palette-container" id="paletteContainer">
 <div class="palette-header">
   <div class="palette-left">
     <b>Question Navigator</b>
@@ -392,7 +366,7 @@ body.dark-mode .history-view-btn{background:#151f2b;color:#dce5ee;border-color:#
 </div>
 <div id="qPalette" class="qpalette"></div>
 </div><div class="sheet"><div id="questions" class="question-grid"><div class="question-column" id="leftQuestions"></div><div class="question-column" id="rightQuestions"></div></div></div>
-<div class="footerbar"><button class="primary" onclick="submitExam()">Submit Exam</button><button class="danger" onclick="resetExam()">Restart Exam</button><span class="status" id="status"></span></div>
+<div class="footerbar"><button id="submitBtn" class="primary" onclick="submitExam()" disabled>Submit Exam</button><button class="danger" onclick="resetExam()">Restart Exam</button><span class="status" id="status"></span></div>
 </section><section class="panel" style="border-top-color:#64748b;">
 <div class="panel-title" style="background:none;">Past Attempts</div>
 <div class="history-toolbar">
@@ -423,7 +397,7 @@ body.dark-mode .history-view-btn{background:#151f2b;color:#dce5ee;border-color:#
     </div>
     
     <div class="about-content" style="font-size:13px;line-height:1.6;color:#344054;">
-      <p style="margin-top:0;"><b>Civil Engineering Reference for Licensure Examination Digital Answer Key System</b> is a practice exam tool designed to test and grade your answers against the CE Reference for Licensure Examination books.</p>
+      <p style="margin-top:0;"><b>Civil Engineering Reference for Licensure Examination Digital Answer Key System</b> is a practice exam tool designed to test and grade your answers against the reference book reviewers.</p>
       
       <div style="margin-top:14px;">
         <b style="color:var(--subject);display:block;margin-bottom:6px;">🚀 Quick Start Guide</b>
@@ -443,6 +417,11 @@ body.dark-mode .history-view-btn{background:#151f2b;color:#dce5ee;border-color:#
           <li><b>MSTEC</b> (Mathematics, Surveying, Transportation Engineering, and Construction): 5 Hours</li>
           <li><b>HPGE</b> (Hydraulics & Principles of Geotechnical Engineering): 4 Hours</li>
         </ul>
+      </div>
+
+      <div style="margin-top:14px;">
+        <b style="color:var(--subject);display:block;margin-bottom:6px;">🅴 Why Choice E Looks Different</b>
+        <p style="margin:0;">The official PRC answer sheet includes a 5th bubble (E) even on items where the questionnaire only offers A–D. Selecting E is highlighted distinctly so you can double-check those entries — it does not mean the choice is wrong.</p>
       </div>
 
       <div style="margin-top:14px;">
@@ -537,9 +516,9 @@ const MAX_HISTORY = 100;
 
 let DATA = {}
 const DURATIONS = {PSAD:21600, MSTEC:18000, HPGE:14400};
-let volume = 'Vol 5, 4th Ed', subject = 'MSTEC', examName = '', ans = [], flagged = [], activeQ = 0, accumulatedMs = 0, startTime = null, running = false, submitted = false, lastResult = null, hotkeysEnabled = false, navCollapsed = true, palFilter = 'all', autoAdvance = true, reviewFilter = 'all';
-const root = document.documentElement, volSel = document.getElementById('volSelect'), sel = document.getElementById('exam'), leftQ = document.getElementById('leftQuestions'), rightQ = document.getElementById('rightQuestions'), timer = document.getElementById('timer'), timerBtn = document.getElementById('timerBtn'), status = document.getElementById('status'), note = document.getElementById('examnote');
-const colors = {MSTEC:['#2674d9','#eaf3ff'], HPGE:['#238636','#e8f5e9'], PSAD:['#d97706','#fff3df']};
+let volume = '', subject = 'MSTEC', examName = '', ans = [], flagged = [], activeQ = 0, accumulatedMs = 0, startTime = null, running = false, submitted = false, lastResult = null, hotkeysEnabled = false, navCollapsed = true, palFilter = 'all', autoAdvance = true, reviewFilter = 'all';
+const root = document.documentElement, volSel = document.getElementById('volSelect'), sel = document.getElementById('exam'), leftQ = document.getElementById('leftQuestions'), rightQ = document.getElementById('rightQuestions'), timer = document.getElementById('timer'), timerBtn = document.getElementById('timerBtn'), status = document.getElementById('status'), note = document.getElementById('examnote'), submitBtn = document.getElementById('submitBtn');
+const colors = {MSTEC:['#2674d9','#eaf3ff'], HPGE:['#16a34a','#e8f5e9'], PSAD:['#d97706','#fff3df']};
 
 function openAboutModal() {
   document.getElementById('aboutModal').classList.add('show');
@@ -641,19 +620,25 @@ function switchVolume(v) {
 }
 
 function updateExamDropdown(preferredExam = '') {
-  sel.disabled = false;
-  sel.innerHTML = '';
-  const exams = (DATA[volume] && DATA[volume][subject]) || {};
-  const names = Object.keys(exams);
-  names.forEach(n => {
-    const o = document.createElement('option');
-    o.value = n;
-    o.textContent = n;
-    sel.appendChild(o);
-  });
-  examName = names.includes(preferredExam) ? preferredExam : (names[0] || '');
-  sel.value = examName;
-  const len = ((exams[examName]) || []).length;
+  sel.disabled = !volume;
+  sel.innerHTML = '<option value="" selected disabled>Select Exam Session</option>';
+  
+  if (volume && DATA[volume] && DATA[volume][subject]) {
+    const exams = DATA[volume][subject];
+    const names = Object.keys(exams);
+    names.forEach(n => {
+      const o = document.createElement('option');
+      o.value = n;
+      o.textContent = n;
+      sel.appendChild(o);
+    });
+    examName = names.includes(preferredExam) ? preferredExam : '';
+    sel.value = examName;
+  } else {
+    examName = '';
+  }
+  
+  const len = (volume && examName && DATA[volume][subject][examName]) ? DATA[volume][subject][examName].length : 0;
   ans = Array(len).fill(null);
   flagged = Array(len).fill(false);
   activeQ = 0;
@@ -668,9 +653,10 @@ function updateTimerUI() {
   timer.textContent = fmt(rem);
   timerBtn.textContent = running ? 'Pause' : 'Start';
   timerBtn.classList.toggle('running', running);
-  timerBtn.disabled = submitted || !examName;
-  sel.disabled = false;
+  timerBtn.disabled = submitted || !volume || !examName;
+  sel.disabled = !volume;
   volSel.disabled = false;
+  submitBtn.disabled = !volume || !examName || submitted;
 
   timer.classList.remove('timer-warning', 'timer-critical');
   if (running && !submitted) {
@@ -682,7 +668,10 @@ function updateTimerUI() {
   }
 }
 function updateNote() {
-  if (running) {
+  if (!volume || !examName) {
+    note.style.display = 'block';
+    note.innerHTML = 'Please select a Reference Book and Exam Session to begin.';
+  } else if (running) {
     note.style.display = 'none';
   } else if (lastResult) {
     note.style.display = 'block';
@@ -813,7 +802,7 @@ function setPalFilter(f) {
 }
 
 function updateFilterCounts() {
-  const key = (DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) || [];
+  const key = (volume && examName && DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) || [];
   const total = key.length;
   const ansCount = ans.filter(Boolean).length;
   const unansCount = total - ansCount;
@@ -833,7 +822,7 @@ function renderPalette() {
   const pal = document.getElementById('qPalette');
   if (!pal) return;
   applyNavState();
-  const key = (DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) || [];
+  const key = (volume && examName && DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) || [];
   pal.innerHTML = '';
 
   let shownCount = 0;
@@ -863,7 +852,9 @@ function renderPalette() {
   if (shownCount === 0) {
     const emptyMsg = document.createElement('div');
     emptyMsg.className = 'pal-empty-msg';
-    if (palFilter === 'flagged') {
+    if (!volume || !examName) {
+      emptyMsg.innerHTML = 'Select a Reference Book and Exam Session to begin.';
+    } else if (palFilter === 'flagged') {
       emptyMsg.innerHTML = '🚩 No flagged questions yet. Click 🏳️ next to any item to flag it for review.';
     } else if (palFilter === 'unanswered') {
       emptyMsg.innerHTML = '🎉 All questions answered! You are ready to submit your exam.';
@@ -875,7 +866,17 @@ function renderPalette() {
 }
 
 function render() {
-  const key = (DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) || [];
+  const key = (volume && examName && DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) || [];
+  
+  if (key.length === 0) {
+    leftQ.innerHTML = '<div style="padding: 40px 20px; text-align: center; color: #64748b; font-size: 14px; grid-column: 1 / -1; border: 2px dashed var(--line); border-radius: 8px;">Please select a Reference Book and Licensure Exam Session above to load the question sheet.</div>';
+    rightQ.innerHTML = '';
+    document.getElementById('meta').textContent = '';
+    status.textContent = 'Awaiting exam selection...';
+    renderPalette();
+    return;
+  }
+  
   document.getElementById('meta').textContent = key.length + ' items';
   leftQ.innerHTML = ''; rightQ.innerHTML = '';
   const split = Math.ceil(key.length / 2);
@@ -1058,6 +1059,7 @@ function performSubmit(auto = false) {
 }
 
 function submitExam(auto = false) {
+  if (!volume || !examName) return;
   if (auto) {
     performSubmit(true);
   } else if (submitted) {
@@ -1134,7 +1136,7 @@ function retake() {
     document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.s === subject));
     updateExamDropdown(targetExam);
   }
-  const len = (DATA[volume][subject][examName] || []).length;
+  const len = (DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) ? DATA[volume][subject][examName].length : 0;
   ans = Array(len).fill(null); flagged = Array(len).fill(false); activeQ = 0;
   accumulatedMs = 0; startTime = null; running = false; submitted = false; lastResult = null;
   currentViewedAttempt = null;
@@ -1161,6 +1163,7 @@ function clearAndRestartExam(promptUser = true) {
 }
 
 function resetExam() {
+  if (!volume || !examName) return;
   clearAndRestartExam(true);
 }
 
@@ -1169,6 +1172,7 @@ function resetTimer() {
     alert('This exam has already been submitted. Use “Retake This Exam” to start a new attempt.');
     return;
   }
+  if (!volume || !examName) return;
   if (getElapsedSeconds() > 0 || ans.some(Boolean) || flagged.some(Boolean)) {
     if (!confirm('Reset the timer to the full exam time? Your current answers and flags will be kept.')) return;
   }
@@ -1300,7 +1304,7 @@ function scrollToActive() {
 document.addEventListener('keydown', (e) => {
   if (!hotkeysEnabled) return;
   if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
-  if (!running || submitted) return;
+  if (!running || submitted || !volume || !examName) return;
 
   const key = e.key.toUpperCase();
   const total = ((DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) || []).length;
