@@ -44,7 +44,18 @@ select{padding:9px 10px;border:1px solid #cbd2da;border-radius:4px;background:#f
 .choice:focus-within{outline:2px solid var(--subject);outline-offset:1px}
 .choice:disabled{cursor:not-allowed}.choice:disabled:hover{background:inherit}.choice b{font:inherit}
 .choice.selected{background:var(--softsub);border-color:var(--subject);box-shadow:0 0 0 1px var(--subject) inset}.choice.e-selected{background:#fff1f1;border-color:#ef4444;box-shadow:0 0 0 1px #ef4444 inset}.choice.locked{cursor:not-allowed;opacity:.62}.choice.locked:hover{background:#fff;border-color:#cbd7e5}
-.footerbar{display:flex;align-items:center;gap:10px;padding:14px 20px;border-top:1px solid var(--line);background:#fafbfc}button{font-weight:700;border-radius:4px;padding:9px 15px;cursor:pointer}.primary{background:var(--subject);border:1px solid var(--subject);color:#fff}.primary:disabled{opacity:0.6;cursor:not-allowed;}.secondary{background:#fff;border:1px solid #cbd2da;color:#344054}.danger{background:#fff;border:1px solid #d9534f;color:#c62828}.status{margin-left:auto;font-size:13px;color:#667085}
+
+.footerbar{display:flex;align-items:center;gap:10px;padding:14px 20px;border-top:1px solid var(--line);background:#fafbfc}
+button{font-weight:700;border-radius:4px;padding:9px 15px;cursor:pointer;transition:all 0.15s ease}
+.primary{background:var(--subject);border:1px solid var(--subject);color:#fff}
+.primary:hover:not(:disabled){filter:brightness(1.1);transform:translateY(-1px);box-shadow:0 2px 4px rgba(0,0,0,0.1)}
+.primary:disabled{opacity:0.6;cursor:not-allowed;}
+.secondary{background:#fff;border:1px solid #cbd2da;color:#344054}
+.secondary:hover:not(:disabled){background:#f8fafc;border-color:#94a3b8}
+.danger{background:#fff;border:1px solid #d9534f;color:#c62828}
+.danger:hover:not(:disabled){background:#fef2f2}
+.status{margin-left:auto;font-size:13px;color:#667085}
+
 .attempts{width:100%;border-collapse:collapse;font-size:13px}.attempts th,.attempts td{text-align:left;padding:11px 12px;border-bottom:1px solid #e5e7eb}.attempts th{background:#f8fafc}
 .modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:20px;z-index:100}.modal.show{display:flex}.modalbox{background:#fff;border-radius:7px;width:min(900px,100%);max-height:88vh;overflow:auto;padding:24px}.score{text-align:center;font-size:44px;font-weight:800;color:var(--subject)}
 
@@ -114,12 +125,12 @@ body.dark-mode .qpalette.has-more::after { background: linear-gradient(rgba(15,2
 
 /* Dark Mode Overrides (Cool Slate Theme) */
 body.dark-mode { 
-  --bg: #020617; 
+  --bg: #0f172a; 
   --line: #334155; 
-  --navy: #0f172a; 
-  --subject-mstec:#60a5fa; --softsub-mstec:rgba(56, 139, 253, 0.15);
-  --subject-hpge:#34d399;  --softsub-hpge:rgba(16, 185, 129, 0.15);
-  --subject-psad:#fbbf24;  --softsub-psad:rgba(245, 158, 11, 0.15);
+  --navy: #1e293b; 
+  --subject-mstec:#3b82f6; --softsub-mstec:rgba(59, 130, 246, 0.15);
+  --subject-hpge:#10b981;  --softsub-hpge:rgba(16, 185, 129, 0.15);
+  --subject-psad:#f59e0b;  --softsub-psad:rgba(245, 158, 11, 0.15);
   color: #e2e8f0; 
 }
 body.dark-mode header { background: #0f172a; border-bottom: 1px solid #1e293b; }
@@ -128,8 +139,8 @@ body.dark-mode .sub { color: #94a3b8; }
 body.dark-mode .select-label { color: #94a3b8; }
 body.dark-mode .tab { background: #0f172a; color: #94a3b8; border-color: #334155; }
 body.dark-mode .tab[data-s="MSTEC"].active { background: var(--subject-mstec); color: #fff; border-color: var(--subject-mstec); }
-body.dark-mode .tab[data-s="HPGE"].active { background: var(--subject-hpge); color: #fff; border-color: var(--subject-hpge); }
-body.dark-mode .tab[data-s="PSAD"].active { background: var(--subject-psad); color: #fff; border-color: var(--subject-psad); }
+body.dark-mode .tab[data-s="HPGE"].active { background: var(--subject-hpge); color: #020617; font-weight: 800; border-color: var(--subject-hpge); }
+body.dark-mode .tab[data-s="PSAD"].active { background: var(--subject-psad); color: #020617; font-weight: 800; border-color: var(--subject-psad); }
 body.dark-mode .qrow.active-q { background: #1e293b; outline-color: var(--subject); }
 body.dark-mode .shortcut-bar { background: #0f172a; border-color: #334155; color: #94a3b8; }
 body.dark-mode .kbd { background: #1e293b; border-color: #475569; color: #e2e8f0; box-shadow: none; }
@@ -140,6 +151,8 @@ body.dark-mode .reviewchoice.correct { background: #065f46; border-color: #10b98
 body.dark-mode .reviewchoice.wrong { background: #7f1d1d; border-color: #ef4444; color: #fef2f2; }
 body.dark-mode .reviewchoice.unanswered { background: #0f172a; border-color: #b45309; color: #fbbf24; }
 body.dark-mode .p-btn.p-answered { background: var(--subject) !important; color: #ffffff !important; border-color: var(--subject) !important; }
+body.dark-mode[data-subject="HPGE"] .p-btn.p-answered, 
+body.dark-mode[data-subject="PSAD"] .p-btn.p-answered { color: #020617 !important; font-weight: 800; }
 body.dark-mode .about-content { color: #cbd5e1 !important; }
 body.dark-mode .review-header-bar h3 { color: #f8fafc; }
 body.dark-mode .r-badge.r-correct { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border-color: #059669; }
@@ -162,6 +175,10 @@ body.dark-mode .shortcut-inline { color: #94a3b8; }
 @keyframes timerPulse {
   0% { transform: scale(1); opacity: 1; }
   100% { transform: scale(1.05); opacity: 0.85; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Palette Controls, Toggle, and Filters */
@@ -289,7 +306,7 @@ body.dark-mode .qrow{border-color:#1e293b;}
 body.dark-mode .qno{color:#cbd5e1;}
 body.dark-mode .choice{background:#1e293b;border-color:#475569;color:#e2e8f0;}
 body.dark-mode .choice:hover{background:#334155;border-color:var(--subject);}
-body.dark-mode .choice.selected{background:var(--softsub);border-color:var(--subject);color:var(--subject);}
+body.dark-mode .choice.selected{background:var(--softsub);border-color:var(--subject);color:#f8fafc;}
 body.dark-mode .choice.e-selected{background:rgba(239,68,68,.16);border-color:#f87171;}
 body.dark-mode .footerbar{background:#020617;border-color:#334155;}
 body.dark-mode .secondary{background:#1e293b;border-color:#475569;color:#e2e8f0;}
@@ -891,10 +908,17 @@ function render() {
   const key = (hasSubject && examName && DATA[volume][subject][examName]) || [];
   
   if (key.length === 0) {
-    let msg = '<div style="font-size:32px; margin-bottom:8px; opacity:0.5;">📋</div><div style="font-weight:700; opacity:0.7;">Ready when you are.</div>';
-    if (volume && !hasSubject) msg = '<div style="font-size:32px; margin-bottom:8px; opacity:0.5;">🚧</div><div style="font-weight:700; opacity:0.7;">Answers for <b>' + subject + '</b> are not yet available.</div>';
+    let msg = '<div style="font-size:46px; margin-bottom:16px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">👷‍♂️</div>' + 
+              '<div style="font-weight:800; font-size:24px; color:var(--subject); letter-spacing:-0.5px; margin-bottom:8px;">Hello, Future Civil Engineer!</div>' + 
+              '<div style="font-size:15px; color:#64748b; font-weight:500;">Select a reference book and exam session to begin.</div>';
+              
+    if (volume && !hasSubject) {
+      msg = '<div style="font-size:46px; margin-bottom:16px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">🚧</div>' + 
+            '<div style="font-weight:800; font-size:22px; color:var(--subject); margin-bottom:8px;">Answers for ' + subject + ' coming soon.</div>' +
+            '<div style="font-size:15px; color:#64748b; font-weight:500;">Check back later for this subject data.</div>';
+    }
     
-    leftQ.innerHTML = '<div style="padding: 60px 20px; text-align: center; font-size: 14px; grid-column: 1 / -1; display:flex; flex-direction:column; align-items:center; justify-content:center;">' + msg + '</div>';
+    leftQ.innerHTML = '<div style="grid-column: 1 / -1; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height: 45vh; text-align:center; padding:20px; animation: fadeIn 0.5s ease;">' + msg + '</div>';
     rightQ.innerHTML = '';
     document.getElementById('meta').textContent = '';
     status.textContent = hasSubject ? 'Awaiting exam selection...' : 'Subject Unavailable';
