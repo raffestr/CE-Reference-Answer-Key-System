@@ -11,6 +11,7 @@
   --subject-solid:var(--subject-mstec-solid);
   --navy:#172b4d; --line:#d9dee5; --bg:#f4f6f8;
 }
+body[data-subject="MSTEC"]{--subject:var(--subject-mstec);--softsub:var(--softsub-mstec);--subject-solid:var(--subject-mstec-solid);}
 body[data-subject="HPGE"]{--subject:var(--subject-hpge);--softsub:var(--softsub-hpge);--subject-solid:var(--subject-hpge-solid);}
 body[data-subject="PSAD"]{--subject:var(--subject-psad);--softsub:var(--softsub-psad);--subject-solid:var(--subject-psad-solid);}
 
@@ -70,6 +71,7 @@ button{font-weight:700;border-radius:4px;padding:9px 15px;cursor:pointer;transit
 .reviewchoice.wrong{background:#ef4444;border-color:#ef4444;color:#fff}
 .reviewchoice.unanswered{background:#fff;border:2px solid #d97706;color:#b45309}
 .review-label{display:flex;align-items:center;justify-content:flex-start;gap:4px;flex-wrap:wrap;min-width:0;padding-right:4px;}
+.badge-bonus{display:inline-block;padding:2px 5px;background:#f0fdf4;color:#16a34a;border:1px solid #22c55e;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.3px}
 .badge-skipped{display:inline-block;padding:2px 5px;background:#fff3dc;color:#b45309;border:1px solid #f59e0b;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.3px}
 .badge-wrong{display:inline-block;padding:2px 5px;background:#fef2f2;color:#991b1b;border:1px solid #ef4444;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.3px}
 .badge-flagged{display:inline-block;padding:2px 5px;background:#f5f3ff;color:#6d28d9;border:1px solid #8b5cf6;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.3px}
@@ -150,6 +152,7 @@ body.dark-mode .tab[data-s="PSAD"].active { background: var(--subject-psad); bor
 body.dark-mode .qrow.active-q { background: #1e293b; outline-color: var(--subject); }
 body.dark-mode .shortcut-bar { background: #0f172a; border-color: #334155; color: #94a3b8; }
 body.dark-mode .kbd { background: #1e293b; border-color: #475569; color: #e2e8f0; box-shadow: none; }
+body.dark-mode .badge-bonus { background: rgba(34, 197, 94, 0.15); color: #4ade80; border-color: #16a34a; }
 body.dark-mode .badge-skipped { background: rgba(217, 119, 6, 0.15); color: #fbbf24; border-color: #b45309; }
 body.dark-mode .badge-wrong { background: rgba(220, 38, 38, 0.15); color: #fca5a5; border-color: #ef4444; }
 body.dark-mode .badge-flagged { background: rgba(124, 58, 237, 0.15); color: #c4b5fd; border-color: #7c3aed; }
@@ -972,18 +975,21 @@ function buildReview(key, userAns = ans, userFlagged = flagged) {
   let itemsRendered = 0;
   const html = key.map((correct, i) => {
     const ua = userAns[i];
-    const isSkipped = !ua;
-    const isWrong = ua && ua !== correct;
+    const isBonus = (correct === "");
+    const isSkipped = !ua && !isBonus;
+    const isWrong = ua && ua !== correct && !isBonus;
     const isFlagged = Boolean(userFlagged && userFlagged[i]);
 
-    if (reviewFilter === 'incorrect' && (!isWrong)) return '';
-    if (reviewFilter === 'skipped' && (!isSkipped)) return '';
-    if (reviewFilter === 'flagged' && (!isFlagged)) return '';
+    if (reviewFilter === 'incorrect' && !isWrong) return '';
+    if (reviewFilter === 'skipped' && !isSkipped) return '';
+    if (reviewFilter === 'flagged' && !isFlagged) return '';
 
     itemsRendered++;
     const choices = ['A','B','C','D','E'].map(c => {
       let cls = 'reviewchoice';
-      if (isSkipped) {
+      if (isBonus) {
+        if (ua === c) cls += ' correct';
+      } else if (isSkipped) {
         if (c === correct) cls += ' unanswered';
       } else {
         if (c === correct) cls += ' correct';
@@ -995,7 +1001,8 @@ function buildReview(key, userAns = ans, userFlagged = flagged) {
     }).join('');
     
     let badges = '';
-    if (isSkipped) badges += '<span class="badge-skipped">SKIPPED</span>';
+    if (isBonus) badges += '<span class="badge-bonus">BONUS</span>';
+    else if (isSkipped) badges += '<span class="badge-skipped">SKIPPED</span>';
     else if (isWrong) badges += '<span class="badge-wrong">WRONG</span>';
     if (isFlagged) badges += '<span class="badge-flagged" title="Flagged during exam">🚩</span>';
 
@@ -1021,8 +1028,8 @@ function showResult() {
   const correctCount = lastResult.correct;
   const totalCount = key.length;
   const answeredCount = lastResult.answered;
-  const wrongCount = answeredCount - correctCount;
-  const skippedCount = totalCount - answeredCount;
+  const wrongCount = lastResult.wrong;
+  const skippedCount = lastResult.skipped;
   const flaggedCount = (userFlagged || []).filter(Boolean).length;
 
   document.getElementById('rt').textContent = lastResult.auto ? 'Time Expired — Exam Submitted' : 'Exam Result';
@@ -1095,9 +1102,17 @@ function performSubmit(auto = false) {
   submitted = true;
   const el = getElapsedSeconds();
   const key = DATA[volume][subject][examName];
-  const correct = ans.reduce((n, a, i) => n + (a === key[i] ? 1 : 0), 0);
-  const pct = (correct / key.length * 100).toFixed(2);
-  lastResult = {correct, pct, time: fmt(el), answered: ans.filter(Boolean).length, auto, ans: [...ans], flagged: [...flagged]};
+  
+  let correct = 0, wrong = 0, skipped = 0;
+  ans.forEach((a, i) => {
+    if (key[i] === "") correct++;
+    else if (!a) skipped++;
+    else if (a === key[i]) correct++;
+    else wrong++;
+  });
+  
+  const pct = ((correct / key.length) * 100).toFixed(2);
+  lastResult = {correct, wrong, skipped, pct, time: fmt(el), answered: ans.filter(Boolean).length, auto, ans: [...ans], flagged: [...flagged]};
   
   const a = getAttempts();
   a.push({
@@ -1139,18 +1154,24 @@ function viewAttempt(idx) {
   const itemAns = item.ans || [];
   const itemFlagged = item.flagged || [];
   
-  const correctCount = itemAns.reduce((n, a, i) => n + (a === key[i] ? 1 : 0), 0);
+  let correctCount = 0, wrongCount = 0, skippedCount = 0;
+  itemAns.forEach((ansValue, i) => {
+    if (key[i] === "") correctCount++;
+    else if (!ansValue) skippedCount++;
+    else if (ansValue === key[i]) correctCount++;
+    else wrongCount++;
+  });
+  
   const totalCount = key.length;
   const answeredCount = itemAns.filter(Boolean).length;
-  const wrongCount = answeredCount - correctCount;
-  const skippedCount = totalCount - answeredCount;
   const flaggedCount = itemFlagged.filter(Boolean).length;
+  const computedPct = ((correctCount / totalCount) * 100).toFixed(2);
 
-  lastResult = { correct: correctCount, pct: item.pct, time: item.time, answered: answeredCount, auto: false, ans: itemAns, flagged: itemFlagged };
+  lastResult = { correct: correctCount, wrong: wrongCount, skipped: skippedCount, pct: computedPct, time: item.time, answered: answeredCount, auto: false, ans: itemAns, flagged: itemFlagged };
 
   document.getElementById('rt').textContent = 'Past Attempt — ' + itemVol + ' | ' + item.subject + ' (' + item.exam + ')';
-  document.getElementById('score').textContent = item.score;
-  document.getElementById('summary').textContent = item.pct + ' • ' + answeredCount + ' answered • Time consumed: ' + item.time;
+  document.getElementById('score').textContent = correctCount + ' / ' + totalCount;
+  document.getElementById('summary').textContent = computedPct + '% • ' + answeredCount + ' answered • Time consumed: ' + item.time;
   
   document.getElementById('rStatCorrect').textContent = correctCount;
   document.getElementById('rStatWrong').textContent = wrongCount;
