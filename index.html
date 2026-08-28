@@ -37,7 +37,10 @@ select{padding:9px 10px;border:1px solid #cbd2da;border-radius:4px;background:#f
 .vol-select{min-width:190px;font-weight:700;color:var(--navy)}
 .exam-select{min-width:240px}
 .timerbox{margin-left:auto;text-align:right}.timerlabel{font-size:11px;font-weight:700;color:#697586}.timer{font-size:25px;font-weight:700;color:var(--subject)}.timercontrols{display:flex;align-items:center;gap:7px}
-.timerbtn{padding:7px 11px;border:1px solid #cbd2da;background:#fff;color:#344054;border-radius:4px;font-size:12px}.timerbtn.running{background:var(--subject-solid);border-color:var(--subject-solid);color:#fff}.timerbtn:disabled{opacity:.4;cursor:not-allowed}
+.timerbtn{padding:7px 11px;border:1px solid #cbd2da;background:#fff;color:#344054;border-radius:4px;font-size:12px;cursor:pointer;transition:all 0.15s ease}
+.timerbtn:hover:not(:disabled){background:#f8fafc;border-color:#94a3b8}
+.timerbtn.running{background:var(--subject-solid);border-color:var(--subject-solid);color:#fff}
+.timerbtn:disabled{opacity:.4;cursor:not-allowed}
 .examnote{font-size:12px;color:#667085;padding:10px 20px;background:#fffdf5;border-bottom:1px solid #eee4bd}
 .sheet{padding:18px 20px}.question-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 34px;align-items:start}.question-column{min-width:0}
 .qrow{display:grid;grid-template-columns:42px 1fr;align-items:center;min-height:54px;border-top:1px solid #e5e8ec}.qrow:first-child{border-top:0}.qno{font-weight:700;color:#475467}
@@ -46,7 +49,18 @@ select{padding:9px 10px;border:1px solid #cbd2da;border-radius:4px;background:#f
 .choice:focus-within{outline:2px solid var(--subject);outline-offset:1px}
 .choice:disabled{cursor:not-allowed}.choice:disabled:hover{background:inherit}.choice b{font:inherit}
 .choice.selected{background:var(--softsub);border-color:var(--subject);box-shadow:0 0 0 1px var(--subject) inset}.choice.e-selected{background:#fff1f1;border-color:#ef4444;box-shadow:0 0 0 1px #ef4444 inset}.choice.locked{cursor:not-allowed;opacity:.62}.choice.locked:hover{background:#fff;border-color:#cbd7e5}
-.footerbar{display:flex;align-items:center;gap:10px;padding:14px 20px;border-top:1px solid var(--line);background:#fafbfc}button{font-weight:700;border-radius:4px;padding:9px 15px;cursor:pointer}.primary{background:var(--subject-solid);border:1px solid var(--subject-solid);color:#fff}.primary:disabled{opacity:0.6;cursor:not-allowed;}.secondary{background:#fff;border:1px solid #cbd2da;color:#344054}.danger{background:#fff;border:1px solid #d9534f;color:#c62828}.status{margin-left:auto;font-size:13px;color:#667085}
+
+.footerbar{display:flex;align-items:center;gap:10px;padding:14px 20px;border-top:1px solid var(--line);background:#fafbfc}
+button{font-weight:700;border-radius:4px;padding:9px 15px;cursor:pointer;transition:all 0.15s ease}
+.primary{background:var(--subject-solid);border:1px solid var(--subject-solid);color:#fff}
+.primary:hover:not(:disabled){filter:brightness(1.1);transform:translateY(-1px);box-shadow:0 2px 4px rgba(0,0,0,0.1)}
+.primary:disabled{opacity:0.6;cursor:not-allowed;}
+.secondary{background:#fff;border:1px solid #cbd2da;color:#344054}
+.secondary:hover:not(:disabled){background:#f8fafc;border-color:#94a3b8}
+.danger{background:#fff;border:1px solid #d9534f;color:#c62828}
+.danger:hover:not(:disabled){background:#fef2f2}
+.status{margin-left:auto;font-size:13px;color:#667085}
+
 .attempts{width:100%;border-collapse:collapse;font-size:13px}.attempts th,.attempts td{text-align:left;padding:11px 12px;border-bottom:1px solid #e5e7eb}.attempts th{background:#f8fafc}
 .modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:20px;z-index:100}.modal.show{display:flex}.modalbox{background:#fff;border-radius:7px;width:min(900px,100%);max-height:88vh;overflow:auto;padding:24px}.score{text-align:center;font-size:44px;font-weight:800;color:var(--subject)}
 
@@ -116,12 +130,12 @@ body.dark-mode .qpalette.has-more::after { background: linear-gradient(rgba(15,2
 
 /* Dark Mode Overrides (Cool Slate Theme) */
 body.dark-mode { 
-  --bg: #020617; 
+  --bg: #0f172a; 
   --line: #334155; 
-  --navy: #0f172a; 
-  --subject-mstec:#60a5fa; --softsub-mstec:rgba(56, 139, 253, 0.15);
-  --subject-hpge:#34d399;  --softsub-hpge:rgba(16, 185, 129, 0.15);
-  --subject-psad:#fbbf24;  --softsub-psad:rgba(245, 158, 11, 0.15);
+  --navy: #1e293b; 
+  --subject-mstec:#3b82f6; --softsub-mstec:rgba(59, 130, 246, 0.15);
+  --subject-hpge:#10b981;  --softsub-hpge:rgba(16, 185, 129, 0.15);
+  --subject-psad:#f59e0b;  --softsub-psad:rgba(245, 158, 11, 0.15);
   color: #e2e8f0; 
 }
 body.dark-mode header { background: #0f172a; border-bottom: 1px solid #1e293b; }
@@ -129,6 +143,10 @@ body.dark-mode .brand { color: #f8fafc; }
 body.dark-mode .sub { color: #94a3b8; }
 body.dark-mode .select-label { color: #94a3b8; }
 body.dark-mode .tab { background: #0f172a; color: #94a3b8; border-color: #334155; }
+body.dark-mode .tab.active { color: #020617; font-weight: 800; }
+body.dark-mode .tab[data-s="MSTEC"].active { background: var(--subject-mstec); border-color: var(--subject-mstec); }
+body.dark-mode .tab[data-s="HPGE"].active { background: var(--subject-hpge); border-color: var(--subject-hpge); }
+body.dark-mode .tab[data-s="PSAD"].active { background: var(--subject-psad); border-color: var(--subject-psad); }
 body.dark-mode .qrow.active-q { background: #1e293b; outline-color: var(--subject); }
 body.dark-mode .shortcut-bar { background: #0f172a; border-color: #334155; color: #94a3b8; }
 body.dark-mode .kbd { background: #1e293b; border-color: #475569; color: #e2e8f0; box-shadow: none; }
@@ -138,6 +156,7 @@ body.dark-mode .badge-flagged { background: rgba(124, 58, 237, 0.15); color: #c4
 body.dark-mode .reviewchoice.correct { background: #065f46; border-color: #10b981; color: #ecfdf5; }
 body.dark-mode .reviewchoice.wrong { background: #7f1d1d; border-color: #ef4444; color: #fef2f2; }
 body.dark-mode .reviewchoice.unanswered { background: #0f172a; border-color: #b45309; color: #fbbf24; }
+body.dark-mode .p-btn.p-answered { color: #020617 !important; font-weight: 800; }
 body.dark-mode .about-content { color: #cbd5e1 !important; }
 body.dark-mode .review-header-bar h3 { color: #f8fafc; }
 body.dark-mode .r-badge.r-correct { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border-color: #059669; }
@@ -160,6 +179,10 @@ body.dark-mode .shortcut-inline { color: #94a3b8; }
 @keyframes timerPulse {
   0% { transform: scale(1); opacity: 1; }
   100% { transform: scale(1.05); opacity: 0.85; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Palette Controls, Toggle, and Filters */
@@ -249,7 +272,6 @@ body.dark-mode .pal-empty-msg { background: #0f172a; color: #94a3b8; border-colo
 .pal-cnt-badge { font-size: 10px; opacity: 0.85; font-weight: 600; margin-left: 2px; }
 
 /* Refinements & History Dashboard Extensions */
-.timerbtn.timer-reset{background:#fff7ed;border-color:#f59e0b;color:#9a3412}
 .auto-advance-toggle{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;color:#667085;cursor:pointer;user-select:none}
 .auto-advance-toggle input{cursor:pointer;margin:0}
 body.dark-mode .auto-advance-toggle{color:#94a3b8}
@@ -273,7 +295,7 @@ body.dark-mode select{background:#1e293b;color:#f1f5f9;border-color:#475569;}
 body.dark-mode .timerlabel{color:#94a3b8;}
 body.dark-mode .timer{color:var(--subject);}
 body.dark-mode .timerbtn{background:#1e293b;color:#e2e8f0;border-color:#475569;}
-body.dark-mode .timerbtn.timer-reset{background:rgba(217, 119, 6, 0.15);border-color:#b45309;color:#fbbf24;}
+body.dark-mode .timerbtn.running{background:var(--subject);border-color:var(--subject);color:#fff;}
 body.dark-mode .examnote{background:rgba(217, 119, 6, 0.1);border-color:#b45309;color:#fde047;}
 body.dark-mode .palette-container{background:#0f172a;border-color:#334155;}
 body.dark-mode .palette-header{color:#cbd5e1;}
@@ -286,7 +308,7 @@ body.dark-mode .qrow{border-color:#1e293b;}
 body.dark-mode .qno{color:#cbd5e1;}
 body.dark-mode .choice{background:#1e293b;border-color:#475569;color:#e2e8f0;}
 body.dark-mode .choice:hover{background:#334155;border-color:var(--subject);}
-body.dark-mode .choice.selected{background:var(--softsub);border-color:var(--subject);color:var(--subject);}
+body.dark-mode .choice.selected{background:var(--softsub);border-color:var(--subject);color:#f8fafc;}
 body.dark-mode .choice.e-selected{background:rgba(239,68,68,.16);border-color:#f87171;}
 body.dark-mode .footerbar{background:#020617;border-color:#334155;}
 body.dark-mode .secondary{background:#1e293b;border-color:#475569;color:#e2e8f0;}
@@ -349,7 +371,7 @@ body.dark-mode .history-view-btn{background:#1e293b;color:#e2e8f0;border-color:#
     <span id="meta" style="font-size:12px;color:#667085;font-weight:600"></span>
   </div>
 </div>
-<div class="timerbox"><div class="timerlabel">EXAM TIMER</div><div class="timercontrols"><div class="timer" id="timer">06:00:00</div><button class="timerbtn" id="timerBtn" onclick="toggleTimer()">Start</button><button class="timerbtn timer-reset" onclick="resetTimer()">Reset Timer</button></div></div></div>
+<div class="timerbox"><div class="timerlabel">EXAM TIMER</div><div class="timercontrols"><div class="timer" id="timer">06:00:00</div><button class="timerbtn" id="timerBtn" onclick="toggleTimer()">Start</button><button class="timerbtn" onclick="resetTimer()">Reset</button></div></div></div>
 <div class="examnote" id="examnote" style="display:none;"></div><div class="palette-container" id="paletteContainer">
 <div class="palette-header">
   <div class="palette-left">
@@ -377,7 +399,7 @@ body.dark-mode .history-view-btn{background:#1e293b;color:#e2e8f0;border-color:#
 </div>
 <div id="qPalette" class="qpalette"></div>
 </div><div class="sheet"><div id="questions" class="question-grid"><div class="question-column" id="leftQuestions"></div><div class="question-column" id="rightQuestions"></div></div></div>
-<div class="footerbar"><button id="submitBtn" class="primary" onclick="submitExam()" disabled>Submit Exam</button><button class="danger" onclick="resetExam()">Restart Exam</button><span class="status" id="status"></span></div>
+<div class="footerbar"><button id="submitBtn" class="primary" onclick="submitExam()" disabled>Submit Exam</button><button class="secondary" onclick="resetExam()">Restart Exam</button><span class="status" id="status"></span></div>
 </section><section class="panel" style="border-top-color:#64748b;">
 <div class="panel-title" style="background:none;">Past Attempts</div>
 <div class="history-toolbar">
@@ -385,7 +407,7 @@ body.dark-mode .history-view-btn{background:#1e293b;color:#e2e8f0;border-color:#
   <select id="histSubj" onchange="renderAttempts()"><option value="all">All Subjects</option></select>
   <select id="histExam" onchange="renderAttempts()"><option value="all">All Exams</option></select>
   <button class="secondary" style="padding:6px 10px;font-size:12px" onclick="clearHistoryFilters()">Clear Filters</button>
-  <button class="danger" style="padding:6px 10px;font-size:12px;margin-left:auto" onclick="clearHistory()">Clear All History</button>
+  <button class="secondary" style="padding:6px 10px;font-size:12px;margin-left:auto" onclick="clearHistory()">Clear All History</button>
 </div>
 <div class="history-summary">
   <div class="history-stat attempts"><div class="val" id="histAttempts">0</div><div class="lbl">Attempts</div></div>
@@ -493,19 +515,19 @@ body.dark-mode .history-view-btn{background:#1e293b;color:#e2e8f0;border-color:#
     <p id="summary" style="text-align:center"></p>
     
     <div class="result-stats-row">
-      <div class="r-badge r-correct">✓ <span id="rStatCorrect">0</span> Correct</div>
-      <div class="r-badge r-wrong">✕ <span id="rStatWrong">0</span> Wrong</div>
-      <div class="r-badge r-skipped">⚠ <span id="rStatSkipped">0</span> Skipped</div>
-      <div class="r-badge r-flagged">🚩 <span id="rStatResFlagged">0</span> Flagged</div>
+      <div class="r-badge r-correct" id="badgeCorrect">✓ <span id="rStatCorrect">0</span> Correct</div>
+      <div class="r-badge r-wrong" id="badgeWrong">✕ <span id="rStatWrong">0</span> Wrong</div>
+      <div class="r-badge r-skipped" id="badgeSkipped">⚠ <span id="rStatSkipped">0</span> Skipped</div>
+      <div class="r-badge r-flagged" id="badgeFlagged">🚩 <span id="rStatResFlagged">0</span> Flagged</div>
     </div>
 
     <div class="review-header-bar">
       <h3>Answer Review</h3>
       <div class="pal-filter-tabs">
         <button class="pal-ftab active" id="rfAll" onclick="setReviewFilter('all')">All</button>
-        <button class="pal-ftab" id="rfWrong" onclick="setReviewFilter('incorrect')">Wrong Only</button>
-        <button class="pal-ftab" id="rfSkipped" onclick="setReviewFilter('skipped')">Skipped Only</button>
-        <button class="pal-ftab" id="rfFlagged" onclick="setReviewFilter('flagged')">Flagged Only</button>
+        <button class="pal-ftab" id="rfWrong" onclick="setReviewFilter('incorrect')">Wrong</button>
+        <button class="pal-ftab" id="rfSkipped" onclick="setReviewFilter('skipped')">Skipped</button>
+        <button class="pal-ftab" id="rfFlagged" onclick="setReviewFilter('flagged')">Flagged</button>
       </div>
     </div>
 
@@ -888,11 +910,18 @@ function render() {
   const key = (hasSubject && examName && DATA[volume][subject][examName]) || [];
   
   if (key.length === 0) {
-    let msg = '<div style="font-size:32px; margin-bottom:8px; opacity:0.5;">🏗️</div><div style="font-weight:700; opacity:0.7;">Hello, Future Civil Engineer!</div><div style="font-weight:400; opacity:0.55; font-size:12.5px; margin-top:6px;">Select a reference volume and exam session above to begin.</div>';
-    if (volume && !hasSubject) msg = '<div style="font-size:32px; margin-bottom:8px; opacity:0.5;">🚧</div><div style="font-weight:700; opacity:0.7;">Answers for <b>' + subject + '</b> are not yet available.</div>';
+    let msg = '<div style="font-size:46px; margin-bottom:16px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">👷‍♂️</div>' + 
+              '<div style="font-weight:800; font-size:24px; color:var(--subject); letter-spacing:-0.5px; margin-bottom:8px;">Hello, Future Civil Engineer!</div>' + 
+              '<div style="font-size:15px; color:#64748b; font-weight:500;">Select a reference book and exam session to begin.</div>';
+              
+    if (volume && !hasSubject) {
+      msg = '<div style="font-size:46px; margin-bottom:16px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">🚧</div>' + 
+            '<div style="font-weight:800; font-size:22px; color:var(--subject); margin-bottom:8px;">Answers for ' + subject + ' coming soon.</div>' +
+            '<div style="font-size:15px; color:#64748b; font-weight:500;">Check back later for this subject data.</div>';
+    }
     
     leftQ.style.gridColumn = '1 / -1';
-    leftQ.innerHTML = '<div style="padding: 60px 20px; text-align: center; font-size: 14px; display:flex; flex-direction:column; align-items:center; justify-content:center;">' + msg + '</div>';
+    leftQ.innerHTML = '<div style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height: 45vh; text-align:center; padding:20px; animation: fadeIn 0.5s ease;">' + msg + '</div>';
     rightQ.innerHTML = '';
     document.getElementById('meta').textContent = '';
     status.textContent = !volume ? '' : (hasSubject ? 'Awaiting exam selection...' : 'Subject Unavailable');
@@ -1004,6 +1033,11 @@ function showResult() {
   document.getElementById('rStatWrong').textContent = wrongCount;
   document.getElementById('rStatSkipped').textContent = skippedCount;
   document.getElementById('rStatResFlagged').textContent = flaggedCount;
+
+  document.getElementById('badgeCorrect').style.display = correctCount > 0 ? 'flex' : 'none';
+  document.getElementById('badgeWrong').style.display = wrongCount > 0 ? 'flex' : 'none';
+  document.getElementById('badgeSkipped').style.display = skippedCount > 0 ? 'flex' : 'none';
+  document.getElementById('badgeFlagged').style.display = flaggedCount > 0 ? 'flex' : 'none';
 
   reviewFilter = 'all';
   ['rfAll', 'rfWrong', 'rfSkipped', 'rfFlagged'].forEach(id => {
@@ -1122,6 +1156,11 @@ function viewAttempt(idx) {
   document.getElementById('rStatWrong').textContent = wrongCount;
   document.getElementById('rStatSkipped').textContent = skippedCount;
   document.getElementById('rStatResFlagged').textContent = flaggedCount;
+
+  document.getElementById('badgeCorrect').style.display = correctCount > 0 ? 'flex' : 'none';
+  document.getElementById('badgeWrong').style.display = wrongCount > 0 ? 'flex' : 'none';
+  document.getElementById('badgeSkipped').style.display = skippedCount > 0 ? 'flex' : 'none';
+  document.getElementById('badgeFlagged').style.display = flaggedCount > 0 ? 'flex' : 'none';
 
   reviewFilter = 'all';
   ['rfAll', 'rfWrong', 'rfSkipped', 'rfFlagged'].forEach(id => {
