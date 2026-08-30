@@ -40,7 +40,8 @@ select{padding:9px 10px;border:1px solid #cbd2da;border-radius:4px;background:#f
 .timerbox{margin-left:auto;text-align:right}.timerlabel{font-size:11px;font-weight:700;color:#697586}.timer{font-size:25px;font-weight:700;color:var(--subject)}.timercontrols{display:flex;align-items:center;gap:7px}
 .timerbtn{padding:7px 11px;border:1px solid #cbd2da;background:#fff;color:#344054;border-radius:4px;font-size:12px;cursor:pointer;transition:all 0.15s ease}
 .timerbtn:hover:not(:disabled){background:#f8fafc;border-color:#94a3b8}
-.timerbtn.running{background:var(--subject-solid);border-color:var(--subject-solid);color:#fff}
+.timerbtn.start-ready{background:var(--subject-solid);border-color:var(--subject-solid);color:#fff}
+.timerbtn.start-ready:hover:not(:disabled){filter:brightness(1.1);transform:translateY(-1px);box-shadow:0 2px 4px rgba(0,0,0,0.1)}
 .timerbtn:disabled{opacity:.4;cursor:not-allowed}
 .examnote{font-size:12px;color:#667085;padding:10px 20px;background:#fffdf5;border-bottom:1px solid #eee4bd}
 .sheet{padding:18px 20px}.question-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 34px;align-items:start}.question-column{min-width:0}
@@ -62,7 +63,8 @@ button{font-weight:700;border-radius:4px;padding:9px 15px;cursor:pointer;transit
 .danger:hover:not(:disabled){background:#fef2f2}
 .status{margin-left:auto;font-size:13px;color:#667085}
 
-.attempts{width:100%;border-collapse:collapse;font-size:13px}.attempts th,.attempts td{text-align:left;padding:11px 12px;border-bottom:1px solid #e5e7eb}.attempts th{background:#f8fafc}
+.table-responsive{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.attempts{width:100%;border-collapse:collapse;font-size:13px}.attempts th,.attempts td{text-align:left;padding:11px 12px;border-bottom:1px solid #e5e7eb}.attempts th{background:#f8fafc;white-space:nowrap}
 .modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:20px;z-index:100}.modal.show{display:flex}.modalbox{background:#fff;border-radius:7px;width:min(900px,100%);max-height:88vh;overflow:auto;padding:24px}.score{text-align:center;font-size:44px;font-weight:800;color:var(--subject)}
 
 /* Result Review Grid Layout & Spacing Fixes */
@@ -288,7 +290,7 @@ body.dark-mode .auto-advance-toggle{color:#94a3b8}
 .history-stat.avg .val{color:var(--subject)}.history-stat.best .val{color:#16a34a}.history-stat.attempts .val{color:#7c3aed}.history-stat.low .val{color:#d97706}
 .history-stat.trend .val{color:#10b981}.history-stat.trend .val.negative{color:#ef4444}
 
-/* Remaining Dark Mode Overrides */
+/* Remaining Dark Mode Overrides (Hover states included to fix sticky pure-white button mobile tap bug) */
 body.dark-mode main{color:#e2e8f0;}
 body.dark-mode .panel{background:#0f172a;border-color:#334155;border-top-color:var(--subject);}
 body.dark-mode .panel-title{color:#f8fafc;border-color:#334155;}
@@ -298,7 +300,8 @@ body.dark-mode select{background:#1e293b;color:#f1f5f9;border-color:#475569;}
 body.dark-mode .timerlabel{color:#94a3b8;}
 body.dark-mode .timer{color:var(--subject);}
 body.dark-mode .timerbtn{background:#1e293b;color:#e2e8f0;border-color:#475569;}
-body.dark-mode .timerbtn.running{background:var(--subject);border-color:var(--subject);color:#fff;}
+body.dark-mode .timerbtn.start-ready{background:var(--subject);border-color:var(--subject);color:#fff;}
+body.dark-mode .timerbtn:hover:not(:disabled){background:#334155;border-color:#64748b;color:#f8fafc;}
 body.dark-mode .examnote{background:rgba(217, 119, 6, 0.1);border-color:#b45309;color:#fde047;}
 body.dark-mode .palette-container{background:#0f172a;border-color:#334155;}
 body.dark-mode .palette-header{color:#cbd5e1;}
@@ -315,6 +318,8 @@ body.dark-mode .choice.selected{background:var(--softsub);border-color:var(--sub
 body.dark-mode .choice.e-selected{background:rgba(239,68,68,.16);border-color:#f87171;}
 body.dark-mode .footerbar{background:#020617;border-color:#334155;}
 body.dark-mode .secondary{background:#1e293b;border-color:#475569;color:#e2e8f0;}
+body.dark-mode .secondary:hover:not(:disabled){background:#334155;border-color:#64748b;color:#f8fafc;}
+body.dark-mode .danger:hover:not(:disabled){background:#7f1d1d;border-color:#991b1b;color:#fef2f2;}
 body.dark-mode .status{color:#94a3b8;}
 body.dark-mode .attempts th{background:#1e293b;color:#cbd5e1;border-color:#334155;}
 body.dark-mode .attempts td{background:#0f172a;color:#e2e8f0;border-color:#334155;}
@@ -359,6 +364,7 @@ body.dark-mode .history-view-btn{background:#1e293b;color:#e2e8f0;border-color:#
   <label class="select-label" for="volSelect">Reference Book</label>
   <select id="volSelect" class="vol-select" onchange="switchVolume(this.value)">
     <option value="" selected disabled>Select Reference Book</option>
+    <option value="Vol 6">VOLUME 6</option>
     <option value="Vol 5, 4th Ed">VOLUME 5 (4th Ed)</option>
     <option value="Vol 4, 7th Ed">VOLUME 4 (7th Ed)</option>
     <option value="Vol 3, 2nd Ed">VOLUME 3 (2nd Ed)</option>
@@ -686,7 +692,7 @@ function updateTimerUI() {
   
   timer.textContent = fmt(rem);
   timerBtn.textContent = running ? 'Pause' : 'Start';
-  timerBtn.classList.toggle('running', running);
+  timerBtn.classList.toggle('start-ready', !running);
   timerBtn.disabled = submitted || !volume || !examName || !hasSubject;
   sel.disabled = !volume || !hasSubject;
   volSel.disabled = false;
@@ -1369,7 +1375,7 @@ function renderAttempts() {
     return createTableRow(labels, cells);
   }).join('');
   
-  container.innerHTML = `<table class="attempts"><thead><tr>${headers}</tr></thead><tbody>${rows}</tbody></table>`;
+  container.innerHTML = `<div class="table-responsive"><table class="attempts"><thead><tr>${headers}</tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
 function clearHistory() { 
