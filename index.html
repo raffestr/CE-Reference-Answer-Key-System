@@ -252,9 +252,12 @@ body.dark-mode .confirm-warning-box { background: rgba(234, 179, 8, 0.1); border
 .danger-btn { background: #dc2626 !important; border-color: #dc2626 !important; color: #ffffff !important; }
 .danger-btn:hover { background: #b91c1c !important; }
 
-/* Sticky Top Controls on Mobile Screens */
-@media(max-width:800px) {
+/* Sticky Top Controls on Mobile & Tablet Screens (Vertical & Horizontal) */
+@media(max-width: 1280px) {
   .exambar { position: sticky; top: 0; z-index: 80; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+}
+
+@media(max-width:800px) {
   .confirm-stats-grid { grid-template-columns: repeat(2, 1fr); }
   .palette-header { flex-direction: column; align-items: stretch; gap: 9px; }
   .palette-left { gap: 8px; }
