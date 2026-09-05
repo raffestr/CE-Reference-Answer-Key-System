@@ -19,14 +19,12 @@ body[data-subject="PSAD"]{--subject:var(--subject-psad);--softsub:var(--softsub-
 header{background:var(--navy);color:#fff;padding:18px 28px;display:flex;align-items:center;justify-content:space-between}.brand{font-size:20px;font-weight:700}.sub{font-size:12px;opacity:.75;margin-top:4px}
 .header-actions{display:flex;align-items:center;gap:8px}
 
-/* Enhanced Subject Tabs */
 .tabs{background:#fff;border-bottom:1px solid var(--line);display:flex;padding:0 max(8px,calc((100% - 1120px)/2));gap:6px;padding-top:6px}
 .tab{flex:1;border:1px solid var(--line);border-bottom:0;background:#f8fafc;padding:14px 12px;font-weight:800;font-size:15px;cursor:pointer;color:#64748b;border-radius:6px 6px 0 0;transition:all 0.2s}
 .tab[data-s="MSTEC"].active{background:var(--subject-mstec-solid);color:#fff;border-color:var(--subject-mstec-solid)}
 .tab[data-s="HPGE"].active{background:var(--subject-hpge-solid);color:#fff;border-color:var(--subject-hpge-solid)}
 .tab[data-s="PSAD"].active{background:var(--subject-psad-solid);color:#fff;border-color:var(--subject-psad-solid)}
 
-/* Panel & Answer Sheet Card Accent */
 main{max-width:1120px;margin:22px auto;padding:0 18px}
 .panel{background:#fff;border:1px solid var(--line);border-top:5px solid var(--subject);border-radius:6px;margin-bottom:18px;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
 .panel-title{font-size:20px;font-weight:700;padding:18px 20px;border-bottom:1px solid var(--line);background:linear-gradient(180deg, var(--softsub) 0%, rgba(255,255,255,0) 100%)}
@@ -45,7 +43,7 @@ select{padding:9px 10px;border:1px solid #cbd2da;border-radius:4px;background:#f
 .timerbtn:disabled{opacity:.4;cursor:not-allowed}
 .examnote{font-size:12px;color:#667085;padding:10px 20px;background:#fffdf5;border-bottom:1px solid #eee4bd}
 .sheet{padding:18px 20px}.question-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 34px;align-items:start}.question-column{min-width:0}
-.qrow{display:grid;grid-template-columns:42px 1fr;align-items:center;min-height:54px;border-top:1px solid #e5e8ec}.qrow:first-child{border-top:0}.qno{font-weight:700;color:#475467}
+.qrow{display:grid;grid-template-columns:42px 1fr;align-items:center;min-height:54px;border-top:1px solid #e5e8ec;transition:background 0.15s;padding:4px 6px;border-radius:4px;cursor:pointer}.qrow:first-child{border-top:0}.qno{font-weight:700;color:#475467}
 .choices{display:grid;grid-template-columns:repeat(5,minmax(44px,1fr));gap:7px}.choice{position:relative;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:9px 5px;border:1px solid #cbd7e5;border-radius:5px;min-height:40px;font-size:14px;color:#344054;}.choice:hover{background:var(--softsub);border-color:#8fb2df}
 .choice input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
 .choice:focus-within{outline:2px solid var(--subject);outline-offset:1px}
@@ -62,16 +60,15 @@ button{font-weight:700;border-radius:4px;padding:9px 15px;cursor:pointer;transit
 .danger{background:#fff;border:1px solid #d9534f;color:#c62828}
 .danger:hover:not(:disabled){background:#fef2f2}
 .status{margin-left:auto;font-size:13px;color:#667085}
+.btn-sm{padding:5px 10px;font-size:12px}
 
 .table-responsive{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .attempts{width:100%;border-collapse:collapse;font-size:13px}.attempts th,.attempts td{text-align:left;padding:11px 12px;border-bottom:1px solid #e5e7eb}.attempts th{background:#f8fafc;white-space:nowrap}
 .modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:20px;z-index:100}.modal.show{display:flex}.modalbox{background:#fff;border-radius:7px;width:min(900px,100%);max-height:88vh;overflow:auto;padding:24px}.score{text-align:center;font-size:44px;font-weight:800;color:var(--subject)}
 
-/* Result Review Grid Layout & Spacing Fixes */
 .review{display:grid;grid-template-columns:135px 1fr;align-items:center;padding:10px 0;border-bottom:1px solid #eee}.reviewchoices{display:grid;grid-template-columns:repeat(5,minmax(50px,1fr));gap:8px}.reviewchoice{display:flex;justify-content:center;align-items:center;min-height:42px;border:1px solid #cbd7e5;border-radius:5px;font-weight:700;color:#475467}
 .reviewchoice.correct{background:#12b981;border-color:#12b981;color:#fff}
 .reviewchoice.wrong{background:#ef4444;border-color:#ef4444;color:#fff}
-/* Changed unanswered (skipped correct answer) outline to Green */
 .reviewchoice.unanswered{background:#fff;border:2px solid #12b981;color:#12b981}
 .review-label{display:flex;align-items:center;justify-content:flex-start;gap:4px;flex-wrap:wrap;min-width:0;padding-right:4px;}
 .badge-bonus{display:inline-block;padding:2px 5px;background:#f0fdf4;color:#16a34a;border:1px solid #22c55e;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.3px}
@@ -82,7 +79,6 @@ button{font-weight:700;border-radius:4px;padding:9px 15px;cursor:pointer;transit
 .disclaimer{margin-top:16px;padding:10px 14px;background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid #f59e0b;border-radius:4px;font-size:12px;color:#475467}
 .result-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
 
-/* Result Modal Diagnostic Badges & Filter Bar */
 .result-stats-row { display: flex; justify-content: center; gap: 10px; margin: 12px 0 18px; flex-wrap: wrap; }
 .r-badge { display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 700; border: 1px solid transparent; cursor: pointer; transition: all 0.2s ease; user-select: none; }
 .r-badge:hover { filter: brightness(0.95); transform: translateY(-1px); }
@@ -94,6 +90,10 @@ button{font-weight:700;border-radius:4px;padding:9px 15px;cursor:pointer;transit
 
 .review-header-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; padding-bottom: 8px; border-bottom: 2px solid var(--line); flex-wrap: wrap; gap: 10px; }
 .review-header-bar h3 { margin: 0; font-size: 16px; font-weight: 800; color: var(--navy); }
+
+/* Pagination Controls */
+.pagination-bar { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: #f8fafc; border-top: 1px solid var(--line); font-size: 13px; color: #475467; font-weight: 600; }
+body.dark-mode .pagination-bar { background: #0f172a; border-color: #334155; color: #94a3b8; }
 
 @media(max-width:800px){.question-grid{grid-template-columns:1fr}.timerbox{margin-left:0}.exambar{flex-wrap:wrap;align-items:stretch}.select-group{width:100%}select{width:100%;min-width:0}.timercontrols{margin-left:0}}
 @media(max-width:600px){
@@ -107,22 +107,18 @@ button{font-weight:700;border-radius:4px;padding:9px 15px;cursor:pointer;transit
   .history-summary { grid-template-columns: repeat(6, 1fr); gap: 8px; padding: 12px; }
   .history-stat:nth-child(1), .history-stat:nth-child(2), .history-stat:nth-child(3) { grid-column: span 2; }
   .history-stat:nth-child(4), .history-stat:nth-child(5) { grid-column: span 3; }
+  .history-toolbar-actions { width: 100%; display: flex; justify-content: space-between; gap: 8px; margin-top: 8px; }
 }
 
-/* Dark Mode Extensions */
 .theme-btn { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 700; transition: background 0.2s; }
 .theme-btn:hover { background: rgba(255,255,255,0.25); }
-.qrow { transition: background 0.15s; padding: 4px 6px; border-radius: 4px; cursor: pointer; }
 .qrow.active-q { background: var(--softsub); outline: 2px solid var(--subject); outline-offset: -2px; }
 .qheader { display: flex; flex-direction: column; align-items: center; gap: 4px; justify-content: center; }
 .flag-btn { border:0; background:none; cursor:pointer; font-size:13px; padding:2px; opacity:0.35; transition: opacity 0.2s, transform 0.1s; }
 .flag-btn:hover { opacity:0.85; transform: scale(1.15); }
 .flag-btn.flagged { opacity:1; filter: drop-shadow(0 0 2px #f59e0b); }
-.shortcut-bar { display: flex; gap: 12px; font-size: 11px; color: #667085; padding: 6px 20px; background: #f0f4f8; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
-.shortcut-item { display: flex; align-items: center; gap: 4px; }
 .kbd { background: #fff; border: 1px solid #cbd2da; border-radius: 3px; padding: 1px 5px; font-weight: 700; font-family: monospace; box-shadow: 0 1px 1px #0001; font-size: 10px; }
 
-/* Question Jump Navigator (Palette) */
 .palette-container { padding: 10px 20px; background: #f8fafc; border-bottom: 1px solid var(--line); }
 
 .qpalette { display: flex; flex-wrap: wrap; gap: 5px; max-height: 105px; overflow-y: auto; padding: 6px 8px; position: relative; }
@@ -135,7 +131,7 @@ body.dark-mode .qpalette.has-more::after { background: linear-gradient(rgba(15,2
 .p-btn.p-flagged { border-color: #f59e0b !important; }
 .p-btn.p-flagged::after { content: "🚩"; position: absolute; top: -4px; right: -4px; font-size: 10px; line-height: 1; z-index: 5; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.4)); }
 
-/* Dark Mode Overrides (Cool Slate Theme) */
+/* Dark Mode Overrides */
 body.dark-mode { 
   --bg: #0f172a; 
   --line: #334155; 
@@ -154,8 +150,12 @@ body.dark-mode .tab.active { color: #020617; font-weight: 800; }
 body.dark-mode .tab[data-s="MSTEC"].active { background: var(--subject-mstec); border-color: var(--subject-mstec); }
 body.dark-mode .tab[data-s="HPGE"].active { background: var(--subject-hpge); border-color: var(--subject-hpge); }
 body.dark-mode .tab[data-s="PSAD"].active { background: var(--subject-psad); border-color: var(--subject-psad); }
+/* Same bright-bg + near-black-text treatment as active tabs, applied consistently to every other filled UI element */
+body.dark-mode .primary, body.dark-mode .timerbtn.start-ready, body.dark-mode .pal-ftab.active {
+  background: var(--subject); border-color: var(--subject); color: #020617;
+}
+body.dark-mode .p-btn.p-answered { background: var(--subject) !important; color: #020617 !important; border-color: var(--subject) !important; font-weight: 800; }
 body.dark-mode .qrow.active-q { background: #1e293b; outline-color: var(--subject); }
-body.dark-mode .shortcut-bar { background: #0f172a; border-color: #334155; color: #94a3b8; }
 body.dark-mode .kbd { background: #1e293b; border-color: #475569; color: #e2e8f0; box-shadow: none; }
 body.dark-mode .badge-bonus { background: rgba(34, 197, 94, 0.15); color: #4ade80; border-color: #16a34a; }
 body.dark-mode .badge-skipped { background: rgba(217, 119, 6, 0.15); color: #fbbf24; border-color: #b45309; }
@@ -163,9 +163,7 @@ body.dark-mode .badge-wrong { background: rgba(220, 38, 38, 0.15); color: #fca5a
 body.dark-mode .badge-flagged { background: rgba(124, 58, 237, 0.15); color: #c4b5fd; border-color: #7c3aed; }
 body.dark-mode .reviewchoice.correct { background: #065f46; border-color: #10b981; color: #ecfdf5; }
 body.dark-mode .reviewchoice.wrong { background: #7f1d1d; border-color: #ef4444; color: #fef2f2; }
-/* Changed unanswered (skipped correct answer) outline to Green for Dark Mode */
 body.dark-mode .reviewchoice.unanswered { background: #0f172a; border-color: #10b981; color: #10b981; }
-body.dark-mode .p-btn.p-answered { color: #020617 !important; font-weight: 800; }
 body.dark-mode .about-content { color: #cbd5e1 !important; }
 body.dark-mode .review-header-bar h3 { color: #f8fafc; }
 body.dark-mode .r-badge:hover { filter: brightness(1.15); }
@@ -184,7 +182,6 @@ body.dark-mode .r-badge.r-flagged { background: rgba(139, 92, 246, 0.15); color:
 
 body.dark-mode .shortcut-inline { color: #94a3b8; }
 
-/* Low Time Warning Colors & Animations */
 .timer.timer-warning { color: #f59e0b !important; }
 .timer.timer-critical { color: #ef4444 !important; animation: timerPulse 1s infinite alternate; }
 @keyframes timerPulse {
@@ -196,7 +193,6 @@ body.dark-mode .shortcut-inline { color: #94a3b8; }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Palette Controls, Toggle, and Filters */
 .nav-toggle-btn {
   padding: 3px 8px; font-size: 11px; font-weight: 700; border: 1px solid #cbd2da;
   background: #ffffff; color: #475467; border-radius: 4px; cursor: pointer; transition: all 0.15s;
@@ -224,9 +220,6 @@ body.dark-mode .pal-filter-tabs { background: #1e293b; }
 body.dark-mode .pal-ftab { color: #94a3b8; }
 .pal-ftab.active { background: var(--subject-solid); color: #ffffff; }
 
-.shortcut-bar-sub { display:none !important; }
-
-/* Pre-submission Confirmation Modal */
 .confirm-box { max-width: 520px; text-align: left; }
 .confirm-header { display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 14px; }
 .confirm-header h2 { margin: 0; font-size: 20px; font-weight: 800; color: var(--navy); }
@@ -237,7 +230,6 @@ body.dark-mode .confirm-desc { color: #94a3b8; }
 
 .confirm-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
 .stat-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 6px; text-align: center; }
-body.dark-mode .stat-card { background: #0f172a; border-color: #334155; }
 .stat-val { font-size: 20px; font-weight: 800; color: #1e293b; }
 body.dark-mode .stat-val { color: #f8fafc; }
 .stat-lbl { font-size: 10px; font-weight: 700; color: #64748b; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.3px; }
@@ -258,7 +250,6 @@ body.dark-mode .confirm-warning-box { background: rgba(234, 179, 8, 0.1); border
 .danger-btn { background: #dc2626 !important; border-color: #dc2626 !important; color: #ffffff !important; }
 .danger-btn:hover { background: #b91c1c !important; }
 
-/* Sticky Top Controls on Mobile & Tablet Screens (Vertical & Horizontal) */
 @media(max-width: 1280px) {
   .exambar { position: sticky; top: 0; z-index: 80; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
 }
@@ -275,17 +266,13 @@ body.dark-mode .confirm-warning-box { background: rgba(234, 179, 8, 0.1); border
   .qpalette { max-height: 155px; }
 }
 
-/* Remove active outline on question numbers & rows when Hotkeys are OFF */
 body.hotkeys-off .p-btn.p-active { box-shadow: none !important; }
 body.hotkeys-off .qrow.active-q { outline: none !important; background: transparent !important; }
 
-/* Filter Empty State Message & Counts */
 .pal-empty-msg { width: 100%; padding: 12px 14px; font-size: 11.5px; color: #64748b; background: #ffffff; border: 1px dashed #cbd2da; border-radius: 5px; text-align: center; }
 body.dark-mode .pal-empty-msg { background: #0f172a; color: #94a3b8; border-color: #334155; }
-
 .pal-cnt-badge { font-size: 10px; opacity: 0.85; font-weight: 600; margin-left: 2px; }
 
-/* Refinements & History Dashboard Extensions */
 .auto-advance-toggle{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;color:#667085;cursor:pointer;user-select:none}
 .auto-advance-toggle input{cursor:pointer;margin:0}
 body.dark-mode .auto-advance-toggle{color:#94a3b8}
@@ -299,7 +286,6 @@ body.dark-mode .auto-advance-toggle{color:#94a3b8}
 .history-stat.avg .val{color:var(--subject)}.history-stat.best .val{color:#16a34a}.history-stat.attempts .val{color:#7c3aed}.history-stat.low .val{color:#d97706}
 .history-stat.trend .val{color:#10b981}.history-stat.trend .val.negative{color:#ef4444}
 
-/* Remaining Dark Mode Overrides (Hover states included to fix sticky pure-white button mobile tap bug) */
 body.dark-mode main{color:#e2e8f0;}
 body.dark-mode .panel{background:#0f172a;border-color:#334155;border-top-color:var(--subject);}
 body.dark-mode .panel-title{color:#f8fafc;border-color:#334155;}
@@ -309,7 +295,6 @@ body.dark-mode select{background:#1e293b;color:#f1f5f9;border-color:#475569;}
 body.dark-mode .timerlabel{color:#94a3b8;}
 body.dark-mode .timer{color:var(--subject);}
 body.dark-mode .timerbtn{background:#1e293b;color:#e2e8f0;border-color:#475569;}
-body.dark-mode .timerbtn.start-ready{background:var(--subject);border-color:var(--subject);color:#fff;}
 body.dark-mode .timerbtn:hover:not(:disabled){background:#334155;border-color:#64748b;color:#f8fafc;}
 body.dark-mode .examnote{background:rgba(217, 119, 6, 0.1);border-color:#b45309;color:#fde047;}
 body.dark-mode .palette-container{background:#0f172a;border-color:#334155;}
@@ -421,11 +406,17 @@ body.dark-mode .history-view-btn{background:#1e293b;color:#e2e8f0;border-color:#
 </section><section class="panel" style="border-top-color:#64748b;">
 <div class="panel-title" style="background:none;">Past Attempts</div>
 <div class="history-toolbar">
-  <select id="histVol" onchange="renderAttempts()"><option value="all">All Volumes</option></select>
-  <select id="histSubj" onchange="renderAttempts()"><option value="all">All Subjects</option></select>
-  <select id="histExam" onchange="renderAttempts()"><option value="all">All Exams</option></select>
-  <button class="secondary" style="padding:6px 10px;font-size:12px" onclick="clearHistoryFilters()">Clear Filters</button>
-  <button class="secondary" style="padding:6px 10px;font-size:12px;margin-left:auto" onclick="clearHistory()">Clear All History</button>
+  <select id="histVol" onchange="resetHistoryPage(); renderAttempts()"><option value="all">All Volumes</option></select>
+  <select id="histSubj" onchange="resetHistoryPage(); renderAttempts()"><option value="all">All Subjects</option></select>
+  <select id="histExam" onchange="resetHistoryPage(); renderAttempts()"><option value="all">All Exams</option></select>
+  
+  <div class="history-toolbar-actions" style="margin-left:auto; display:flex; gap:8px;">
+    <button class="secondary btn-sm" onclick="clearHistoryFilters()">Clear Filters</button>
+    <button class="secondary btn-sm" onclick="exportHistory()" title="Download History Data">📥 Export</button>
+    <button class="secondary btn-sm" onclick="document.getElementById('importFile').click()" title="Load History Data">📤 Import</button>
+    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importHistory(event)">
+    <button class="danger btn-sm" onclick="clearHistory()">Clear All</button>
+  </div>
 </div>
 <div class="history-summary">
   <div class="history-stat attempts"><div class="val" id="histAttempts">0</div><div class="lbl">Attempts</div></div>
@@ -472,7 +463,7 @@ body.dark-mode .history-view-btn{background:#1e293b;color:#e2e8f0;border-color:#
 
       <div style="margin-top:14px;">
         <b style="color:var(--subject);display:block;margin-bottom:6px;">💾 Saved Progress & Attempt History</b>
-        <p style="margin:0;">Your exam attempt history is saved directly on your browser device. Refreshing the page resets active unsubmitted exams to ensure fresh practice attempts.</p>
+        <p style="margin:0;">Your exam attempt history is saved directly on your browser device. Refreshing the page resets active unsubmitted exams to ensure fresh practice attempts. Use the Export/Import buttons to backup your history to a JSON file.</p>
       </div>
 
       <div class="disclaimer" style="margin-top:16px;">
@@ -536,7 +527,7 @@ body.dark-mode .history-view-btn{background:#1e293b;color:#e2e8f0;border-color:#
       <div class="r-badge r-correct" id="badgeCorrect" onclick="toggleReviewFilter('correct')" title="Filter by Correct">✓ <span id="rStatCorrect">0</span> Correct</div>
       <div class="r-badge r-wrong" id="badgeWrong" onclick="toggleReviewFilter('incorrect')" title="Filter by Wrong">✕ <span id="rStatWrong">0</span> Wrong</div>
       <div class="r-badge r-skipped" id="badgeSkipped" onclick="toggleReviewFilter('skipped')" title="Filter by Skipped">⚠ <span id="rStatSkipped">0</span> Skipped</div>
-      <div class="r-badge r-flagged" id="badgeFlagged" onclick="toggleReviewFilter('flagged')" title="Filter by Flagged">🚩 <span id="rStatResFlagged">0</span> Flagged</div>
+      <div class="r-badge r-flagged" id="badgeFlagged" onclick="toggleReviewFilter('flagged')" title="Filter by Flagged (Requires Overlap)">🚩 <span id="rStatResFlagged">0</span> Flagged</div>
     </div>
 
     <div class="review-header-bar">
@@ -550,21 +541,19 @@ body.dark-mode .history-view-btn{background:#1e293b;color:#e2e8f0;border-color:#
 </div>
 
 <script>
-// --- Storage Configuration ---
 const STORAGE_KEY = 'ceUltimateAttempts';
-const MAX_HISTORY = 100;
+const MAX_HISTORY = 200; 
 
 let DATA = {}
 const DURATIONS = {PSAD:21600, MSTEC:18000, HPGE:14400};
 let volume = '', subject = 'MSTEC', examName = '', ans = [], flagged = [], activeQ = 0, accumulatedMs = 0, startTime = null, running = false, submitted = false, lastResult = null, hotkeysEnabled = false, navCollapsed = true, palFilter = 'all', autoAdvance = true, activeFilters = new Set();
+let historyPage = 1;
+const ITEMS_PER_PAGE = 10;
+
 const root = document.documentElement, volSel = document.getElementById('volSelect'), sel = document.getElementById('exam'), leftQ = document.getElementById('leftQuestions'), rightQ = document.getElementById('rightQuestions'), timer = document.getElementById('timer'), timerBtn = document.getElementById('timerBtn'), status = document.getElementById('status'), note = document.getElementById('examnote'), submitBtn = document.getElementById('submitBtn');
 
-function openAboutModal() {
-  document.getElementById('aboutModal').classList.add('show');
-}
-function closeAboutModal() {
-  document.getElementById('aboutModal').classList.remove('show');
-}
+function openAboutModal() { document.getElementById('aboutModal').classList.add('show'); }
+function closeAboutModal() { document.getElementById('aboutModal').classList.remove('show'); }
 
 function toggleDarkMode() {
   document.body.classList.toggle('dark-mode');
@@ -608,22 +597,14 @@ sel.addEventListener('change', () => {
   updateTimerUI(); updateNote(); render();
 });
 
-// --- Optimized Storage Handlers ---
 function getAttempts() {
-  try { 
-    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; 
-  } catch { 
-    return []; 
-  }
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; }
 }
-
 function saveAttempts(attempts) {
   try {
     if (attempts.length > MAX_HISTORY) attempts = attempts.slice(-MAX_HISTORY);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(attempts));
-  } catch (e) {
-    console.warn('Unable to save attempt: Storage may be full or disabled.');
-  }
+  } catch (e) { console.warn('Unable to save attempt: Storage may be full.'); }
 }
 
 function getElapsedSeconds() {
@@ -703,22 +684,16 @@ function updateTimerUI() {
 
   timer.classList.remove('timer-warning', 'timer-critical');
   if (running && !submitted) {
-    if (rem <= 300) {
-      timer.classList.add('timer-critical');
-    } else if (rem <= 900) {
-      timer.classList.add('timer-warning');
-    }
+    if (rem <= 300) { timer.classList.add('timer-critical'); } 
+    else if (rem <= 900) { timer.classList.add('timer-warning'); }
   }
 }
 
 function updateNote() {
   const hasSubject = volume && DATA[volume] && DATA[volume][subject];
-
-  if (running) {
-    note.style.display = 'none';
-  } else if (!volume || !examName) {
-    note.style.display = 'none';
-  } else if (volume && !hasSubject) {
+  if (running) { note.style.display = 'none'; } 
+  else if (!volume || !examName) { note.style.display = 'none'; } 
+  else if (volume && !hasSubject) {
     note.style.display = 'block';
     note.innerHTML = 'Data for <b>' + subject + '</b> in this volume is currently unavailable.';
   } else if (lastResult) {
@@ -727,16 +702,11 @@ function updateNote() {
   } else if (getElapsedSeconds() > 0) {
     note.style.display = 'block';
     note.innerHTML = '<b>Timer paused.</b> Selected answers are preserved. Press <b>Start</b> to resume.';
-  } else {
-    note.style.display = 'none';
-  }
+  } else { note.style.display = 'none'; }
 }
 
 function toggleTimer() {
-  if (!examName || examName === '') {
-    alert('Please select an examination first.');
-    return;
-  }
+  if (!examName || examName === '') { alert('Please select an examination first.'); return; }
   if (submitted) return;
   if (getElapsedSeconds() >= duration()) { submitExam(true); return; }
   if (running) {
@@ -781,8 +751,6 @@ function makeQuestion(i) {
     choice.type = 'button';
     choice.className = 'choice' + (ans[i] === letter ? ' selected' : '') + (ans[i] === 'E' && letter === 'E' ? ' e-selected' : '') + (locked ? ' locked' : '');
     choice.disabled = locked || submitted;
-    choice.setAttribute('aria-pressed', ans[i] === letter ? 'true' : 'false');
-    choice.setAttribute('aria-label', 'Question ' + (i + 1) + ', option ' + letter);
     choice.innerHTML = '<b>' + letter + '</b>';
     choice.addEventListener('click', e => {
       e.preventDefault();
@@ -795,16 +763,10 @@ function makeQuestion(i) {
     });
     box.appendChild(choice);
   });
-
-  row.appendChild(box);
-  return row;
+  row.appendChild(box); return row;
 }
 
-function toggleNav() {
-  navCollapsed = !navCollapsed;
-  applyNavState();
-}
-
+function toggleNav() { navCollapsed = !navCollapsed; applyNavState(); }
 function applyNavState() {
   const pal = document.getElementById('qPalette');
   const btn = document.getElementById('navToggleBtn');
@@ -820,17 +782,10 @@ function toggleHotkeys(enabled) {
   const txt = document.getElementById('hkStatusText');
   const guide = document.getElementById('shortcutGuide');
   const aaLabel = document.getElementById('autoAdvanceLabel');
-  const toggle = document.getElementById('hotkeysToggle');
-
-  if (toggle) toggle.checked = hotkeysEnabled;
-  if (txt) {
-    txt.textContent = hotkeysEnabled ? 'ON' : 'OFF';
-    txt.className = 'kbd-inline ' + (hotkeysEnabled ? '' : 'off');
-  }
-
+  if (document.getElementById('hotkeysToggle')) document.getElementById('hotkeysToggle').checked = hotkeysEnabled;
+  if (txt) { txt.textContent = hotkeysEnabled ? 'ON' : 'OFF'; txt.className = 'kbd-inline ' + (hotkeysEnabled ? '' : 'off'); }
   if (guide) guide.hidden = !hotkeysEnabled;
   if (aaLabel) aaLabel.hidden = !hotkeysEnabled;
-
   document.body.classList.toggle('hotkeys-off', !hotkeysEnabled);
   if (document.activeElement) document.activeElement.blur();
   render();
@@ -838,10 +793,7 @@ function toggleHotkeys(enabled) {
 
 function setPalFilter(f) {
   palFilter = f;
-  ['pftAll', 'pftUnans', 'pftFlagged'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.classList.remove('active');
-  });
+  ['pftAll', 'pftUnans', 'pftFlagged'].forEach(id => { const el = document.getElementById(id); if (el) el.classList.remove('active'); });
   if (f === 'all' && document.getElementById('pftAll')) document.getElementById('pftAll').classList.add('active');
   if (f === 'unanswered' && document.getElementById('pftUnans')) document.getElementById('pftUnans').classList.add('active');
   if (f === 'flagged' && document.getElementById('pftFlagged')) document.getElementById('pftFlagged').classList.add('active');
@@ -856,13 +808,9 @@ function updateFilterCounts() {
   const unansCount = total - ansCount;
   const flagCount = flagged.filter(Boolean).length;
 
-  const cntAll = document.getElementById('cntAll');
-  const cntUnans = document.getElementById('cntUnans');
-  const cntFlagged = document.getElementById('cntFlagged');
-
-  if (cntAll) cntAll.textContent = '(' + total + ')';
-  if (cntUnans) cntUnans.textContent = '(' + unansCount + ')';
-  if (cntFlagged) cntFlagged.textContent = '(' + flagCount + ')';
+  if (document.getElementById('cntAll')) document.getElementById('cntAll').textContent = '(' + total + ')';
+  if (document.getElementById('cntUnans')) document.getElementById('cntUnans').textContent = '(' + unansCount + ')';
+  if (document.getElementById('cntFlagged')) document.getElementById('cntFlagged').textContent = '(' + flagCount + ')';
 }
 
 function renderPalette() {
@@ -890,11 +838,7 @@ function renderPalette() {
     btn.className = cls;
     btn.textContent = i + 1;
     btn.title = 'Question ' + (i + 1) + (ans[i] ? ' (' + ans[i] + ')' : '') + (flagged[i] ? ' [Flagged]' : '');
-    btn.onclick = () => {
-      activeQ = i;
-      render();
-      scrollToActive();
-    };
+    btn.onclick = () => { activeQ = i; render(); scrollToActive(); };
     pal.appendChild(btn);
   });
 
@@ -902,18 +846,12 @@ function renderPalette() {
     const emptyMsg = document.createElement('div');
     emptyMsg.className = 'pal-empty-msg';
     
-    if (volume && !hasSubject) {
-      emptyMsg.innerHTML = 'Data for this subject is coming soon.';
-    } else if (!volume || !examName) {
-      emptyMsg.innerHTML = 'Select an exam to load navigator.';
-    } else if (palFilter === 'flagged') {
-      emptyMsg.innerHTML = '🚩 No flagged questions yet. Click 🏳️ next to any item to flag it for review.';
-    } else if (palFilter === 'unanswered') {
-      emptyMsg.innerHTML = '🎉 All questions answered! You are ready to submit your exam.';
-    }
+    if (volume && !hasSubject) { emptyMsg.innerHTML = 'Data for this subject is coming soon.'; } 
+    else if (!volume || !examName) { emptyMsg.innerHTML = 'Select an exam to load navigator.'; } 
+    else if (palFilter === 'flagged') { emptyMsg.innerHTML = '🚩 No flagged questions yet. Click 🏳️ next to any item to flag it for review.'; } 
+    else if (palFilter === 'unanswered') { emptyMsg.innerHTML = '🎉 All questions answered! You are ready to submit your exam.'; }
     pal.appendChild(emptyMsg);
   }
-
   pal.classList.toggle('has-more', pal.scrollHeight > pal.clientHeight + 1);
 }
 
@@ -964,11 +902,7 @@ setInterval(() => {
 }, 500);
 
 function toggleReviewFilter(f) {
-  if (activeFilters.has(f)) {
-    activeFilters.delete(f);
-  } else {
-    activeFilters.add(f);
-  }
+  if (activeFilters.has(f)) { activeFilters.delete(f); } else { activeFilters.add(f); }
   updateFilterBubbles();
   
   const targetVol = currentViewedAttempt ? (currentViewedAttempt.vol || 'Vol 4, 7th Ed') : volume;
@@ -990,17 +924,12 @@ function updateFilterBubbles() {
   };
 
   if (activeFilters.size === 0) {
-    for (let k in badges) {
-      if (badges[k]) badges[k].classList.remove('inactive');
-    }
+    for (let k in badges) { if (badges[k]) badges[k].classList.remove('inactive'); }
   } else {
     for (let k in badges) {
       if (badges[k]) {
-        if (activeFilters.has(k)) {
-          badges[k].classList.remove('inactive');
-        } else {
-          badges[k].classList.add('inactive');
-        }
+        if (activeFilters.has(k)) { badges[k].classList.remove('inactive'); } 
+        else { badges[k].classList.add('inactive'); }
       }
     }
   }
@@ -1008,6 +937,11 @@ function updateFilterBubbles() {
 
 function buildReview(key, userAns = ans, userFlagged = flagged) {
   let itemsRendered = 0;
+  
+  // Isolate state filters (OR logic) from flag filter (AND logic)
+  const activeStates = new Set([...activeFilters].filter(f => ['correct', 'incorrect', 'skipped'].includes(f)));
+  const reqFlag = activeFilters.has('flagged');
+
   const html = key.map((correct, i) => {
     const ua = userAns[i];
     const isBonus = (correct === "");
@@ -1016,14 +950,17 @@ function buildReview(key, userAns = ans, userFlagged = flagged) {
     const isCorrectAns = (ua === correct) || isBonus;
     const isFlagged = Boolean(userFlagged && userFlagged[i]);
 
+    // Smart Boolean Logic Verification
+    const itemState = isCorrectAns ? 'correct' : (isSkipped ? 'skipped' : 'incorrect');
+    let match = true;
+
     if (activeFilters.size > 0) {
-      let match = false;
-      if (activeFilters.has('correct') && isCorrectAns) match = true;
-      if (activeFilters.has('incorrect') && isWrong) match = true;
-      if (activeFilters.has('skipped') && isSkipped) match = true;
-      if (activeFilters.has('flagged') && isFlagged) match = true;
-      if (!match) return '';
+      const stateMatch = activeStates.size === 0 || activeStates.has(itemState);
+      const flagMatch = !reqFlag || isFlagged;
+      match = stateMatch && flagMatch;
     }
+
+    if (!match) return '';
 
     itemsRendered++;
     const choices = ['A','B','C','D','E'].map(c => {
@@ -1034,9 +971,7 @@ function buildReview(key, userAns = ans, userFlagged = flagged) {
         if (c === correct) cls += ' unanswered';
       } else {
         if (c === correct) cls += ' correct';
-        if (ua === c && ua !== correct) {
-          cls += ' wrong';
-        }
+        if (ua === c && ua !== correct) { cls += ' wrong'; }
       }
       return '<div class="' + cls + '">' + c + '</div>';
     }).join('');
@@ -1051,13 +986,7 @@ function buildReview(key, userAns = ans, userFlagged = flagged) {
   }).join('');
 
   if (itemsRendered === 0) {
-    let msg = 'No items match the selected filter(s).';
-    if (activeFilters.size === 1) {
-      if (activeFilters.has('incorrect')) msg = '🎉 Perfect score! No wrong answers to review.';
-      else if (activeFilters.has('skipped')) msg = '👍 You answered every single question. Zero items skipped!';
-      else if (activeFilters.has('flagged')) msg = '🚩 No flagged questions in this exam attempt.';
-      else if (activeFilters.has('correct')) msg = 'Keep practicing! No correct answers in this attempt.';
-    }
+    let msg = 'No items match the selected filter combination.';
     return '<div style="padding:20px;text-align:center;color:#64748b;font-weight:700;font-size:13px;">' + msg + '</div>';
   }
   return html;
@@ -1067,21 +996,15 @@ function showResult() {
   const key = DATA[volume][subject][examName];
   const userAns = lastResult ? lastResult.ans : ans;
   const userFlagged = lastResult ? lastResult.flagged : flagged;
-  const correctCount = lastResult.correct;
-  const totalCount = key.length;
-  const answeredCount = lastResult.answered;
-  const wrongCount = lastResult.wrong;
-  const skippedCount = lastResult.skipped;
-  const flaggedCount = (userFlagged || []).filter(Boolean).length;
-
-  document.getElementById('rt').textContent = lastResult.auto ? 'Time Expired — Exam Submitted' : 'Exam Result';
-  document.getElementById('score').textContent = correctCount + ' / ' + totalCount;
-  document.getElementById('summary').textContent = lastResult.pct + '% • ' + answeredCount + ' answered • Time consumed: ' + lastResult.time;
   
-  document.getElementById('rStatCorrect').textContent = correctCount;
-  document.getElementById('rStatWrong').textContent = wrongCount;
-  document.getElementById('rStatSkipped').textContent = skippedCount;
-  document.getElementById('rStatResFlagged').textContent = flaggedCount;
+  document.getElementById('rt').textContent = lastResult.auto ? 'Time Expired — Exam Submitted' : 'Exam Result';
+  document.getElementById('score').textContent = lastResult.correct + ' / ' + key.length;
+  document.getElementById('summary').textContent = lastResult.pct + '% • ' + lastResult.answered + ' answered • Time consumed: ' + lastResult.time;
+  
+  document.getElementById('rStatCorrect').textContent = lastResult.correct;
+  document.getElementById('rStatWrong').textContent = lastResult.wrong;
+  document.getElementById('rStatSkipped').textContent = lastResult.skipped;
+  document.getElementById('rStatResFlagged').textContent = (userFlagged || []).filter(Boolean).length;
 
   activeFilters.clear();
   updateFilterBubbles();
@@ -1117,17 +1040,12 @@ function confirmSubmit() {
     } else if (flagCount > 0) {
       warn.style.display = 'block';
       warn.innerHTML = '📌 <b>Note:</b> You still have <b>' + flagCount + ' flagged item(s)</b>. Review them before completing if needed.';
-    } else {
-      warn.style.display = 'none';
-    }
+    } else { warn.style.display = 'none'; }
   }
-
   document.getElementById('confirmModal').classList.add('show');
 }
 
-function closeConfirmModal() {
-  document.getElementById('confirmModal').classList.remove('show');
-}
+function closeConfirmModal() { document.getElementById('confirmModal').classList.remove('show'); }
 
 function performSubmit(auto = false) {
   closeConfirmModal();
@@ -1148,31 +1066,15 @@ function performSubmit(auto = false) {
   lastResult = {correct, wrong, skipped, pct, time: fmt(el), answered: ans.filter(Boolean).length, auto, ans: [...ans], flagged: [...flagged]};
   
   const a = getAttempts();
-  a.push({
-    vol: volume, 
-    subject: subject, 
-    exam: examName, 
-    date: new Date().toLocaleString(), 
-    score: correct + '/' + key.length, 
-    pct: pct + '%', 
-    time: fmt(el), 
-    ans: [...ans], 
-    flagged: [...flagged]
-  });
+  a.push({ vol: volume, subject: subject, exam: examName, date: new Date().toLocaleString(), score: correct + '/' + key.length, pct: pct + '%', time: fmt(el), ans: [...ans], flagged: [...flagged] });
   saveAttempts(a);
   
-  updateTimerUI(); updateNote(); renderAttempts(); showResult();
+  updateTimerUI(); updateNote(); resetHistoryPage(); renderAttempts(); showResult();
 }
 
 function submitExam(auto = false) {
   if (!volume || !examName) return;
-  if (auto) {
-    performSubmit(true);
-  } else if (submitted) {
-    showResult();
-  } else {
-    confirmSubmit();
-  }
+  if (auto) { performSubmit(true); } else if (submitted) { showResult(); } else { confirmSubmit(); }
 }
 
 let currentViewedAttempt = null;
@@ -1220,7 +1122,6 @@ function viewAttempt(idx) {
 
 function deleteAttempt(idx) {
   if (!confirm('Delete this specific attempt entry?')) return;
-  
   const all = getAttempts();
   if (idx >= 0 && idx < all.length) {
     all.splice(idx, 1);
@@ -1252,48 +1153,27 @@ function retake() {
 }
 
 function clearAndRestartExam(promptUser = true) {
-  if (promptUser && !confirm('Clear all answers and restart this examination from scratch?')) {
-    return;
-  }
+  if (promptUser && !confirm('Clear all answers and restart this examination from scratch?')) return;
   const len = ((DATA[volume] && DATA[volume][subject] && DATA[volume][subject][examName]) || []).length;
   ans = Array(len).fill(null);
   flagged = Array(len).fill(false);
-  activeQ = 0;
-  accumulatedMs = 0;
-  startTime = null;
-  running = false;
-  submitted = false;
-  lastResult = null;
-  updateTimerUI();
-  updateNote();
-  render();
+  activeQ = 0; accumulatedMs = 0; startTime = null; running = false; submitted = false; lastResult = null;
+  updateTimerUI(); updateNote(); render();
 }
 
-function resetExam() {
-  if (!volume || !examName) return;
-  clearAndRestartExam(true);
-}
+function resetExam() { if (!volume || !examName) return; clearAndRestartExam(true); }
 
 function resetTimer() {
-  if (submitted) {
-    alert('This exam has already been submitted. Use “Retake This Exam” to start a new attempt.');
-    return;
-  }
+  if (submitted) { alert('This exam has already been submitted. Use “Retake This Exam” to start a new attempt.'); return; }
   if (!volume || !examName) return;
   if (getElapsedSeconds() > 0 || ans.some(Boolean) || flagged.some(Boolean)) {
     if (!confirm('Reset the timer to the full exam time? Your current answers and flags will be kept.')) return;
   }
-  accumulatedMs = 0;
-  startTime = null;
-  running = false;
-  updateTimerUI();
-  updateNote();
-  render();
+  accumulatedMs = 0; startTime = null; running = false;
+  updateTimerUI(); updateNote(); render();
 }
 
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
+function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 function populateHistoryFilters() {
   const v=document.getElementById('histVol'), s=document.getElementById('histSubj'), e=document.getElementById('histExam');
@@ -1319,6 +1199,7 @@ function filteredHistory(source = null) {
 
 function clearHistoryFilters() {
   ['histVol','histSubj','histExam'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='all';});
+  resetHistoryPage();
   renderAttempts();
 }
 
@@ -1349,10 +1230,12 @@ function updateHistorySummary(a) {
   }
 }
 
-// --- Optimized DOM Rendering for History Table ---
 function createTableRow(labels, cells) {
   return `<tr>${cells.map((val, i) => `<td data-label="${labels[i]}">${i === 0 || i === 8 ? val : escapeHtml(val)}</td>`).join('')}</tr>`;
 }
+
+function resetHistoryPage() { historyPage = 1; }
+function changeHistoryPage(delta) { historyPage += delta; renderAttempts(); }
 
 function renderAttempts() {
   populateHistoryFilters();
@@ -1368,39 +1251,98 @@ function renderAttempts() {
     return;
   }
   
+  // Pagination Math
+  const totalPages = Math.ceil(a.length / ITEMS_PER_PAGE) || 1;
+  if (historyPage > totalPages) historyPage = totalPages;
+  if (historyPage < 1) historyPage = 1;
+  
+  const startIndex = (historyPage - 1) * ITEMS_PER_PAGE;
+  const paginatedItems = a.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
   const labels = ['#', 'Volume', 'Subject', 'Exam', 'Date', 'Score', '%', 'Time', 'Action'];
   const headers = labels.map(label => `<th>${label}</th>`).join('');
   
-  const rows = a.map((x, rowIndex) => {
-    const idx = all.indexOf(x);
+  const rows = paginatedItems.map((x, rowIndex) => {
+    const globalIdx = all.indexOf(x); // Find index in the FULL, unfiltered array for accurate view/delete
+    const displayNum = startIndex + rowIndex + 1;
     const actions = `
       <div style="display:flex;gap:4px;justify-content:flex-end;">
-        <button class="secondary history-view-btn" style="padding:4px 8px;font-size:12px" onclick="viewAttempt(${idx})">View</button>
-        <button class="danger" style="padding:4px 8px;font-size:12px" onclick="deleteAttempt(${idx})" title="Delete attempt">🗑️</button>
+        <button class="secondary history-view-btn btn-sm" onclick="viewAttempt(${globalIdx})">View</button>
+        <button class="danger btn-sm" onclick="deleteAttempt(${globalIdx})" title="Delete attempt">🗑️</button>
       </div>`;
       
-    const cells = [
-      rowIndex + 1, 
-      x.vol || 'Vol 4, 7th Ed', 
-      x.subject || '', 
-      x.exam || '', 
-      x.date || '', 
-      x.score || '', 
-      x.pct || '', 
-      x.time || '', 
-      actions
-    ];
+    const cells = [ displayNum, x.vol || 'Vol 4, 7th Ed', x.subject || '', x.exam || '', x.date || '', x.score || '', x.pct || '', x.time || '', actions ];
     return createTableRow(labels, cells);
   }).join('');
   
-  container.innerHTML = `<div class="table-responsive"><table class="attempts"><thead><tr>${headers}</tr></thead><tbody>${rows}</tbody></table></div>`;
+  let paginationHTML = '';
+  if (totalPages > 1) {
+    paginationHTML = `
+      <div class="pagination-bar">
+        <button class="secondary btn-sm" ${historyPage === 1 ? 'disabled' : ''} onclick="changeHistoryPage(-1)">← Previous</button>
+        <span>Page ${historyPage} of ${totalPages}</span>
+        <button class="secondary btn-sm" ${historyPage === totalPages ? 'disabled' : ''} onclick="changeHistoryPage(1)">Next →</button>
+      </div>
+    `;
+  }
+  
+  container.innerHTML = `<div class="table-responsive"><table class="attempts"><thead><tr>${headers}</tr></thead><tbody>${rows}</tbody></table></div>${paginationHTML}`;
 }
 
 function clearHistory() { 
   if (!confirm('Clear ALL saved exam history for MSTEC, HPGE, and PSAD?')) return;
-  
   localStorage.removeItem(STORAGE_KEY);
+  resetHistoryPage();
   renderAttempts(); 
+}
+
+// Client-Side Import/Export Handlers
+function exportHistory() {
+  const data = localStorage.getItem(STORAGE_KEY) || '[]';
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `ce-reference-history-${new Date().toISOString().split('T')[0]}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function importHistory(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const importedData = JSON.parse(e.target.result);
+      if (!Array.isArray(importedData)) throw new Error("Invalid JSON structure: Expected an array of attempts.");
+      
+      const existingData = getAttempts();
+      if (existingData.length > 0) {
+        if (confirm(`You currently have ${existingData.length} saved attempts. Do you want to merge the imported data with your existing history? (Click OK to Merge, or Cancel to completely Replace)`)) {
+          // Merge Data
+          saveAttempts([...existingData, ...importedData]);
+          alert('History merged successfully!');
+        } else {
+          // Replace Data
+          saveAttempts(importedData);
+          alert('History replaced successfully!');
+        }
+      } else {
+        saveAttempts(importedData);
+        alert('History imported successfully!');
+      }
+      resetHistoryPage();
+      renderAttempts();
+    } catch (err) {
+      alert('Failed to import file. Please ensure it is a valid JSON export from this application.\n\nError: ' + err.message);
+    }
+    event.target.value = ''; // Reset input to allow re-importing the same file if needed
+  };
+  reader.readAsText(file);
 }
 
 function scrollToActive() {
