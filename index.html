@@ -71,7 +71,8 @@ button{font-weight:700;border-radius:4px;padding:9px 15px;cursor:pointer;transit
 .review{display:grid;grid-template-columns:135px 1fr;align-items:center;padding:10px 0;border-bottom:1px solid #eee}.reviewchoices{display:grid;grid-template-columns:repeat(5,minmax(50px,1fr));gap:8px}.reviewchoice{display:flex;justify-content:center;align-items:center;min-height:42px;border:1px solid #cbd7e5;border-radius:5px;font-weight:700;color:#475467}
 .reviewchoice.correct{background:#12b981;border-color:#12b981;color:#fff}
 .reviewchoice.wrong{background:#ef4444;border-color:#ef4444;color:#fff}
-.reviewchoice.unanswered{background:#fff;border:2px solid #d97706;color:#b45309}
+/* Changed unanswered (skipped correct answer) outline to Green */
+.reviewchoice.unanswered{background:#fff;border:2px solid #12b981;color:#12b981}
 .review-label{display:flex;align-items:center;justify-content:flex-start;gap:4px;flex-wrap:wrap;min-width:0;padding-right:4px;}
 .badge-bonus{display:inline-block;padding:2px 5px;background:#f0fdf4;color:#16a34a;border:1px solid #22c55e;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.3px}
 .badge-skipped{display:inline-block;padding:2px 5px;background:#fff3dc;color:#b45309;border:1px solid #f59e0b;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.3px}
@@ -83,7 +84,9 @@ button{font-weight:700;border-radius:4px;padding:9px 15px;cursor:pointer;transit
 
 /* Result Modal Diagnostic Badges & Filter Bar */
 .result-stats-row { display: flex; justify-content: center; gap: 10px; margin: 12px 0 18px; flex-wrap: wrap; }
-.r-badge { display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 700; border: 1px solid transparent; }
+.r-badge { display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 700; border: 1px solid transparent; cursor: pointer; transition: all 0.2s ease; user-select: none; }
+.r-badge:hover { filter: brightness(0.95); transform: translateY(-1px); }
+.r-badge.inactive { opacity: 0.4; filter: grayscale(1); box-shadow: none; }
 .r-badge.r-correct { background: #ecfdf5; color: #047857; border-color: #a7f3d0; }
 .r-badge.r-wrong { background: #fef2f2; color: #b91c1c; border-color: #fca5a5; }
 .r-badge.r-skipped { background: #fffbe3; color: #b45309; border-color: #fde047; }
@@ -160,10 +163,13 @@ body.dark-mode .badge-wrong { background: rgba(220, 38, 38, 0.15); color: #fca5a
 body.dark-mode .badge-flagged { background: rgba(124, 58, 237, 0.15); color: #c4b5fd; border-color: #7c3aed; }
 body.dark-mode .reviewchoice.correct { background: #065f46; border-color: #10b981; color: #ecfdf5; }
 body.dark-mode .reviewchoice.wrong { background: #7f1d1d; border-color: #ef4444; color: #fef2f2; }
-body.dark-mode .reviewchoice.unanswered { background: #0f172a; border-color: #b45309; color: #fbbf24; }
+/* Changed unanswered (skipped correct answer) outline to Green for Dark Mode */
+body.dark-mode .reviewchoice.unanswered { background: #0f172a; border-color: #10b981; color: #10b981; }
 body.dark-mode .p-btn.p-answered { color: #020617 !important; font-weight: 800; }
 body.dark-mode .about-content { color: #cbd5e1 !important; }
 body.dark-mode .review-header-bar h3 { color: #f8fafc; }
+body.dark-mode .r-badge:hover { filter: brightness(1.15); }
+body.dark-mode .r-badge.inactive { opacity: 0.3; filter: grayscale(1); box-shadow: none; }
 body.dark-mode .r-badge.r-correct { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border-color: #059669; }
 body.dark-mode .r-badge.r-wrong { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border-color: #dc2626; }
 body.dark-mode .r-badge.r-skipped { background: rgba(245, 158, 11, 0.15); color: #fde047; border-color: #d97706; }
@@ -527,20 +533,14 @@ body.dark-mode .history-view-btn{background:#1e293b;color:#e2e8f0;border-color:#
     <p id="summary" style="text-align:center"></p>
     
     <div class="result-stats-row">
-      <div class="r-badge r-correct" id="badgeCorrect">✓ <span id="rStatCorrect">0</span> Correct</div>
-      <div class="r-badge r-wrong" id="badgeWrong">✕ <span id="rStatWrong">0</span> Wrong</div>
-      <div class="r-badge r-skipped" id="badgeSkipped">⚠ <span id="rStatSkipped">0</span> Skipped</div>
-      <div class="r-badge r-flagged" id="badgeFlagged">🚩 <span id="rStatResFlagged">0</span> Flagged</div>
+      <div class="r-badge r-correct" id="badgeCorrect" onclick="toggleReviewFilter('correct')" title="Filter by Correct">✓ <span id="rStatCorrect">0</span> Correct</div>
+      <div class="r-badge r-wrong" id="badgeWrong" onclick="toggleReviewFilter('incorrect')" title="Filter by Wrong">✕ <span id="rStatWrong">0</span> Wrong</div>
+      <div class="r-badge r-skipped" id="badgeSkipped" onclick="toggleReviewFilter('skipped')" title="Filter by Skipped">⚠ <span id="rStatSkipped">0</span> Skipped</div>
+      <div class="r-badge r-flagged" id="badgeFlagged" onclick="toggleReviewFilter('flagged')" title="Filter by Flagged">🚩 <span id="rStatResFlagged">0</span> Flagged</div>
     </div>
 
     <div class="review-header-bar">
       <h3>Answer Review</h3>
-      <div class="pal-filter-tabs">
-        <button class="pal-ftab active" id="rfAll" onclick="setReviewFilter('all')">All</button>
-        <button class="pal-ftab" id="rfWrong" onclick="setReviewFilter('incorrect')">Wrong</button>
-        <button class="pal-ftab" id="rfSkipped" onclick="setReviewFilter('skipped')">Skipped</button>
-        <button class="pal-ftab" id="rfFlagged" onclick="setReviewFilter('flagged')">Flagged</button>
-      </div>
     </div>
 
     <div id="review"></div>
@@ -556,7 +556,7 @@ const MAX_HISTORY = 100;
 
 let DATA = {}
 const DURATIONS = {PSAD:21600, MSTEC:18000, HPGE:14400};
-let volume = '', subject = 'MSTEC', examName = '', ans = [], flagged = [], activeQ = 0, accumulatedMs = 0, startTime = null, running = false, submitted = false, lastResult = null, hotkeysEnabled = false, navCollapsed = true, palFilter = 'all', autoAdvance = true, reviewFilter = 'all';
+let volume = '', subject = 'MSTEC', examName = '', ans = [], flagged = [], activeQ = 0, accumulatedMs = 0, startTime = null, running = false, submitted = false, lastResult = null, hotkeysEnabled = false, navCollapsed = true, palFilter = 'all', autoAdvance = true, activeFilters = new Set();
 const root = document.documentElement, volSel = document.getElementById('volSelect'), sel = document.getElementById('exam'), leftQ = document.getElementById('leftQuestions'), rightQ = document.getElementById('rightQuestions'), timer = document.getElementById('timer'), timerBtn = document.getElementById('timerBtn'), status = document.getElementById('status'), note = document.getElementById('examnote'), submitBtn = document.getElementById('submitBtn');
 
 function openAboutModal() {
@@ -963,21 +963,47 @@ setInterval(() => {
   }
 }, 500);
 
-function setReviewFilter(f) {
-  reviewFilter = f;
-  ['rfAll', 'rfWrong', 'rfSkipped', 'rfFlagged'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.classList.remove('active');
-  });
-  if (f === 'all' && document.getElementById('rfAll')) document.getElementById('rfAll').classList.add('active');
-  if (f === 'incorrect' && document.getElementById('rfWrong')) document.getElementById('rfWrong').classList.add('active');
-  if (f === 'skipped' && document.getElementById('rfSkipped')) document.getElementById('rfSkipped').classList.add('active');
-  if (f === 'flagged' && document.getElementById('rfFlagged')) document.getElementById('rfFlagged').classList.add('active');
+function toggleReviewFilter(f) {
+  if (activeFilters.has(f)) {
+    activeFilters.delete(f);
+  } else {
+    activeFilters.add(f);
+  }
+  updateFilterBubbles();
   
-  const key = DATA[volume][subject][examName];
+  const targetVol = currentViewedAttempt ? (currentViewedAttempt.vol || 'Vol 4, 7th Ed') : volume;
+  const targetSubj = currentViewedAttempt ? currentViewedAttempt.subject : subject;
+  const targetExam = currentViewedAttempt ? currentViewedAttempt.exam : examName;
+  const key = DATA[targetVol][targetSubj][targetExam];
+  
   const userAns = lastResult ? lastResult.ans : ans;
   const userFlagged = lastResult ? lastResult.flagged : flagged;
   document.getElementById('review').innerHTML = buildReview(key, userAns, userFlagged);
+}
+
+function updateFilterBubbles() {
+  const badges = {
+    'correct': document.getElementById('badgeCorrect'),
+    'incorrect': document.getElementById('badgeWrong'),
+    'skipped': document.getElementById('badgeSkipped'),
+    'flagged': document.getElementById('badgeFlagged')
+  };
+
+  if (activeFilters.size === 0) {
+    for (let k in badges) {
+      if (badges[k]) badges[k].classList.remove('inactive');
+    }
+  } else {
+    for (let k in badges) {
+      if (badges[k]) {
+        if (activeFilters.has(k)) {
+          badges[k].classList.remove('inactive');
+        } else {
+          badges[k].classList.add('inactive');
+        }
+      }
+    }
+  }
 }
 
 function buildReview(key, userAns = ans, userFlagged = flagged) {
@@ -987,11 +1013,17 @@ function buildReview(key, userAns = ans, userFlagged = flagged) {
     const isBonus = (correct === "");
     const isSkipped = !ua && !isBonus;
     const isWrong = ua && ua !== correct && !isBonus;
+    const isCorrectAns = (ua === correct) || isBonus;
     const isFlagged = Boolean(userFlagged && userFlagged[i]);
 
-    if (reviewFilter === 'incorrect' && !isWrong) return '';
-    if (reviewFilter === 'skipped' && !isSkipped) return '';
-    if (reviewFilter === 'flagged' && !isFlagged) return '';
+    if (activeFilters.size > 0) {
+      let match = false;
+      if (activeFilters.has('correct') && isCorrectAns) match = true;
+      if (activeFilters.has('incorrect') && isWrong) match = true;
+      if (activeFilters.has('skipped') && isSkipped) match = true;
+      if (activeFilters.has('flagged') && isFlagged) match = true;
+      if (!match) return '';
+    }
 
     itemsRendered++;
     const choices = ['A','B','C','D','E'].map(c => {
@@ -1019,13 +1051,14 @@ function buildReview(key, userAns = ans, userFlagged = flagged) {
   }).join('');
 
   if (itemsRendered === 0) {
-    if (reviewFilter === 'incorrect') {
-      return '<div style="padding:20px;text-align:center;color:#10b981;font-weight:700;font-size:13px;">🎉 Perfect score! No wrong answers to review.</div>';
-    } else if (reviewFilter === 'skipped') {
-      return '<div style="padding:20px;text-align:center;color:#64748b;font-weight:700;font-size:13px;">👍 You answered every single question. Zero items skipped!</div>';
-    } else if (reviewFilter === 'flagged') {
-      return '<div style="padding:20px;text-align:center;color:#6d28d9;font-weight:700;font-size:13px;">🚩 No flagged questions in this exam attempt.</div>';
+    let msg = 'No items match the selected filter(s).';
+    if (activeFilters.size === 1) {
+      if (activeFilters.has('incorrect')) msg = '🎉 Perfect score! No wrong answers to review.';
+      else if (activeFilters.has('skipped')) msg = '👍 You answered every single question. Zero items skipped!';
+      else if (activeFilters.has('flagged')) msg = '🚩 No flagged questions in this exam attempt.';
+      else if (activeFilters.has('correct')) msg = 'Keep practicing! No correct answers in this attempt.';
     }
+    return '<div style="padding:20px;text-align:center;color:#64748b;font-weight:700;font-size:13px;">' + msg + '</div>';
   }
   return html;
 }
@@ -1050,17 +1083,8 @@ function showResult() {
   document.getElementById('rStatSkipped').textContent = skippedCount;
   document.getElementById('rStatResFlagged').textContent = flaggedCount;
 
-  document.getElementById('badgeCorrect').style.display = correctCount > 0 ? 'flex' : 'none';
-  document.getElementById('badgeWrong').style.display = wrongCount > 0 ? 'flex' : 'none';
-  document.getElementById('badgeSkipped').style.display = skippedCount > 0 ? 'flex' : 'none';
-  document.getElementById('badgeFlagged').style.display = flaggedCount > 0 ? 'flex' : 'none';
-
-  reviewFilter = 'all';
-  ['rfAll', 'rfWrong', 'rfSkipped', 'rfFlagged'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.classList.remove('active');
-  });
-  if (document.getElementById('rfAll')) document.getElementById('rfAll').classList.add('active');
+  activeFilters.clear();
+  updateFilterBubbles();
 
   document.getElementById('review').innerHTML = buildReview(key, userAns, userFlagged);
   document.getElementById('modal').classList.add('show');
@@ -1187,17 +1211,8 @@ function viewAttempt(idx) {
   document.getElementById('rStatSkipped').textContent = skippedCount;
   document.getElementById('rStatResFlagged').textContent = flaggedCount;
 
-  document.getElementById('badgeCorrect').style.display = correctCount > 0 ? 'flex' : 'none';
-  document.getElementById('badgeWrong').style.display = wrongCount > 0 ? 'flex' : 'none';
-  document.getElementById('badgeSkipped').style.display = skippedCount > 0 ? 'flex' : 'none';
-  document.getElementById('badgeFlagged').style.display = flaggedCount > 0 ? 'flex' : 'none';
-
-  reviewFilter = 'all';
-  ['rfAll', 'rfWrong', 'rfSkipped', 'rfFlagged'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.classList.remove('active');
-  });
-  if (document.getElementById('rfAll')) document.getElementById('rfAll').classList.add('active');
+  activeFilters.clear();
+  updateFilterBubbles();
 
   document.getElementById('review').innerHTML = buildReview(key, itemAns, itemFlagged);
   document.getElementById('modal').classList.add('show');
