@@ -55,7 +55,7 @@ select{padding:9px 10px;border:1px solid var(--border-soft);border-radius:4px;ba
 .sheet{padding:18px 20px}.question-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 34px;align-items:start}.question-column{min-width:0}
 .qrow{display:grid;grid-template-columns:42px 1fr;align-items:center;min-height:54px;border-top:1px solid var(--line);transition:background 0.15s;padding:4px 6px;border-radius:4px;cursor:pointer}.qrow:first-child{border-top:0}.qno{font-weight:700;color:var(--text-muted)}
 .choices{display:grid;grid-template-columns:repeat(5,minmax(44px,1fr));gap:7px}
-.choice{position:relative;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:9px 5px;border:1px solid var(--border-soft);border-radius:5px;min-height:40px;font-size:14px;color:var(--text-main);}.choice:hover{background:var(--softsub);border-color:#8fb2df}
+.choice{position:relative;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:9px 5px;border:1px solid var(--border-soft);border-radius:5px;min-height:40px;font-size:14px;color:var(--text-main);}.choice:hover{background:var(--softsub);border-color:#8fb2df; background: transparent;}
 .choice input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
 .choice:focus-within{outline:2px solid var(--subject);outline-offset:1px}
 .choice:disabled{cursor:not-allowed}.choice:disabled:hover{background:inherit}.choice b{font:inherit}
@@ -494,6 +494,62 @@ body.hotkeys-off .qrow.active-q { outline: none !important; background: transpar
 const STORAGE_KEY = 'ceUltimateAttempts';
 const MAX_HISTORY = 200; 
 
+const ACTIVE_STATE_KEY = 'ceActiveExamProgress';
+
+function saveActiveExamState() {
+  if (!volume || !examName || submitted) return;
+  const state = {
+    volume,
+    subject,
+    examName,
+    ans,
+    flagged,
+    activeQ,
+    accumulatedMs: getElapsedSeconds() * 1000
+  };
+  try {
+    localStorage.setItem(ACTIVE_STATE_KEY, JSON.stringify(state));
+  } catch (e) {}
+}
+
+function clearActiveExamState() {
+  try {
+    localStorage.removeItem(ACTIVE_STATE_KEY);
+  } catch (e) {}
+}
+
+function restoreActiveExamState() {
+  try {
+    const saved = localStorage.getItem(ACTIVE_STATE_KEY);
+    if (!saved) return false;
+    const state = JSON.parse(saved);
+    if (!state || !state.volume || !state.examName) return false;
+
+    if (confirm(`An unfinished exam session was found:\n\n• ${state.volume}\n• ${state.subject}\n• ${state.examName}\n\nWould you like to resume where you left off?`)) {
+      volume = state.volume;
+      if (volSel) volSel.value = volume;
+      subject = state.subject;
+      document.body.setAttribute('data-subject', subject);
+      document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.s === subject));
+      updateExamDropdown(state.examName);
+
+      ans = state.ans || ans;
+      flagged = state.flagged || flagged;
+      activeQ = state.activeQ || 0;
+      accumulatedMs = state.accumulatedMs || 0;
+      running = false; // Start paused for safety
+
+      updateTimerUI();
+      updateNote();
+      render();
+      return true;
+    } else {
+      clearActiveExamState();
+    }
+  } catch (e) {}
+  return false;
+}
+
 let DATA = {}
 const DURATIONS = {PSAD:21600, MSTEC:18000, HPGE:14400};
 let volume = '', subject = 'MSTEC', examName = '', ans = [], flagged = [], activeQ = 0, accumulatedMs = 0, startTime = null, running = false, submitted = false, lastResult = null, hotkeysEnabled = false, navCollapsed = true, palFilter = 'all', autoAdvance = true, activeFilters = new Set();
@@ -668,6 +724,7 @@ function toggleTimer() {
     running = true;
   }
   updateTimerUI(); updateNote(); render();
+  saveActiveExamState();
 }
 
 function toggleAutoAdvance(enabled) {
@@ -679,6 +736,7 @@ function toggleFlag(i) {
   if (i < 0 || i >= flagged.length) return;
   flagged[i] = !flagged[i];
   render();
+  saveActiveExamState();
 }
 
 function makeQuestion(i) {
@@ -707,6 +765,7 @@ function makeQuestion(i) {
       if (choice.disabled || submitted) return;
       const clearing = ans[i] === letter;
       ans[i] = clearing ? null : letter;
+      saveActiveExamState();
       if (!clearing && autoAdvance && activeQ === i && i < ans.length - 1) activeQ++;
       render();
       if (!clearing && autoAdvance) scrollToActive();
@@ -1001,6 +1060,7 @@ function performSubmit(auto = false) {
   closeConfirmModal();
   if (running) { accumulatedMs += (Date.now() - startTime); startTime = null; running = false; }
   submitted = true;
+  clearActiveExamState();
   const el = getElapsedSeconds();
   const key = DATA[volume][subject][examName];
   
@@ -1108,6 +1168,7 @@ function clearAndRestartExam(promptUser = true) {
   ans = Array(len).fill(null);
   flagged = Array(len).fill(false);
   activeQ = 0; accumulatedMs = 0; startTime = null; running = false; submitted = false; lastResult = null;
+  clearActiveExamState();
   updateTimerUI(); updateNote(); render();
 }
 
@@ -1312,6 +1373,7 @@ document.addEventListener('keydown', (e) => {
 
   if (['A', 'B', 'C', 'D', 'E'].includes(key)) {
     ans[activeQ] = key;
+    saveActiveExamState();
     if (autoAdvance && activeQ < total - 1) activeQ++;
     render();
     if (autoAdvance) scrollToActive();
@@ -1327,6 +1389,7 @@ document.addEventListener('keydown', (e) => {
   } else if (e.key === 'Backspace' || e.key === 'Delete') {
     e.preventDefault();
     ans[activeQ] = null;
+    saveActiveExamState();
     render();
   }
 });
@@ -1347,6 +1410,9 @@ async function startApp() {
     toggleHotkeys(hotkeysEnabled);
     applyNavState();
     renderAttempts();
+
+    restoreActiveExamState();
+
   } catch (error) {
     console.error('Error loading answers.json:', error);
     const main = document.querySelector('main');
